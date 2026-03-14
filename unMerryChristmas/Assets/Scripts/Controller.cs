@@ -6,15 +6,20 @@ public class Controller : MonoBehaviour
     [SerializeField] private float _turnSpeed = 360f;
     [SerializeField] private Rigidbody _rb;
     private Vector3 _input;
-    private float jumpForce = 5f;
+    private float jumpForce = 8f;
     private bool jump = false;
     private bool isGrounded = true;
 
     void Update()
     {
-        if (_rb.transform.position.y <= 0)
+        //check if rb is on the ground and set isGrounded to true
+        if (Physics.Raycast(transform.position, Vector3.down, 1.1f))
         {
             isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
         }
         GatherInput();
         Look();
