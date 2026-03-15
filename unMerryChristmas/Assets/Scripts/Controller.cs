@@ -20,6 +20,9 @@ public class Controller : MonoBehaviour
     private float _currentSpeed;
     private int _lockedH = 0;
     private int _lockedV = 0;
+    private float jumpForce = 8f;
+    private bool jump = false;
+    private bool isGrounded = true;
 
     private void OnEnable()
     {
@@ -53,6 +56,15 @@ public class Controller : MonoBehaviour
 
     void Update()
     {
+        //check if rb is on the ground and set isGrounded to true
+        if (Physics.Raycast(transform.position, Vector3.down, 1.1f))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
         GatherInput();
         UpdateSpeed();
         Look();
@@ -86,6 +98,12 @@ public class Controller : MonoBehaviour
 
     void Move()
     {
-        _rb.MovePosition(transform.position + transform.forward * _currentSpeed * Time.fixedDeltaTime);
+        _rb.MovePosition(transform.position + (transform.forward * _input.magnitude * _speed * Time.fixedDeltaTime));
+        if (jump && isGrounded)
+        {
+            _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            jump = false;
+            isGrounded = false;
+        }
     }
 }
