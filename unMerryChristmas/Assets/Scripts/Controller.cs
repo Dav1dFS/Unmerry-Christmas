@@ -15,6 +15,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private InputAction _moveUp;
     [SerializeField] private InputAction _moveDown;
     [SerializeField] private InputAction _sprint;
+    [SerializeField] private InputAction _jump;
 
     private Vector3 _input;
     private float _currentSpeed;
@@ -31,6 +32,9 @@ public class Controller : MonoBehaviour
         _moveUp.Enable();
         _moveDown.Enable();
         _sprint.Enable();
+        _jump.Enable();
+
+        _jump.started += _ => jump = true;
 
         _moveLeft.started  += _ => { if (_lockedH == 0) _lockedH = -1; };
         _moveLeft.canceled += _ => { if (_lockedH == -1) _lockedH = _moveRight.IsPressed() ? 1 : 0; };
@@ -52,6 +56,8 @@ public class Controller : MonoBehaviour
         _moveUp.Disable();
         _moveDown.Disable();
         _sprint.Disable();
+        _jump.Disable();
+
     }
 
     void Update()
@@ -98,7 +104,7 @@ public class Controller : MonoBehaviour
 
     void Move()
     {
-        _rb.MovePosition(transform.position + (transform.forward * _input.magnitude * _speed * Time.fixedDeltaTime));
+        _rb.MovePosition(transform.position + (transform.forward * _input.magnitude * _currentSpeed * Time.fixedDeltaTime));
         if (jump && isGrounded)
         {
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
