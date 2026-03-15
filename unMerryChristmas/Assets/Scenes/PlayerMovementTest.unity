@@ -1153,27 +1153,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _jump.m_SingletonActionBindings.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveUp.m_SingletonActionBindings.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _sprint.m_SingletonActionBindings.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveDown.m_SingletonActionBindings.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveLeft.m_SingletonActionBindings.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveRight.m_SingletonActionBindings.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveAction.m_SingletonActionBindings.Array.size
@@ -1184,6 +1184,10 @@ PrefabInstance:
       value: 340debe2-e6be-4299-a426-9528b3ad7bf9
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _jump.m_SingletonActionBindings.Array.data[1].m_Id
+      value: f211922c-78d8-400c-b00d-83c8ef6d86e0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _sprintAction.m_SingletonActionBindings.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -1192,15 +1196,31 @@ PrefabInstance:
       value: <Keyboard>/space
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _jump.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <Gamepad>/buttonSouth
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveUp.m_SingletonActionBindings.Array.data[0].m_Id
       value: a9c0a1d5-a038-49a1-8a56-49b76808060e
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveUp.m_SingletonActionBindings.Array.data[1].m_Id
+      value: e5301b10-092c-4209-93a3-b7797648b1e3
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _sprint.m_SingletonActionBindings.Array.data[0].m_Id
       value: 632cec4e-9516-4b0f-bb32-567bce48c401
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _sprint.m_SingletonActionBindings.Array.data[1].m_Id
+      value: ae3a59e1-dcfb-4702-8934-6c9b761e784a
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _jump.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Jump
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _jump.m_SingletonActionBindings.Array.data[1].m_Action
       value: Jump
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
@@ -1208,20 +1228,40 @@ PrefabInstance:
       value: 13fb4a48-bd71-456e-b0da-9e23126889a9
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveDown.m_SingletonActionBindings.Array.data[1].m_Id
+      value: 5abf77b2-607d-438a-9095-d872ce2c60f1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveLeft.m_SingletonActionBindings.Array.data[0].m_Id
       value: c4949c12-b69b-4c26-b921-12c756ed50b7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveLeft.m_SingletonActionBindings.Array.data[1].m_Id
+      value: 40ad9be4-2aa7-4547-ab82-5ec3869daee9
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveUp.m_SingletonActionBindings.Array.data[0].m_Path
       value: <Keyboard>/w
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveUp.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <Gamepad>/leftStick/up
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _sprint.m_SingletonActionBindings.Array.data[0].m_Path
       value: <Keyboard>/shift
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _sprint.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <Gamepad>/leftTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveRight.m_SingletonActionBindings.Array.data[0].m_Id
       value: 43cc5ab9-4a25-49cd-a83a-f6a048da4303
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveRight.m_SingletonActionBindings.Array.data[1].m_Id
+      value: 15799b0e-5473-4e25-b00f-2a4939adde0d
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveAction.m_SingletonActionBindings.Array.data[0].m_Id
@@ -1248,11 +1288,23 @@ PrefabInstance:
       value: <Keyboard>/s
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveDown.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <Gamepad>/leftStick/down
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveLeft.m_SingletonActionBindings.Array.data[0].m_Path
       value: <Keyboard>/a
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveLeft.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <Gamepad>/leftStick/left
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveUp.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Move Up
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveUp.m_SingletonActionBindings.Array.data[1].m_Action
       value: Move Up
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
@@ -1260,8 +1312,16 @@ PrefabInstance:
       value: Sprint
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _sprint.m_SingletonActionBindings.Array.data[1].m_Action
+      value: Sprint
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveRight.m_SingletonActionBindings.Array.data[0].m_Path
       value: <Keyboard>/d
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveRight.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <Gamepad>/leftStick/right
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveAction.m_SingletonActionBindings.Array.data[0].m_Name
@@ -1308,7 +1368,15 @@ PrefabInstance:
       value: Move Down
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveDown.m_SingletonActionBindings.Array.data[1].m_Action
+      value: Move Down
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveLeft.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Move Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveLeft.m_SingletonActionBindings.Array.data[1].m_Action
       value: Move Left
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
@@ -1337,6 +1405,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _moveRight.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Move Right
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _moveRight.m_SingletonActionBindings.Array.data[1].m_Action
       value: Move Right
       objectReference: {fileID: 0}
     - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
