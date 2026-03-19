@@ -104,7 +104,7 @@ public class Controller : MonoBehaviour
 
     void Move()
     {
-        _rb.MovePosition(transform.position + (transform.forward * _input.magnitude * _currentSpeed * Time.fixedDeltaTime));
+        _rb.MovePosition(transform.position + (transform.forward * (_input != Vector3.zero ? 1f : 0f) * _currentSpeed * Time.fixedDeltaTime));
         if (jump && isGrounded)
         {
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
