@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6270632845464589419}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,6 +36,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3866867829619734047}
+  - {fileID: 7874114153055189859}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4090068494717676178
@@ -130,9 +131,191 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6664e2f67c8f039418c025e3e396c3a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Controller
-  _speed: 5
-  _turnSpeed: 360
+  _walkSpeed: 5
+  _sprintSpeed: 10
+  _acceleration: 10
+  _deceleration: 15
+  _rotationSpeed: 10
   _rb: {fileID: 944156596086110503}
+  _moveLeft:
+    m_Name: Move Left
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 7dfc2293-e388-4ddb-8bfc-a0b4ac6e66d8
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: c4949c12-b69b-4c26-b921-12c756ed50b7
+      m_Path: <Keyboard>/a
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Left
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 40ad9be4-2aa7-4547-ab82-5ec3869daee9
+      m_Path: <Gamepad>/leftStick/left
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Left
+      m_Flags: 0
+    m_Flags: 0
+  _moveRight:
+    m_Name: Move Right
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 4a19bee6-2cff-45bc-b288-c04dc967c114
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 43cc5ab9-4a25-49cd-a83a-f6a048da4303
+      m_Path: <Keyboard>/d
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Right
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 15799b0e-5473-4e25-b00f-2a4939adde0d
+      m_Path: <Gamepad>/leftStick/right
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Right
+      m_Flags: 0
+    m_Flags: 0
+  _moveUp:
+    m_Name: Move Up
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: ebc81fa5-0eb5-43fa-a588-42654d8802f5
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: a9c0a1d5-a038-49a1-8a56-49b76808060e
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Up
+      m_Flags: 0
+    - m_Name: 
+      m_Id: e5301b10-092c-4209-93a3-b7797648b1e3
+      m_Path: <Gamepad>/leftStick/up
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Up
+      m_Flags: 0
+    m_Flags: 0
+  _moveDown:
+    m_Name: Move Down
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: 25ba0e40-7f9a-49c1-a646-276b4fa7ebdd
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 13fb4a48-bd71-456e-b0da-9e23126889a9
+      m_Path: <Keyboard>/s
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Down
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 5abf77b2-607d-438a-9095-d872ce2c60f1
+      m_Path: <Gamepad>/leftStick/down
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Move Down
+      m_Flags: 0
+    m_Flags: 0
+  _sprint:
+    m_Name: Sprint
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: a610df75-ac1d-42d1-9000-d59e603995f1
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 632cec4e-9516-4b0f-bb32-567bce48c401
+      m_Path: <Keyboard>/shift
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Sprint
+      m_Flags: 0
+    - m_Name: 
+      m_Id: ae3a59e1-dcfb-4702-8934-6c9b761e784a
+      m_Path: <Gamepad>/leftTrigger
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Sprint
+      m_Flags: 0
+    m_Flags: 0
+  _jump:
+    m_Name: Jump
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 8a1f1e99-eb38-4328-82b7-b1c0dfe9b3e8
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 340debe2-e6be-4299-a426-9528b3ad7bf9
+      m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Jump
+      m_Flags: 0
+    - m_Name: 
+      m_Id: f211922c-78d8-400c-b00d-83c8ef6d86e0
+      m_Path: <Gamepad>/buttonSouth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Jump
+      m_Flags: 0
+    m_Flags: 0
+  _interact:
+    m_Name: Interact
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: ef3c2272-1fab-4eb5-9271-f625425c1c13
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 786ebb3d-e0fd-4a59-b3cd-68f5f18d7293
+      m_Path: <Keyboard>/e
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Interact
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 6d759be6-8ebf-4b43-9000-f1a488ee3267
+      m_Path: <Gamepad>/buttonWest
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Interact
+      m_Flags: 0
+    m_Flags: 0
+  pickupLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  holdPoint: {fileID: 7874114153055189859}
 --- !u!54 &944156596086110503
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -158,7 +341,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!65 &6270632845464589419
 BoxCollider:
@@ -293,3 +476,34 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &7345835491508316574
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7874114153055189859}
+  m_Layer: 0
+  m_Name: HoldPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7874114153055189859
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7345835491508316574}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.602, y: 0, z: 0.449}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2424163403160389342}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

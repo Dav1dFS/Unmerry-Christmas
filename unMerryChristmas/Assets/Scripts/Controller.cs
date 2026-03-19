@@ -16,6 +16,9 @@ public class Controller : MonoBehaviour
     [SerializeField] private InputAction _moveDown;
     [SerializeField] private InputAction _sprint;
     [SerializeField] private InputAction _jump;
+    [SerializeField] private InputAction _interact;
+    [SerializeField] private LayerMask pickupLayer;
+    [SerializeField] private Transform holdPoint;
 
     private Vector3 _input;
     private float _currentSpeed;
@@ -25,6 +28,11 @@ public class Controller : MonoBehaviour
     private bool jump = false;
     private bool isGrounded = true;
 
+    private float pickupRange = 3f;
+    
+
+    private PickupObject heldObject;
+
     private void OnEnable()
     {
         _moveLeft.Enable();
@@ -33,8 +41,10 @@ public class Controller : MonoBehaviour
         _moveDown.Enable();
         _sprint.Enable();
         _jump.Enable();
+        _interact.Enable();
 
         _jump.started += _ => jump = true;
+        _interact.started += _ => checkHands();
 
         _moveLeft.started  += _ => { if (_lockedH == 0) _lockedH = -1; };
         _moveLeft.canceled += _ => { if (_lockedH == -1) _lockedH = _moveRight.IsPressed() ? 1 : 0; };
@@ -49,6 +59,8 @@ public class Controller : MonoBehaviour
         _moveDown.canceled += _ => { if (_lockedV == -1) _lockedV = _moveUp.IsPressed() ? 1 : 0; };
     }
 
+    
+
     private void OnDisable()
     {
         _moveLeft.Disable();
@@ -57,7 +69,55 @@ public class Controller : MonoBehaviour
         _moveDown.Disable();
         _sprint.Disable();
         _jump.Disable();
+        _interact.Disable();
+    }
 
+    void checkHands()
+    {
+        if (heldObject != null)
+        {
+            DropObject();
+        }
+        else
+        {
+            TryPickup();
+        }
+    }
+
+    void TryPickup()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
+
+        float closestDistance = Mathf.Infinity;
+        PickupObject closestObject = null;
+
+        foreach (Collider hit in hits)
+        {
+            PickupObject pickup = hit.GetComponent<PickupObject>();
+
+            if (pickup != null)
+            {
+                float distance = Vector3.Distance(transform.position, hit.transform.position);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestObject = pickup;
+                }
+            }
+        }
+
+        if (closestObject != null)
+        {
+            heldObject = closestObject;
+            heldObject.OnPickup(holdPoint);
+        }
+    }
+
+    void DropObject()
+    {
+        heldObject.OnDrop();
+        heldObject = null;
     }
 
     void Update()
