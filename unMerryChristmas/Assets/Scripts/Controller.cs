@@ -90,24 +90,41 @@ public class Controller : MonoBehaviour
 
         float closestDistance = Mathf.Infinity;
         PickupObject closestObject = null;
+        Collider closestCollectable = null;
 
         foreach (Collider hit in hits)
         {
-            PickupObject pickup = hit.GetComponent<PickupObject>();
+            float distance = Vector3.Distance(transform.position, hit.transform.position);
+            if (distance >= closestDistance) continue;
 
-            if (pickup != null)
+            if (hit.CompareTag("Collectable"))
             {
-                float distance = Vector3.Distance(transform.position, hit.transform.position);
-
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
-                    closestObject = pickup;
+                    closestCollectable = hit;
+                    closestObject = null; // Prioritize collectables over pickup objects
+                }
+            }
+            else
+            {
+                PickupObject pickup = hit.GetComponent<PickupObject>();
+                if (pickup != null)
+                {
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestObject = pickup;
+                    }
                 }
             }
         }
-
-        if (closestObject != null)
+        if (closestCollectable != null)
+        {
+            CollectableManager.Instance.Collect();
+            Destroy(closestCollectable.gameObject);
+        }
+        else if (closestObject != null)
         {
             heldObject = closestObject;
             heldObject.OnPickup(holdPoint);
