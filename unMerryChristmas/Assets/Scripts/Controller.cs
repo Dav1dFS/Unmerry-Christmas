@@ -28,7 +28,7 @@ public class Controller : MonoBehaviour
     private bool jump = false;
     private bool isGrounded = true;
 
-    private float pickupRange = 3f;
+    private float pickupRange = 1.5f;
     
 
     private PickupObject heldObject;
@@ -80,6 +80,7 @@ public class Controller : MonoBehaviour
         }
         else
         {
+            //In the future, insert here the logic to check the closest object layer to decide what kind of interaction do to
             TryPickup();
         }
     }
