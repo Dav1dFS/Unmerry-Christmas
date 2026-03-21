@@ -17,6 +17,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private InputAction _sprint;
     [SerializeField] private InputAction _jump;
     [SerializeField] private InputAction _interact;
+    [SerializeField] private InputAction _throw;
     [SerializeField] private LayerMask pickupLayer;
     [SerializeField] private Transform holdPoint;
 
@@ -42,9 +43,11 @@ public class Controller : MonoBehaviour
         _sprint.Enable();
         _jump.Enable();
         _interact.Enable();
+        _throw.Enable();
 
         _jump.started += _ => jump = true;
         _interact.started += _ => checkHands();
+        _throw.started += _ => throwObject();
 
         _moveLeft.started  += _ => { if (_lockedH == 0) _lockedH = -1; };
         _moveLeft.canceled += _ => { if (_lockedH == -1) _lockedH = _moveRight.IsPressed() ? 1 : 0; };
@@ -70,6 +73,23 @@ public class Controller : MonoBehaviour
         _sprint.Disable();
         _jump.Disable();
         _interact.Disable();
+        _throw.Disable();
+    }
+
+    void throwObject() 
+    {
+        if (heldObject != null)
+        {
+            
+            Rigidbody objectRb = heldObject.GetComponent<Rigidbody>();
+            if (objectRb != null)
+            {
+                DropObject();
+                Vector3 throwDirection = transform.forward + Vector3.up * 0.5f;
+                objectRb.AddForce(throwDirection.normalized * 10f, ForceMode.Impulse); 
+                
+            }
+        }
     }
 
     void checkHands()
