@@ -28,7 +28,7 @@ public class Controller : MonoBehaviour
     private bool jump = false;
     private bool isGrounded = true;
 
-    private float pickupRange = 3f;
+    private float pickupRange = 1.5f;
     
 
     private PickupObject heldObject;
