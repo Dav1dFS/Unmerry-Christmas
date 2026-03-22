@@ -8,6 +8,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private float _acceleration = 10f;
     [SerializeField] private float _deceleration = 15f;
     [SerializeField] private float _rotationSpeed = 10f;
+    [SerializeField] private float throwForce = 10f;
     [SerializeField] private Rigidbody _rb;
 
     [SerializeField] private InputAction _moveLeft;
@@ -28,6 +29,8 @@ public class Controller : MonoBehaviour
     private float jumpForce = 8f;
     private bool jump = false;
     private bool isGrounded = true;
+    private bool isAiming = false;
+    private float holdTime = 0f;
 
     private float pickupRange = 1.5f;
     
@@ -47,7 +50,8 @@ public class Controller : MonoBehaviour
 
         _jump.started += _ => jump = true;
         _interact.started += _ => checkHands();
-        _throw.started += _ => throwObject();
+        _throw.started += _ => StartAiming();
+        _throw.canceled += _ => throwObject();
 
         _moveLeft.started  += _ => { if (_lockedH == 0) _lockedH = -1; };
         _moveLeft.canceled += _ => { if (_lockedH == -1) _lockedH = _moveRight.IsPressed() ? 1 : 0; };
@@ -76,17 +80,28 @@ public class Controller : MonoBehaviour
         _throw.Disable();
     }
 
+    void StartAiming()
+    {
+        if (heldObject != null)
+        {
+            isAiming = true;
+            holdTime = 0f;
+        }
+    }
+
     void throwObject() 
     {
         if (heldObject != null)
         {
-            
+            isAiming = false;   
+            float force = Mathf.Clamp(holdTime * throwForce, 5f, 20f);
+
             Rigidbody objectRb = heldObject.GetComponent<Rigidbody>();
             if (objectRb != null)
             {
                 DropObject();
                 Vector3 throwDirection = transform.forward + Vector3.up * 0.5f;
-                objectRb.AddForce(throwDirection.normalized * 10f, ForceMode.Impulse); 
+                objectRb.AddForce(throwDirection.normalized * force, ForceMode.Impulse); 
                 
             }
         }
@@ -168,6 +183,10 @@ public class Controller : MonoBehaviour
         else
         {
             isGrounded = false;
+        }
+        if (isAiming)
+        {
+            holdTime += Time.deltaTime;
         }
         GatherInput();
         UpdateSpeed();
