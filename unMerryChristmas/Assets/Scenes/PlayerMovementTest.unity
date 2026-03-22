@@ -1578,42 +1578,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _throw.m_Name
-      value: Throw
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _throw.m_SingletonActionBindings.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _throw.m_SingletonActionBindings.Array.data[0].m_Id
-      value: 1b1b01d9-8dd7-4d42-bd6c-0c1054052897
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _throw.m_SingletonActionBindings.Array.data[1].m_Id
-      value: 37f2da45-fd20-462c-89f7-b9383b6507a2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _throw.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Keyboard>/f
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _throw.m_SingletonActionBindings.Array.data[1].m_Path
-      value: <Gamepad>/rightShoulder
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _throw.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Throw
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _throw.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Throw
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _throw.m_SingletonActionBindings.Array.data[0].m_Interactions
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4940693007258023797, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_Name
       value: Player
