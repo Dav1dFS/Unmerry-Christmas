@@ -136,6 +136,7 @@ MonoBehaviour:
   _acceleration: 10
   _deceleration: 15
   _rotationSpeed: 10
+  throwForce: 10
   _rb: {fileID: 944156596086110503}
   _moveLeft:
     m_Name: Move Left
@@ -310,6 +311,31 @@ MonoBehaviour:
       m_Processors: 
       m_Groups: 
       m_Action: Interact
+      m_Flags: 0
+    m_Flags: 0
+  _throw:
+    m_Name: Throw
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: ddfa3277-e0ae-4a20-9df5-bbba8c42f425
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 1b1b01d9-8dd7-4d42-bd6c-0c1054052897
+      m_Path: <Keyboard>/f
+      m_Interactions: Hold
+      m_Processors: 
+      m_Groups: 
+      m_Action: Throw
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 37f2da45-fd20-462c-89f7-b9383b6507a2
+      m_Path: <Gamepad>/rightShoulder
+      m_Interactions: Hold
+      m_Processors: 
+      m_Groups: 
+      m_Action: Throw
       m_Flags: 0
     m_Flags: 0
   pickupLayer:

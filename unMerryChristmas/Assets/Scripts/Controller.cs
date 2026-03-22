@@ -94,7 +94,7 @@ public class Controller : MonoBehaviour
         if (heldObject != null)
         {
             isAiming = false;   
-            float force = Mathf.Clamp(holdTime * throwForce, 5f, 20f);
+            float force = Mathf.Clamp(holdTime * throwForce, 5f, 15f);
 
             Rigidbody objectRb = heldObject.GetComponent<Rigidbody>();
             if (objectRb != null)
