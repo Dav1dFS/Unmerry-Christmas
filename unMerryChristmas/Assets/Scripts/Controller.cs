@@ -9,6 +9,9 @@ public class Controller : MonoBehaviour
     [SerializeField] private float _deceleration = 15f;
     [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private float throwForce = 10f;
+    [SerializeField] private float _rollForce = 8f;
+    [SerializeField] private float _rollDuration = 0.4f;
+    [SerializeField] private float _rollCooldown = 1.5f;
     [SerializeField] private Rigidbody _rb;
 
     [SerializeField] private InputAction _moveLeft;
@@ -19,6 +22,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private InputAction _jump;
     [SerializeField] private InputAction _interact;
     [SerializeField] private InputAction _throw;
+    [SerializeField] private InputAction _roll;
     [SerializeField] private LayerMask pickupLayer;
     [SerializeField] private Transform holdPoint;
 
@@ -31,6 +35,11 @@ public class Controller : MonoBehaviour
     private bool isGrounded = true;
     private bool isAiming = false;
     private float holdTime = 0f;
+
+    private bool isRolling = false;
+    private float rollTimer = 0f;
+    private float rollCooldownTimer = 0f;
+    private Vector3 rollDirection;
 
     private float pickupRange = 1.5f;
     
@@ -47,11 +56,13 @@ public class Controller : MonoBehaviour
         _jump.Enable();
         _interact.Enable();
         _throw.Enable();
+        _roll.Enable();
 
         _jump.started += _ => jump = true;
         _interact.started += _ => checkHands();
         _throw.started += _ => StartAiming();
         _throw.canceled += _ => throwObject();
+        _roll.started += _ => StartRoll();
 
         _moveLeft.started  += _ => { if (_lockedH == 0) _lockedH = -1; };
         _moveLeft.canceled += _ => { if (_lockedH == -1) _lockedH = _moveRight.IsPressed() ? 1 : 0; };
@@ -78,6 +89,7 @@ public class Controller : MonoBehaviour
         _jump.Disable();
         _interact.Disable();
         _throw.Disable();
+        _roll.Disable();
     }
 
     void StartAiming()
@@ -105,6 +117,18 @@ public class Controller : MonoBehaviour
                 
             }
         }
+    }
+
+    void StartRoll()
+    {
+        if (isRolling || rollCooldownTimer > 0f) return;
+
+        rollDirection = transform.forward;
+        isRolling = true;
+        rollTimer = _rollDuration;
+
+        _rb.linearVelocity = Vector3.zero;
+        _rb.angularVelocity = Vector3.zero;
     }
 
     void checkHands()
@@ -184,6 +208,19 @@ public class Controller : MonoBehaviour
         {
             isGrounded = false;
         }
+        if (rollCooldownTimer > 0f)
+        {
+            rollCooldownTimer -= Time.deltaTime;
+        }
+        if (isRolling)
+        { 
+            rollTimer -= Time.deltaTime;
+            if (rollTimer <= 0f)
+            {
+                isRolling = false;
+                rollCooldownTimer = _rollCooldown;
+            }
+        }
         if (isAiming)
         {
             holdTime += Time.deltaTime;
@@ -205,6 +242,9 @@ public class Controller : MonoBehaviour
 
     void UpdateSpeed()
     {
+        // while rolling the acceleration doesn't apply
+        if (isRolling) return;
+
         float targetSpeed = _input == Vector3.zero ? 0f : (_sprint.IsPressed() ? _sprintSpeed : _walkSpeed);
         float rate = _input != Vector3.zero ? _acceleration : _deceleration;
         _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, rate * Time.deltaTime);
@@ -221,7 +261,19 @@ public class Controller : MonoBehaviour
 
     void Move()
     {
-        _rb.MovePosition(transform.position + (transform.forward * (_input != Vector3.zero ? 1f : 0f) * _currentSpeed * Time.fixedDeltaTime));
+        if (isRolling)
+        {
+            // During the roll, we ignore player input and move in the roll direction at a fixed speed
+            _rb.MovePosition(transform.position + rollDirection * _rollForce * Time.fixedDeltaTime);
+        }
+        else
+        {
+            _rb.MovePosition(transform.position + transform.forward
+                * (_input != Vector3.zero ? 1f : 0f)
+                * _currentSpeed
+                * Time.fixedDeltaTime);
+        }
+
         if (jump && isGrounded)
         {
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);

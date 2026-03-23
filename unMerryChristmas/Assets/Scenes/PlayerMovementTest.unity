@@ -1538,6 +1538,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 944156596086110503, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: m_Constraints
+      value: 80
+      objectReference: {fileID: 0}
     - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.89661
@@ -1577,6 +1581,38 @@ PrefabInstance:
     - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _roll.m_Name
+      value: Roll
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _roll.m_SingletonActionBindings.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _roll.m_SingletonActionBindings.Array.data[0].m_Id
+      value: f2fed1e0-b84e-4dea-b3cc-78cef356533f
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _roll.m_SingletonActionBindings.Array.data[1].m_Id
+      value: c5d2e232-6038-47bd-a93f-ba7f05f76f4c
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _roll.m_SingletonActionBindings.Array.data[0].m_Path
+      value: <Keyboard>/leftCtrl
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _roll.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <Gamepad>/buttonEast
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _roll.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Roll
+      objectReference: {fileID: 0}
+    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _roll.m_SingletonActionBindings.Array.data[1].m_Action
+      value: Roll
       objectReference: {fileID: 0}
     - target: {fileID: 4940693007258023797, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_Name
