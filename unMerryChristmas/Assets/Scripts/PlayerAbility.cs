@@ -1,0 +1,19 @@
+public enum PlayerAbility
+{
+    Moving,
+    Running,
+    Jumping,
+    Grabbing,
+    Interacting,
+    Releasing,
+    Pushing,
+    Rolling,
+    Throwing,
+    ChangingCostumes,
+    ThrowingCandy,
+    Ziplining,
+    AnimatingElves,
+    Hiding,
+    ExplosingPresents,
+    SequencedDance,
+}
