@@ -60,9 +60,9 @@ public class Controller : MonoBehaviour
 
         _jump.started += _ => jump = true;
         _interact.started += _ => checkHands();
-        _throw.started += _ => StartAiming();
-        _throw.canceled += _ => throwObject();
-        _roll.started += _ => StartRoll();
+        _throw.started += _ => TryStartAiming();
+        _throw.canceled += _ => TryStartThrowing();
+        _roll.started += _ => TryStartRoll();
 
         _moveLeft.started  += _ => { if (_lockedH == 0) _lockedH = -1; };
         _moveLeft.canceled += _ => { if (_lockedH == -1) _lockedH = _moveRight.IsPressed() ? 1 : 0; };
@@ -90,6 +90,42 @@ public class Controller : MonoBehaviour
         _interact.Disable();
         _throw.Disable();
         _roll.Disable();
+    }
+    // locked abilities functions
+    void TryStartRoll()
+    {
+        if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Rolling))
+        {
+            Debug.Log("Rolling ability is not unlocked yet!");
+            return;
+        }
+        else
+        {
+            StartRoll();
+        }
+    }
+    void TryStartAiming()
+    {
+        if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
+        {
+            Debug.Log("Throwing ability is not unlocked yet!");
+            return;
+        }
+        else
+        {
+            StartAiming();
+        }
+    }
+    void TryStartThrowing()
+    {
+        if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
+        {
+            return;
+        }
+        else
+        {
+            throwObject();
+        }
     }
 
     void StartAiming()
@@ -166,6 +202,15 @@ public class Controller : MonoBehaviour
                     closestObject = null; // Prioritize collectables over pickup objects
                 }
             }
+            else if (hit.CompareTag("Token"))
+            {
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestCollectable = hit;
+                    closestObject = null;
+                }    
+            }
             else
             {
                 PickupObject pickup = hit.GetComponent<PickupObject>();
@@ -181,7 +226,18 @@ public class Controller : MonoBehaviour
         }
         if (closestCollectable != null)
         {
-            CollectableManager.Instance.Collect();
+            if (closestCollectable.CompareTag("Token"))
+            {
+                AbilityToken token = closestCollectable.GetComponent<AbilityToken>();
+                if (token != null)
+                {
+                    AbilityTokenManager.Instance.Unlock(token.Ability);
+                }
+            }
+            else
+            {
+                CollectableManager.Instance.Collect();
+            }  
             Destroy(closestCollectable.gameObject);
         }
         else if (closestObject != null)
