@@ -2184,7 +2184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3845935149976060058, guid: e0b7ad05a717f47849d971eff7371be7, type: 3}
       propertyPath: _linearDrag
-      value: 32
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3845935149976060058, guid: e0b7ad05a717f47849d971eff7371be7, type: 3}
       propertyPath: allowedAxes
@@ -2192,7 +2192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3845935149976060058, guid: e0b7ad05a717f47849d971eff7371be7, type: 3}
       propertyPath: _angularDrag
-      value: 32
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3845935149976060058, guid: e0b7ad05a717f47849d971eff7371be7, type: 3}
       propertyPath: maxPushDistance
