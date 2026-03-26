@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1653601394863001516}
   - component: {fileID: 944156596086110503}
   - component: {fileID: 6270632845464589419}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4940693007258023797}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.89661, y: -0, z: -1.96595}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -369,6 +369,9 @@ MonoBehaviour:
   pickupLayer:
     serializedVersion: 2
     m_Bits: 8
+  pushableLayer:
+    serializedVersion: 2
+    m_Bits: 0
   holdPoint: {fileID: 7874114153055189859}
 --- !u!54 &944156596086110503
 Rigidbody:
@@ -430,7 +433,7 @@ GameObject:
   - component: {fileID: 2164433391441945238}
   - component: {fileID: 6289513755984461256}
   - component: {fileID: 4745693481146613036}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +542,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7874114153055189859}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

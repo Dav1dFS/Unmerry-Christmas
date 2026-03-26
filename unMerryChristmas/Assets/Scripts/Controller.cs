@@ -24,6 +24,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private InputAction _throw;
     [SerializeField] private InputAction _roll;
     [SerializeField] private LayerMask pickupLayer;
+    [SerializeField] private LayerMask pushableLayer;
     [SerializeField] private Transform holdPoint;
 
     private Vector3 _input;
@@ -41,10 +42,13 @@ public class Controller : MonoBehaviour
     private float rollCooldownTimer = 0f;
     private Vector3 rollDirection;
 
-    private float pickupRange = 1.5f;
-    
+    [SerializeField] private float pickupRange = 1.5f;
+    [SerializeField] private float pushableRange = 0.8f;
 
     private PickupObject heldObject;
+    private PushableObject _pushedObject;
+    private Vector3 _contactLocalPos; // contact point on the object's face, in object local space
+    private Vector3 _playerLocalPos;  // player position in object local space at grab time
 
     private void OnEnable()
     {
@@ -77,8 +81,6 @@ public class Controller : MonoBehaviour
         _moveDown.canceled += _ => { if (_lockedV == -1) _lockedV = _moveUp.IsPressed() ? 1 : 0; };
     }
 
-    
-
     private void OnDisable()
     {
         _moveLeft.Disable();
@@ -94,38 +96,30 @@ public class Controller : MonoBehaviour
     // locked abilities functions
     void TryStartRoll()
     {
+        if (_pushedObject != null) return;
         if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Rolling))
         {
             Debug.Log("Rolling ability is not unlocked yet!");
             return;
         }
-        else
-        {
-            StartRoll();
-        }
+        StartRoll();
     }
+
     void TryStartAiming()
     {
+        if (_pushedObject != null) return;
         if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
         {
             Debug.Log("Throwing ability is not unlocked yet!");
             return;
         }
-        else
-        {
-            StartAiming();
-        }
+        StartAiming();
     }
+
     void TryStartThrowing()
     {
-        if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
-        {
-            return;
-        }
-        else
-        {
-            throwObject();
-        }
+        if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing)) return;
+        throwObject();
     }
 
     void StartAiming()
@@ -149,8 +143,7 @@ public class Controller : MonoBehaviour
             {
                 DropObject();
                 Vector3 throwDirection = transform.forward + Vector3.up * 0.5f;
-                objectRb.AddForce(throwDirection.normalized * force, ForceMode.Impulse); 
-                
+                objectRb.AddForce(throwDirection.normalized * force, ForceMode.Impulse);
             }
         }
     }
@@ -173,20 +166,28 @@ public class Controller : MonoBehaviour
         {
             DropObject();
         }
+        else if (_pushedObject != null)
+        {
+            ReleasePushable();
+        }
         else
         {
-            //In the future, insert here the logic to check the closest object layer to decide what kind of interaction do to
             TryPickup();
         }
     }
 
     void TryPickup()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
+        Collider[] pickupHits   = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
+        Collider[] pushableHits = Physics.OverlapSphere(transform.position, pushableRange, pushableLayer);
+        Collider[] hits = new Collider[pickupHits.Length + pushableHits.Length];
+        pickupHits.CopyTo(hits, 0);
+        pushableHits.CopyTo(hits, pickupHits.Length);
 
         float closestDistance = Mathf.Infinity;
         PickupObject closestObject = null;
         Collider closestCollectable = null;
+        PushableObject closestPushable = null;
 
         foreach (Collider hit in hits)
         {
@@ -195,49 +196,51 @@ public class Controller : MonoBehaviour
 
             if (hit.CompareTag("Collectable"))
             {
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestCollectable = hit;
-                    closestObject = null; // Prioritize collectables over pickup objects
-                }
+                closestDistance = distance;
+                closestCollectable = hit;
+                closestObject = null;
+                closestPushable = null;
             }
             else if (hit.CompareTag("Token"))
             {
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestCollectable = hit;
-                    closestObject = null;
-                }    
+                closestDistance = distance;
+                closestCollectable = hit;
+                closestObject = null;
+                closestPushable = null;
             }
             else
             {
                 PickupObject pickup = hit.GetComponent<PickupObject>();
                 if (pickup != null)
                 {
-                    if (distance < closestDistance)
+                    closestDistance = distance;
+                    closestObject = pickup;
+                    closestPushable = null;
+                }
+                else
+                {
+                    PushableObject pushable = hit.GetComponent<PushableObject>();
+                    if (pushable != null)
                     {
                         closestDistance = distance;
-                        closestObject = pickup;
+                        closestPushable = pushable;
                     }
                 }
             }
         }
+
         if (closestCollectable != null)
         {
             if (closestCollectable.CompareTag("Token"))
             {
                 AbilityToken token = closestCollectable.GetComponent<AbilityToken>();
                 if (token != null)
-                {
                     AbilityTokenManager.Instance.Unlock(token.Ability);
-                }
             }
             else
             {
                 CollectableManager.Instance.Collect();
-            }  
+            }
             Destroy(closestCollectable.gameObject);
         }
         else if (closestObject != null)
@@ -245,6 +248,40 @@ public class Controller : MonoBehaviour
             heldObject = closestObject;
             heldObject.OnPickup(holdPoint);
         }
+        else if (closestPushable != null)
+        {
+            if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Pushing))
+            {
+                Debug.Log("Pushing ability is not unlocked yet!");
+                return;
+            }
+
+            // Raycast from player toward the object to find the exact face contact point
+            Vector3 dirToObj = (closestPushable.transform.position - transform.position).normalized;
+            Vector3 contactWorldPos;
+            if (Physics.Raycast(transform.position, dirToObj, out RaycastHit contactHit, pickupRange * 2f, pushableLayer))
+                contactWorldPos = contactHit.point;
+            else
+                contactWorldPos = closestPushable.GetComponent<Collider>().ClosestPoint(transform.position);
+
+            _pushedObject = closestPushable;
+            _contactLocalPos = closestPushable.transform.InverseTransformPoint(contactWorldPos);
+            _playerLocalPos  = closestPushable.transform.InverseTransformPoint(transform.position);
+            _pushedObject.OnGrab();
+        }
+    }
+
+    void ReleasePushable()
+    {
+        _pushedObject.OnRelease();
+        _pushedObject = null;
+    }
+
+    void ClearAbilityInputs()
+    {
+        jump = false;
+        isAiming = false;
+        holdTime = 0f;
     }
 
     void DropObject()
@@ -281,6 +318,14 @@ public class Controller : MonoBehaviour
         {
             holdTime += Time.deltaTime;
         }
+        if (_pushedObject != null)
+        {
+            if (!_pushedObject.IsWithinPushDistance())
+                ReleasePushable();
+            else
+                ClearAbilityInputs();
+        }
+
         GatherInput();
         UpdateSpeed();
         Look();
@@ -298,16 +343,25 @@ public class Controller : MonoBehaviour
 
     void UpdateSpeed()
     {
-        // while rolling the acceleration doesn't apply
         if (isRolling) return;
 
-        float targetSpeed = _input == Vector3.zero ? 0f : (_sprint.IsPressed() ? _sprintSpeed : _walkSpeed);
+        float targetSpeed = _input == Vector3.zero ? 0f :
+            (_sprint.IsPressed() && _pushedObject == null) ? _sprintSpeed : _walkSpeed;
         float rate = _input != Vector3.zero ? _acceleration : _deceleration;
         _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, rate * Time.deltaTime);
     }
 
     void Look()
     {
+        if (_pushedObject != null)
+        {
+            Vector3 contactWorld = _pushedObject.transform.TransformPoint(_contactLocalPos);
+            Vector3 toContact = new Vector3(contactWorld.x - transform.position.x, 0f, contactWorld.z - transform.position.z);
+            if (toContact.sqrMagnitude > 0.001f)
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+                    Quaternion.LookRotation(toContact.normalized, Vector3.up), _rotationSpeed * Time.deltaTime);
+            return;
+        }
         if (_input != Vector3.zero)
         {
             var targetRot = Quaternion.LookRotation(_input.ToIso(), Vector3.up);
@@ -319,8 +373,19 @@ public class Controller : MonoBehaviour
     {
         if (isRolling)
         {
-            // During the roll, we ignore player input and move in the roll direction at a fixed speed
             _rb.MovePosition(transform.position + rollDirection * _rollForce * Time.fixedDeltaTime);
+        }
+        else if (_pushedObject != null)
+        {
+            if (_input != Vector3.zero)
+            {
+                Vector3 contactWorld = _pushedObject.transform.TransformPoint(_contactLocalPos);
+                Vector3 inputDir = _input.ToIso().normalized;
+                _pushedObject.ApplyPushForce(inputDir, contactWorld);
+            }
+
+            Vector3 targetWorld = _pushedObject.transform.TransformPoint(_playerLocalPos);
+            _rb.MovePosition(new Vector3(targetWorld.x, transform.position.y, targetWorld.z));
         }
         else
         {
@@ -330,7 +395,7 @@ public class Controller : MonoBehaviour
                 * Time.fixedDeltaTime);
         }
 
-        if (jump && isGrounded)
+        if (jump && isGrounded && _pushedObject == null)
         {
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             jump = false;
