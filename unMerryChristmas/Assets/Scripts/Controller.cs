@@ -42,7 +42,8 @@ public class Controller : MonoBehaviour
     private float rollCooldownTimer = 0f;
     private Vector3 rollDirection;
 
-    private float pickupRange = 1.5f;
+    [SerializeField] private float pickupRange = 1.5f;
+    [SerializeField] private float pushableRange = 0.8f;
 
     private PickupObject heldObject;
     private PushableObject _pushedObject;
@@ -177,7 +178,11 @@ public class Controller : MonoBehaviour
 
     void TryPickup()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer | pushableLayer);
+        Collider[] pickupHits   = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
+        Collider[] pushableHits = Physics.OverlapSphere(transform.position, pushableRange, pushableLayer);
+        Collider[] hits = new Collider[pickupHits.Length + pushableHits.Length];
+        pickupHits.CopyTo(hits, 0);
+        pushableHits.CopyTo(hits, pickupHits.Length);
 
         float closestDistance = Mathf.Infinity;
         PickupObject closestObject = null;
@@ -272,6 +277,13 @@ public class Controller : MonoBehaviour
         _pushedObject = null;
     }
 
+    void ClearAbilityInputs()
+    {
+        jump = false;
+        isAiming = false;
+        holdTime = 0f;
+    }
+
     void DropObject()
     {
         heldObject.OnDrop();
@@ -306,8 +318,13 @@ public class Controller : MonoBehaviour
         {
             holdTime += Time.deltaTime;
         }
-        if (_pushedObject != null && !_pushedObject.IsWithinPushDistance())
-            ReleasePushable();
+        if (_pushedObject != null)
+        {
+            if (!_pushedObject.IsWithinPushDistance())
+                ReleasePushable();
+            else
+                ClearAbilityInputs();
+        }
 
         GatherInput();
         UpdateSpeed();
