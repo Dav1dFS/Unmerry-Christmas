@@ -23,9 +23,13 @@ public class Controller : MonoBehaviour
     [SerializeField] private InputAction _interact;
     [SerializeField] private InputAction _throw;
     [SerializeField] private InputAction _roll;
+    [SerializeField] private InputAction _spawnGift;
+    [SerializeField] private InputAction _dropGift;
     [SerializeField] private LayerMask pickupLayer;
     [SerializeField] private LayerMask pushableLayer;
     [SerializeField] private Transform holdPoint;
+    [SerializeField] private GameObject _giftBombPrefab;
+    
 
     private Vector3 _input;
     private float _currentSpeed;
@@ -47,6 +51,7 @@ public class Controller : MonoBehaviour
 
     private PickupObject heldObject;
     private PushableObject _pushedObject;
+    private ExplosivePresent _giftInHand;
     private Vector3 _contactLocalPos; // contact point on the object's face, in object local space
     private Vector3 _playerLocalPos;  // player position in object local space at grab time
 
@@ -61,12 +66,16 @@ public class Controller : MonoBehaviour
         _interact.Enable();
         _throw.Enable();
         _roll.Enable();
+        _spawnGift.Enable();
+        _dropGift.Enable();
 
         _jump.started += _ => jump = true;
         _interact.started += _ => checkHands();
         _throw.started += _ => TryStartAiming();
         _throw.canceled += _ => TryStartThrowing();
         _roll.started += _ => TryStartRoll();
+        _spawnGift.started += _ => TrySpawnGift();
+        _dropGift.started += _ => DropGift();
 
         _moveLeft.started  += _ => { if (_lockedH == 0) _lockedH = -1; };
         _moveLeft.canceled += _ => { if (_lockedH == -1) _lockedH = _moveRight.IsPressed() ? 1 : 0; };
@@ -92,17 +101,82 @@ public class Controller : MonoBehaviour
         _interact.Disable();
         _throw.Disable();
         _roll.Disable();
+        _spawnGift.Disable();
+        _dropGift.Disable();
     }
     // locked abilities functions
     void TryStartRoll()
     {
         if (_pushedObject != null) return;
+
         if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Rolling))
         {
             Debug.Log("Rolling ability is not unlocked yet!");
             return;
         }
         StartRoll();
+    }
+
+    void TrySpawnGift()
+    {
+        if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.ExplosingPresents))
+        {
+            Debug.Log("Exploding Presents ability is not unlocked yet!");
+            return;
+        }
+        if (heldObject != null || _giftInHand != null) return;
+
+        GameObject obj = Instantiate(_giftBombPrefab, holdPoint.position, Quaternion.identity);
+        obj.transform.SetParent(holdPoint);
+        obj.transform.localPosition = Vector3.zero;
+        _giftInHand = obj.GetComponent<ExplosivePresent>();
+
+        Collider giftCol = obj.GetComponent<Collider>();
+        if (giftCol != null) giftCol.enabled = false;
+    }
+
+    void ThrowGift()
+    {
+        if (_giftInHand == null) return;
+
+        ExplosivePresent gift = _giftInHand;
+        _giftInHand = null;
+
+        gift.transform.SetParent(null);
+        gift.Arm();
+
+        Collider giftCol = gift.GetComponent<Collider>();
+        if (giftCol != null) giftCol.enabled = true;
+
+        Rigidbody giftRb = gift.GetComponent<Rigidbody>();
+        if (giftRb != null)
+        {
+            giftRb.isKinematic = false;
+            float force = Mathf.Clamp(holdTime * throwForce, 5f, 15f);
+            Vector3 throwDirection = transform.forward + Vector3.up * 0.5f;
+            giftRb.AddForce(throwDirection.normalized * force, ForceMode.Impulse);
+        }
+
+        isAiming = false;
+        holdTime = 0f;
+    }
+
+    void DropGift()
+    {
+        if (_giftInHand == null) return;
+
+        ExplosivePresent gift = _giftInHand;
+        _giftInHand = null;
+
+        gift.transform.SetParent(null);
+        gift.Arm();
+
+        Collider giftCol = gift.GetComponent<Collider>();
+        if (giftCol != null) giftCol.enabled = true;
+
+        Rigidbody giftRb = gift.GetComponent<Rigidbody>();
+        if (giftRb != null)
+            giftRb.isKinematic = false;
     }
 
     void TryStartAiming()
@@ -119,12 +193,20 @@ public class Controller : MonoBehaviour
     void TryStartThrowing()
     {
         if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing)) return;
-        throwObject();
+
+        if (_giftInHand != null)
+        {
+            ThrowGift();
+        }
+        else
+        {
+            throwObject();
+        }          
     }
 
     void StartAiming()
     {
-        if (heldObject != null)
+        if (heldObject != null || _giftInHand != null)
         {
             isAiming = true;
             holdTime = 0f;
@@ -169,6 +251,10 @@ public class Controller : MonoBehaviour
         else if (_pushedObject != null)
         {
             ReleasePushable();
+        }
+        else if (_giftInHand != null)
+        {
+            DropGift();
         }
         else
         {
