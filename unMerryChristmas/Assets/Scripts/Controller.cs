@@ -223,7 +223,6 @@ public class Controller : MonoBehaviour
             Rigidbody objectRb = heldObject.GetComponent<Rigidbody>();
             if (objectRb != null)
             {
-                // Ativa o impact antes de largar
                 ThrowableImpact impact = heldObject.GetComponent<ThrowableImpact>();
                 if (impact != null) impact.SetThrown();
 

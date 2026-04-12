@@ -39,12 +39,11 @@ public class ExplosivePresent : MonoBehaviour
         Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius, _affectedLayers);
         foreach (Collider hit in hits)
         {
-            // NPC atingido entra em alerted
+            // Hit NPC goes into alerted state
             NpcController npc = hit.GetComponent<NpcController>();
             if (npc != null)
                 npc.OnHit();
 
-            // Rigidbody recebe força
             Rigidbody rb = hit.GetComponent<Rigidbody>();
             if (rb != null)
             {
@@ -56,5 +55,4 @@ public class ExplosivePresent : MonoBehaviour
         Debug.Log("BOOM!");
         Destroy(gameObject);
     }
-
 }

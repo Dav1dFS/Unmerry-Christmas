@@ -7,7 +7,7 @@ public class NPCVisionCone : MonoBehaviour
     [SerializeField] private float _range = 8f;
     [SerializeField] private float _angle = 60f;
     [SerializeField] private int _segments = 20;
-    [SerializeField] private float _height = 0.05f; // altura acima do chão
+    [SerializeField] private float _height = 0.05f; // above ground
 
     [SerializeField] private Color _busyColor = new Color(1f, 1f, 0f, 0.25f);
     [SerializeField] private Color _alertedColor = new Color(1f, 0.5f, 0f, 0.4f);
@@ -50,7 +50,7 @@ public class NPCVisionCone : MonoBehaviour
                 _mat.color = _alertedColor;
                 break;
             default:
-                // interpola entre verde e amarelo consoante o DetectionProgress
+                // changes between green and yellow based on detection progress
                 _mat.color = Color.Lerp(_busyColor, _alertedColor, _npc.DetectionProgress);
                 break;
         }
@@ -58,11 +58,11 @@ public class NPCVisionCone : MonoBehaviour
 
     void BuildMesh()
     {
-        int vertCount = _segments + 2; // origem + arco
+        int vertCount = _segments + 2;
         Vector3[] verts = new Vector3[vertCount];
         int[] tris = new int[_segments * 3];
 
-        verts[0] = new Vector3(0, _height, 0); // origem local
+        verts[0] = new Vector3(0, _height, 0);
 
         float halfAngle = _angle;
         float angleStep = (halfAngle * 2f) / _segments;
