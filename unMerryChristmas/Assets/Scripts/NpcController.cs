@@ -13,47 +13,50 @@ public class NpcController : MonoBehaviour
     [SerializeField] private float _busyDurationVariance = 5f;
 
     [Header("Detection")]
-    [SerializeField] private float _detectionAngle = 30f; // ângulo de visão (metade do cone)
-    [SerializeField] private float _detectionRange = 4f;
-    [SerializeField] private float _watchDuration = 3f; 
-    [SerializeField] private float _alertDuration = 8f;
-    [SerializeField] private float _lookAroundSpeed = 60f; // graus/segundo ao olhar à volta
-    [SerializeField] private int _lookAroundTurns = 3; // quantas vezes vira a cabeça antes de se acalmar
-    [SerializeField] private LayerMask _playerLayer;
-    [SerializeField] private LayerMask _obstacleMask; // paredes etc para o raycast de visão
-    private float _watchTimer = 0f;
+    [SerializeField] private float _detectionAngle = 30f;
+    [SerializeField] private float _detectionRange = 6f;
+    [SerializeField] private float _detectionBuildUpTime = 2f; // seconds needed to detect player
+    [SerializeField] private float _gracePeriod = 4f;
+    [SerializeField] private float _alertedDetectionBuildUpTime = 1f; // when alerted, detect faster
+    [SerializeField] private float _alertDuration = 6f;
 
+    [SerializeField] private float _watchDuration = 3f;
+    [SerializeField] private float _lookAroundSpeed = 90f; // degrees per second while looking around
+    [SerializeField] private int _lookAroundTurns = 6; // number of times to look around when alerted
+    [SerializeField] private LayerMask _playerLayer;
+    [SerializeField] private LayerMask _obstacleMask; // walls/obstacles that block vision
+
+    public float DetectionProgress => _detectionBuildUpTime > 0f ?
+    Mathf.Clamp01(_detectionTimer / _detectionBuildUpTime) : 0f;
+    
     [Header("Movement")]
     [SerializeField] private float _walkSpeed = 2f;
-    [SerializeField] private float _alertedWalkSpeed = 1f;    // slower when alerted
-    [SerializeField] private float _arrivedThreshold = 0.4f;
+    [SerializeField] private float _alertedWalkSpeed = 1f; // slower when alerted
+    [SerializeField] private float _arrivedThreshold = 1.5f;
 
     [Header("Distraction")]
     [SerializeField] private float _distractedDuration = 5f;
 
     [Header("References")]
-    [SerializeField] private Transform _head;                 // transform da cabeça para rotação de visão
-    [SerializeField] private Transform _player;               // referência ao player (pode auto-detetar)
+    [SerializeField] private Transform _head; // head position for raycasting (can be null, then uses body)
+    [SerializeField] private Transform _player; // player reference (can be set in inspector or auto-found)
 
     public NpcStates CurrentState { get; private set; } = NpcStates.Busy;
-    public float DetectionProgress => _detectionBuildUpTime > 0f ?
-    Mathf.Clamp01(_detectionTimer / _detectionBuildUpTime) : 0f;
 
     private NavMeshAgent _agent;
     private int _currentKeyItemIndex = 0;
     private float _stateTimer = 0f;
-    private int _lookTurnsLeft = 0;
-    private Coroutine _lookAroundCoroutine;
-    private float _watchCooldown = 3f;      // campo privado
-    private float _watchCooldownTimer = 0f; // timer do cooldown
-
-    [SerializeField] private float _detectionBuildUpTime = 2f; // segundos até watching
-    [SerializeField] private float _gracePeriod = 4f;          // segundos sem deteção após watching
-    [SerializeField] private float _alertedDetectionBuildUpTime = 1f; // 1 segundo quando alerted
-    private float _detectionTimer = 0f;   // acumula enquanto te vê
-    private float _gracePeriodTimer = 0f; // conta o grace period
+    private float _detectionTimer = 0f;
+    private float _gracePeriodTimer = 0f;
     private float CurrentDetectionBuildUpTime =>
     CurrentState == NpcStates.Alerted ? _alertedDetectionBuildUpTime : _detectionBuildUpTime;
+
+    private float _watchCooldown = 3f;
+    private float _watchCooldownTimer = 0f;
+    private float _watchTimer = 0f;
+    private int _lookTurnsLeft = 0;
+    private Coroutine _lookAroundCoroutine;
+
     protected virtual void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -92,7 +95,7 @@ public class NpcController : MonoBehaviour
     }
 
     //State Machine
-    void EnterBusy()
+    public void EnterBusy()
     {
         ChangeState(NpcStates.Busy);
         _agent.isStopped = true;
@@ -100,7 +103,7 @@ public class NpcController : MonoBehaviour
         OnEnterBusy(keyItems[_currentKeyItemIndex]);
     }
 
-    void EnterWalking()
+    public void EnterWalking()
     {
         ChangeState(NpcStates.Walking);
         _agent.isStopped = false;
@@ -124,7 +127,7 @@ public class NpcController : MonoBehaviour
         OnEnterAlerted();
     }
 
-    void EnterWatching()
+    public void EnterWatching()
     {
         if (_lookAroundCoroutine != null) StopCoroutine(_lookAroundCoroutine);
 
@@ -163,7 +166,7 @@ public class NpcController : MonoBehaviour
         EnterAlerted();
     }
 
-    // State Machine — Update 
+    // State Machine Updates
 
     void UpdateBusy()
     {
@@ -191,7 +194,7 @@ public class NpcController : MonoBehaviour
         if (_stateTimer <= 0f)
         {
             if (_lookAroundCoroutine != null) StopCoroutine(_lookAroundCoroutine);
-            EnterWalking(); // volta à rotina normal
+            EnterWalking(); // back to normal routine
         }
     }
 
@@ -211,7 +214,7 @@ public class NpcController : MonoBehaviour
         if (_watchTimer <= 0f || !CanSeePlayer())
         {
             PlayerFreezeManager.Instance?.UnFreeze();
-            _gracePeriodTimer = _gracePeriod; // inicia grace period
+            _gracePeriodTimer = _gracePeriod; // start grace period where player can't be detected
             _currentKeyItemIndex = (_currentKeyItemIndex + 1) % keyItems.Count;
             EnterWalking();
         }
@@ -224,7 +227,7 @@ public class NpcController : MonoBehaviour
         OnUpdateDistracted();
 
         if (_stateTimer <= 0f)
-            EnterAlerted(); // após distraído fica alerted antes de voltar ao normal
+            EnterAlerted(); // after distraction ends, go to alerted state
     }
 
     // Detection
@@ -259,7 +262,7 @@ public class NpcController : MonoBehaviour
         float angle = Vector3.Angle(transform.forward, dirToPlayer.normalized);
         if (angle > _detectionAngle) return false;
 
-        // Raycast para verificar que não há parede à frente
+        // Raycast to see if there are obstacles in the way
         if (Physics.Raycast(origin.position, dirToPlayer.normalized, distance, _obstacleMask))
             return false;
 
@@ -272,7 +275,6 @@ public class NpcController : MonoBehaviour
     {
         while (_lookTurnsLeft > 0)
         {
-            // Roda para um lado
             float targetAngle = Random.Range(30f, 80f) * (Random.value > 0.5f ? 1f : -1f);
             yield return RotateByAngle(targetAngle);
             yield return new WaitForSeconds(0.5f);
@@ -294,7 +296,7 @@ public class NpcController : MonoBehaviour
         }
     }
 
-    // Key Item Disruption (chamado externamente)
+    // Key Item Disruption (called externally)
 
     public void OnKeyItemDisrupted()
     {
@@ -311,7 +313,7 @@ public class NpcController : MonoBehaviour
         OnStateChanged(previous, newState);
     }
 
-    // Virtuais — override nas subclasses para comportamentos específicos
+    // Override on enter/update methods in subclasses for specific behaviors or animations
 
     protected virtual void OnEnterBusy(Transform keyItem) { }
     protected virtual void OnEnterWalking(Transform keyItem) { }
@@ -326,14 +328,14 @@ public class NpcController : MonoBehaviour
     protected virtual void OnUpdateWatching() { }
     protected virtual void OnUpdateDistracted() { }
 
-    // Chamado sempre que o estado muda — útil para animações
+    // Called whenever state changes, can be used for debugging or triggering global events
     protected virtual void OnStateChanged(NpcStates previous, NpcStates next) { }
 
     // Gizmos
 
     void OnDrawGizmosSelected()
     {
-        // Cone de visão
+        // Vision Cone
         Gizmos.color = Color.yellow;
         Vector3 leftDir = Quaternion.Euler(0, -_detectionAngle, 0) * transform.forward;
         Vector3 rightDir = Quaternion.Euler(0, _detectionAngle, 0) * transform.forward;

@@ -4,8 +4,8 @@ using UnityEngine;
 public class NPCVisionCone : MonoBehaviour
 {
     [SerializeField] private NpcController _npc;
-    [SerializeField] private float _range = 8f;
-    [SerializeField] private float _angle = 60f;
+    [SerializeField] private float _range = 6f;
+    [SerializeField] private float _angle = 30f;
     [SerializeField] private int _segments = 20;
     [SerializeField] private float _height = 0.05f; // above ground
 

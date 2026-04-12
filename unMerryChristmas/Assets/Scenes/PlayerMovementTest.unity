@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCVisionCone
   _npc: {fileID: 1345592932}
-  _range: 4
+  _range: 6
   _angle: 30
   _segments: 20
   _height: 0.05
@@ -499,7 +499,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1649,7 +1649,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1782,7 +1782,7 @@ GameObject:
   - component: {fileID: 1345592931}
   - component: {fileID: 1345592932}
   m_Layer: 0
-  m_Name: Npc Dad Test
+  m_Name: Father NPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1952,12 +1952,15 @@ MonoBehaviour:
   - {fileID: 1144214934}
   _busyDuration: 10
   _busyDurationVariance: 5
-  _detectionAngle: 60
-  _detectionRange: 8
+  _detectionAngle: 30
+  _detectionRange: 6
+  _detectionBuildUpTime: 2
+  _gracePeriod: 4
+  _alertedDetectionBuildUpTime: 1
+  _alertDuration: 6
   _watchDuration: 3
-  _alertDuration: 8
-  _lookAroundSpeed: 60
-  _lookAroundTurns: 3
+  _lookAroundSpeed: 90
+  _lookAroundTurns: 6
   _playerLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -1966,13 +1969,10 @@ MonoBehaviour:
     m_Bits: 128
   _walkSpeed: 2
   _alertedWalkSpeed: 1
-  _arrivedThreshold: 0.4
+  _arrivedThreshold: 1.5
   _distractedDuration: 5
   _head: {fileID: 0}
   _player: {fileID: 0}
-  _detectionBuildUpTime: 2
-  _gracePeriod: 4
-  _alertedDetectionBuildUpTime: 1
 --- !u!1 &1382732156
 GameObject:
   m_ObjectHideFlags: 0
@@ -2205,7 +2205,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -2775,7 +2775,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
