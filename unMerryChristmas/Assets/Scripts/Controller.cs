@@ -217,12 +217,16 @@ public class Controller : MonoBehaviour
     {
         if (heldObject != null)
         {
-            isAiming = false;   
+            isAiming = false;
             float force = Mathf.Clamp(holdTime * throwForce, 5f, 15f);
 
             Rigidbody objectRb = heldObject.GetComponent<Rigidbody>();
             if (objectRb != null)
             {
+                // Ativa o impact antes de largar
+                ThrowableImpact impact = heldObject.GetComponent<ThrowableImpact>();
+                if (impact != null) impact.SetThrown();
+
                 DropObject();
                 Vector3 throwDirection = transform.forward + Vector3.up * 0.5f;
                 objectRb.AddForce(throwDirection.normalized * force, ForceMode.Impulse);
@@ -424,6 +428,11 @@ public class Controller : MonoBehaviour
 
     void GatherInput()
     {
+        if (PlayerFreezeManager.Instance.isFrozen)
+        {
+            _input = Vector3.zero;
+            return;
+        }
         _input = new Vector3(_lockedH, 0, _lockedV);
     }
 
@@ -457,6 +466,12 @@ public class Controller : MonoBehaviour
 
     void Move()
     {
+        if (PlayerFreezeManager.Instance.isFrozen)
+        {
+            _input = Vector3.zero;
+            return;
+        }
+
         if (isRolling)
         {
             _rb.MovePosition(transform.position + rollDirection * _rollForce * Time.fixedDeltaTime);
