@@ -4,10 +4,7 @@ using UnityEngine;
 public class NPCVisionCone : MonoBehaviour
 {
     [SerializeField] private NpcController _npc;
-    [SerializeField] private float _range = 6f;
-    [SerializeField] private float _angle = 30f;
     [SerializeField] private int _segments = 20;
-    [SerializeField] private float _height = 0.05f; // above ground
 
     [SerializeField] private Color _busyColor = new Color(1f, 1f, 0f, 0.25f);
     [SerializeField] private Color _alertedColor = new Color(1f, 0.5f, 0f, 0.4f);
@@ -21,15 +18,13 @@ public class NPCVisionCone : MonoBehaviour
     {
         _mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = _mesh;
-
         _renderer = GetComponent<MeshRenderer>();
         _mat = new Material(Shader.Find("Sprites/Default"));
         _mat.color = _busyColor;
         _renderer.material = _mat;
         _renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         _renderer.receiveShadows = false;
-
-        if (_npc == null) _npc = GetComponent<NpcController>();
+        if (_npc == null) _npc = GetComponentInParent<NpcController>();
     }
 
     void Update()
@@ -58,20 +53,22 @@ public class NPCVisionCone : MonoBehaviour
 
     void BuildMesh()
     {
+        float range = _npc.DetectionRange;
+        float halfAngle = _npc.DetectionAngle;
+        float height = _npc.DetectionMinHeight;
+
         int vertCount = _segments + 2;
         Vector3[] verts = new Vector3[vertCount];
         int[] tris = new int[_segments * 3];
 
-        verts[0] = new Vector3(0, _height, 0);
-
-        float halfAngle = _angle;
+        verts[0] = new Vector3(0, height, 0);
         float angleStep = (halfAngle * 2f) / _segments;
 
         for (int i = 0; i <= _segments; i++)
         {
             float a = -halfAngle + angleStep * i;
             float rad = a * Mathf.Deg2Rad;
-            verts[i + 1] = new Vector3(Mathf.Sin(rad) * _range, _height, Mathf.Cos(rad) * _range);
+            verts[i + 1] = new Vector3(Mathf.Sin(rad) * range, height, Mathf.Cos(rad) * range);
         }
 
         for (int i = 0; i < _segments; i++)

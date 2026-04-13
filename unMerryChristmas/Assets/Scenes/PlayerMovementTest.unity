@@ -223,10 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NPCVisionCone
   _npc: {fileID: 1345592932}
-  _range: 6
-  _angle: 30
   _segments: 20
-  _height: 0.05
   _busyColor: {r: 0.25652552, g: 1, b: 0, a: 0.25}
   _alertedColor: {r: 1, g: 0.5, b: 0, a: 0.4}
   _watchingColor: {r: 1, g: 0, b: 0, a: 0.5}
@@ -1904,8 +1901,8 @@ Transform:
   m_GameObject: {fileID: 1345592925}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.00127, y: -0.20000005, z: -8.64459}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -5.00127, y: 1.11, z: -8.64459}
+  m_LocalScale: {x: 1.2298, y: 2.1193142, z: 1.2298}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 143872278}
@@ -1952,8 +1949,9 @@ MonoBehaviour:
   - {fileID: 1144214934}
   _busyDuration: 10
   _busyDurationVariance: 5
-  _detectionAngle: 30
-  _detectionRange: 6
+  DetectionAngle: 30
+  DetectionRange: 6
+  DetectionMinHeight: 0.2
   _detectionBuildUpTime: 2
   _gracePeriod: 4
   _alertedDetectionBuildUpTime: 1

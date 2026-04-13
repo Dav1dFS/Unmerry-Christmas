@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,8 +14,9 @@ public class NpcController : MonoBehaviour
     [SerializeField] private float _busyDurationVariance = 5f;
 
     [Header("Detection")]
-    [SerializeField] private float _detectionAngle = 30f;
-    [SerializeField] private float _detectionRange = 6f;
+    public float DetectionAngle = 30f;
+    public float DetectionRange = 6f;
+    public float DetectionMinHeight = 0.2f; // minimum height difference to detect player (to prevent seeing through windows)
     [SerializeField] private float _detectionBuildUpTime = 2f; // seconds needed to detect player
     [SerializeField] private float _gracePeriod = 4f;
     [SerializeField] private float _alertedDetectionBuildUpTime = 1f; // when alerted, detect faster
@@ -78,6 +80,11 @@ public class NpcController : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (_player != null)
+        {
+            float playerHeight = _player.position.y - transform.position.y;
+            Debug.Log($"playerHeight: {playerHeight:F2} | DetectionMinHeight: {DetectionMinHeight}");
+        }
         _stateTimer -= Time.deltaTime;
         if (_gracePeriodTimer > 0f) _gracePeriodTimer -= Time.deltaTime;
 
@@ -257,12 +264,14 @@ public class NpcController : MonoBehaviour
         Vector3 dirToPlayer = (_player.position - origin.position);
         float distance = dirToPlayer.magnitude;
 
-        if (distance > _detectionRange) return false;
+        if (distance > DetectionRange) return false;
 
         float angle = Vector3.Angle(transform.forward, dirToPlayer.normalized);
-        if (angle > _detectionAngle) return false;
+        if (angle > DetectionAngle) return false;
 
-        // Raycast to see if there are obstacles in the way
+        // if the player is below a certain height relative to the NPC, they can't be seen (prevents seeing through windows)
+        float playerHeight = _player.position.y - transform.position.y;
+        if (playerHeight < -DetectionMinHeight) return false;
         if (Physics.Raycast(origin.position, dirToPlayer.normalized, distance, _obstacleMask))
             return false;
 
@@ -337,12 +346,11 @@ public class NpcController : MonoBehaviour
     {
         // Vision Cone
         Gizmos.color = Color.yellow;
-        Vector3 leftDir = Quaternion.Euler(0, -_detectionAngle, 0) * transform.forward;
-        Vector3 rightDir = Quaternion.Euler(0, _detectionAngle, 0) * transform.forward;
-        Gizmos.DrawRay(transform.position, leftDir * _detectionRange);
-        Gizmos.DrawRay(transform.position, rightDir * _detectionRange);
-        Gizmos.DrawWireSphere(transform.position, _detectionRange);
-
+        Vector3 leftDir = Quaternion.Euler(0, -DetectionAngle, 0) * transform.forward;
+        Vector3 rightDir = Quaternion.Euler(0, DetectionAngle, 0) * transform.forward;
+        Gizmos.DrawRay(transform.position, leftDir * DetectionRange);
+        Gizmos.DrawRay(transform.position, rightDir * DetectionRange);
+        Gizmos.DrawWireSphere(transform.position, DetectionRange);
         // Key items
         if (keyItems == null) return;
         Gizmos.color = Color.cyan;
