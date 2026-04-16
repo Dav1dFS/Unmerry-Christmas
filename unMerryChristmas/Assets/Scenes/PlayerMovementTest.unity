@@ -607,7 +607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioListener
   nonRigidbodyVelocity: 0
-  attenuationObject: {fileID: 0}
+  attenuationObject: {fileID: 1638597997}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1293,6 +1293,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 278995317}
+  - {fileID: 2124685180}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1398749658
@@ -1709,6 +1710,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1638597997 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4940693007258023797, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+  m_PrefabInstance: {fileID: 732469472537648761}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1876333536
 GameObject:
   m_ObjectHideFlags: 0
@@ -2062,6 +2068,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2124685179
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2124685180}
+  - component: {fileID: 2124685181}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2124685180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124685179}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1249427269}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2124685181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124685179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d307285259be6d2499ac90e139a93ca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
 --- !u!54 &14044012097085847
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2151,6 +2201,10 @@ PrefabInstance:
       value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: jumpSound.Path
+      value: event:/JUMP
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _giftBombPrefab
       value: 
       objectReference: {fileID: 1457871387852763970, guid: 491bd01bc2901454cba22f9183dba17a, type: 3}
@@ -2161,6 +2215,22 @@ PrefabInstance:
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _spawnGift.m_Name
       value: Spawn Gift
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: jumpSound.Guid.Data1
+      value: 1317898580
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: jumpSound.Guid.Data2
+      value: 1107416975
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: jumpSound.Guid.Data3
+      value: -588469614
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: jumpSound.Guid.Data4
+      value: 538559850
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: pushableLayer.m_Bits
