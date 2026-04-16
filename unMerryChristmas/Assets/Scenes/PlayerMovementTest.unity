@@ -2193,9 +2193,17 @@ PrefabInstance:
       propertyPath: _roll.m_SingletonActionBindings.Array.data[1].m_Action
       value: Roll
       objectReference: {fileID: 0}
+    - target: {fileID: 3841823308818961395, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4940693007258023797, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6457841717928251910, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -14,4 +14,78 @@ MonoBehaviour:
   m_EditorClassIdentifier: LineworkLite::LineworkLite.FreeOutline.FreeOutlineSettings
   injectionPoint: 600
   showInSceneView: 1
-  outlines: []
+  outlines:
+  - {fileID: 1686642789524592239}
+  - {fileID: 3509699196298530599}
+--- !u!114 &1686642789524592239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca2cb9e9790a941d3b51ae2615e6e1bd, type: 3}
+  m_Name: Outline
+  m_EditorClassIdentifier: LineworkLite::LineworkLite.FreeOutline.Outline
+  material: {fileID: 0}
+  isActive: 1
+  RenderingLayer:
+    serializedVersion: 0
+    m_Bits: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  renderQueue: 0
+  occlusion: 1
+  maskingStrategy: 0
+  color: {r: 0.5660378, g: 0, b: 0.037964426, a: 1}
+  enableOcclusion: 0
+  occludedColor: {r: 1, g: 0, b: 0, a: 1}
+  blendMode: 2
+  extrusionMethod: 7
+  scaling: 0
+  width: 92.2
+  minWidth: 0
+  scaleWithResolution: 0
+  referenceResolution: 0
+  customResolution: 0
+  materialType: 0
+  customMaterial: {fileID: 0}
+--- !u!114 &3509699196298530599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca2cb9e9790a941d3b51ae2615e6e1bd, type: 3}
+  m_Name: Outline
+  m_EditorClassIdentifier: LineworkLite::LineworkLite.FreeOutline.Outline
+  material: {fileID: 0}
+  isActive: 1
+  RenderingLayer:
+    serializedVersion: 0
+    m_Bits: 4
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 72
+  renderQueue: 0
+  occlusion: 1
+  maskingStrategy: 0
+  color: {r: 0, g: 1, b: 0, a: 1}
+  enableOcclusion: 0
+  occludedColor: {r: 1, g: 0, b: 0, a: 1}
+  blendMode: 0
+  extrusionMethod: 7
+  scaling: 0
+  width: 10
+  minWidth: 0
+  scaleWithResolution: 0
+  referenceResolution: 0
+  customResolution: 0
+  materialType: 0
+  customMaterial: {fileID: 0}

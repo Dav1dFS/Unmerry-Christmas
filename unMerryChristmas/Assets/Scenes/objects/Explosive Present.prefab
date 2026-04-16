@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4511904122448058140}
   - component: {fileID: 8063452273802683985}
   - component: {fileID: 2997993822534204071}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Explosive Present
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,7 +66,7 @@ MeshRenderer:
   m_SmallMeshCulling: 1
   m_ForceMeshLod: -1
   m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 5
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 9875a245ac49007498213638a307faa1, type: 2}
