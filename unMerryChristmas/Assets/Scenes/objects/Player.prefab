@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1653601394863001516}
   - component: {fileID: 944156596086110503}
   - component: {fileID: 6270632845464589419}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -366,6 +366,24 @@ MonoBehaviour:
       m_Action: Roll
       m_Flags: 0
     m_Flags: 0
+  _spawnGift:
+    m_Name: Spawn Gift
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 409f129a-2c16-4387-9c01-cc36f006bfd5
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  _dropGift:
+    m_Name: Drop Gift
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: e4dd9e33-f004-4b15-92b8-2132310e354c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   pickupLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -373,6 +391,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   holdPoint: {fileID: 7874114153055189859}
+  _giftBombPrefab: {fileID: 0}
+  pickupRange: 1.5
+  pushableRange: 0.8
 --- !u!54 &944156596086110503
 Rigidbody:
   m_ObjectHideFlags: 0
