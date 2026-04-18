@@ -366,6 +366,24 @@ MonoBehaviour:
       m_Action: Roll
       m_Flags: 0
     m_Flags: 0
+  _spawnGift:
+    m_Name: Spawn Gift
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: d1d87d4a-af62-4c3a-8835-9a24b16554e2
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  _dropGift:
+    m_Name: Drop Gift
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: ed2be41f-d3ab-46ac-803a-439bf100cc61
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   pickupLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -373,6 +391,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   holdPoint: {fileID: 7874114153055189859}
+  _giftBombPrefab: {fileID: 0}
+  pickupRange: 1.5
+  pushableRange: 0.8
 --- !u!54 &944156596086110503
 Rigidbody:
   m_ObjectHideFlags: 0

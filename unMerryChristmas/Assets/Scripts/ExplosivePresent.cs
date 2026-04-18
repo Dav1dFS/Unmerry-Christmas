@@ -26,13 +26,24 @@ public class ExplosivePresent : MonoBehaviour
             Explode();
         }
     }
+    private void OnCollisionEnter(Collision col)
+    {
+        if (!_armed) return;
 
+        NpcController npc = col.gameObject.GetComponentInParent<NpcController>();
+        if (npc != null)
+            npc.OnHit();
+    }
     void Explode()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, _explosionRadius, _affectedLayers);
-        foreach (Collider hit in colliders)
+        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius, _affectedLayers);
+        foreach (Collider hit in hits)
         {
-            //Pushable Objects with RigidBody
+            // Hit NPC goes into alerted state
+            NpcController npc = hit.GetComponent<NpcController>();
+            if (npc != null)
+                npc.OnHit();
+
             Rigidbody rb = hit.GetComponent<Rigidbody>();
             if (rb != null)
             {
@@ -40,8 +51,8 @@ public class ExplosivePresent : MonoBehaviour
                 rb.AddForce(dir * _explosionForce, ForceMode.Impulse);
             }
         }
-        // Optionally, add explosion effects here (e.g., particle system, sound)
+
+        Debug.Log("BOOM!");
         Destroy(gameObject);
     }
-
 }
