@@ -103,3 +103,4 @@ ServerData
 Thumbs.db
 .vscode/
 .idea/
+*.md

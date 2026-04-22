@@ -277,6 +277,7 @@ public class Controller : MonoBehaviour
         PickupObject closestObject = null;
         Collider closestCollectable = null;
         PushableObject closestPushable = null;
+        IInteractable closestInteractable = null;
 
         foreach (Collider hit in hits)
         {
@@ -289,6 +290,7 @@ public class Controller : MonoBehaviour
                 closestCollectable = hit;
                 closestObject = null;
                 closestPushable = null;
+                closestInteractable = null;
             }
             else if (hit.CompareTag("Token"))
             {
@@ -296,6 +298,7 @@ public class Controller : MonoBehaviour
                 closestCollectable = hit;
                 closestObject = null;
                 closestPushable = null;
+                closestInteractable = null;
             }
             else
             {
@@ -304,7 +307,9 @@ public class Controller : MonoBehaviour
                 {
                     closestDistance = distance;
                     closestObject = pickup;
+                    closestCollectable = null;
                     closestPushable = null;
+                    closestInteractable = null;
                 }
                 else
                 {
@@ -313,6 +318,21 @@ public class Controller : MonoBehaviour
                     {
                         closestDistance = distance;
                         closestPushable = pushable;
+                        closestCollectable = null;
+                        closestObject = null;
+                        closestInteractable = null;
+                    }
+                    else
+                    {
+                        IInteractable interactable = hit.GetComponent<IInteractable>();
+                        if (interactable != null)
+                        {
+                            closestDistance = distance;
+                            closestInteractable = interactable;
+                            closestCollectable = null;
+                            closestObject = null;
+                            closestPushable = null;
+                        }
                     }
                 }
             }
@@ -328,6 +348,8 @@ public class Controller : MonoBehaviour
             }
             else
             {
+                DrawingPageCollectable page = closestCollectable.GetComponent<DrawingPageCollectable>();
+                if (page != null) page.OnCollect();
                 CollectableManager.Instance.Collect();
             }
             Destroy(closestCollectable.gameObject);
@@ -357,6 +379,10 @@ public class Controller : MonoBehaviour
             _contactLocalPos = closestPushable.transform.InverseTransformPoint(contactWorldPos);
             _playerLocalPos  = closestPushable.transform.InverseTransformPoint(transform.position);
             _pushedObject.OnGrab();
+        }
+        else if (closestInteractable != null)
+        {
+            closestInteractable.Interact();
         }
     }
 

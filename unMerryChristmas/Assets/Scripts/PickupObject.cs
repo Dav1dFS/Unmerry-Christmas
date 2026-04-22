@@ -1,7 +1,11 @@
+using System;
 using UnityEngine;
 
 public class PickupObject : MonoBehaviour
 {
+    public event Action OnPickedUp;
+    public event Action OnDropped;
+
     private Rigidbody rb;
     private Collider col;
 
@@ -19,6 +23,8 @@ public class PickupObject : MonoBehaviour
         transform.SetParent(holdPoint);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+
+        OnPickedUp?.Invoke();
     }
 
     public void OnDrop()
@@ -27,5 +33,7 @@ public class PickupObject : MonoBehaviour
 
         rb.isKinematic = false;
         col.enabled = true;
+
+        OnDropped?.Invoke();
     }
 }
