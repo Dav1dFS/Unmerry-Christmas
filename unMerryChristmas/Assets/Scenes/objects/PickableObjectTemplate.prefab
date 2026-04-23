@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3024590224459237818}
   - component: {fileID: 1567943268541186211}
   - component: {fileID: 745729173021405779}
+  - component: {fileID: 7915002334333275357}
   m_Layer: 3
   m_Name: PickableObjectTemplate
   m_TagString: Pickable
@@ -155,3 +156,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7915002334333275357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2333570648449847387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3de5f9440a303b4fb23a771f27f75a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
