@@ -1964,7 +1964,7 @@ MonoBehaviour:
     m_Bits: 0
   _obstacleMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 256
   _walkSpeed: 2
   _alertedWalkSpeed: 1
   _arrivedThreshold: 1.5
