@@ -1957,8 +1957,8 @@ MonoBehaviour:
   _alertedDetectionBuildUpTime: 1
   _alertDuration: 6
   _watchDuration: 3
-  _lookAroundSpeed: 90
-  _lookAroundTurns: 6
+  _lookAroundSpeed: 45
+  _lookAroundTurns: 3
   _playerLayer:
     serializedVersion: 2
     m_Bits: 0
