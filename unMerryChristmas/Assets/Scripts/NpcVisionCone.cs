@@ -55,7 +55,7 @@ public class NPCVisionCone : MonoBehaviour
     {
         float range = _npc.DetectionRange;
         float halfAngle = _npc.DetectionAngle;
-        float height = _npc.DetectionMinHeight;
+        float height = 0.05f;
 
         int vertCount = _segments + 2;
         Vector3[] verts = new Vector3[vertCount];
