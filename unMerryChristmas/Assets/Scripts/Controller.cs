@@ -349,7 +349,7 @@ public class Controller : MonoBehaviour
         {
             if (closestCollectable.CompareTag("Token"))
             {
-                AbilityToken token = closestCollectable.GetComponent<AbilityToken>();
+                AbilityToken token = closestCollectable.GetComponentInParent<AbilityToken>();
                 if (token != null)
                     AbilityTokenManager.Instance.Unlock(token.Ability);
             }
