@@ -31,6 +31,7 @@ public class NPCVisionCone : MonoBehaviour
     {
         UpdateColor();
         BuildMesh();
+        UpdateTilt();
     }
 
     void UpdateColor()
@@ -49,6 +50,14 @@ public class NPCVisionCone : MonoBehaviour
                 _mat.color = Color.Lerp(_busyColor, _alertedColor, _npc.DetectionProgress);
                 break;
         }
+    }
+
+    void UpdateTilt()
+    {
+        float targetTilt = _npc.CurrentState == NpcStates.Alerted ? 10f : 0f;
+        Vector3 current = transform.localEulerAngles;
+        float smoothed = Mathf.LerpAngle(current.x, targetTilt, 8f * Time.deltaTime);
+        transform.localEulerAngles = new Vector3(smoothed, current.y, current.z);
     }
 
     void BuildMesh()
