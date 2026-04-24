@@ -153,3 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eb6ad35e81554baa832ee0f218ce4c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PushableObject
+  allowedAxes: -1
+  maxPushDistance: 5
+  _pushForce: 800
+  _linearDrag: 8
+  _angularDrag: 8

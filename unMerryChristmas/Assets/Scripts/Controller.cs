@@ -3,13 +3,13 @@ using UnityEngine.InputSystem;
 
 public class Controller : MonoBehaviour
 {
-    [SerializeField] private float _walkSpeed = 5f;
-    [SerializeField] private float _sprintSpeed = 10f;
-    [SerializeField] private float _acceleration = 10f;
-    [SerializeField] private float _deceleration = 15f;
-    [SerializeField] private float _rotationSpeed = 10f;
+    [SerializeField] private float _walkSpeed = 3f;
+    [SerializeField] private float _sprintSpeed = 5f;
+    [SerializeField] private float _acceleration = 5f;
+    [SerializeField] private float _deceleration = 10f;
+    [SerializeField] private float _rotationSpeed = 7.5f;
     [SerializeField] private float throwForce = 10f;
-    [SerializeField] private float _rollForce = 8f;
+    [SerializeField] private float _rollForce = 5f;
     [SerializeField] private float _rollDuration = 0.4f;
     [SerializeField] private float _rollCooldown = 1.5f;
     [SerializeField] private Rigidbody _rb;
@@ -35,7 +35,7 @@ public class Controller : MonoBehaviour
     private float _currentSpeed;
     private int _lockedH = 0;
     private int _lockedV = 0;
-    private float jumpForce = 8f;
+    private float jumpForce = 3.5f;
     private bool jump = false;
     private bool isGrounded = true;
     private bool isAiming = false;
@@ -54,6 +54,13 @@ public class Controller : MonoBehaviour
     private ExplosivePresent _giftInHand;
     private Vector3 _contactLocalPos; // contact point on the object's face, in object local space
     private Vector3 _playerLocalPos;  // player position in object local space at grab time
+
+    private void Awake()
+    {
+        _rb.constraints = RigidbodyConstraints.FreezeRotationX |
+                          RigidbodyConstraints.FreezeRotationY |
+                          RigidbodyConstraints.FreezeRotationZ;
+    }
 
     private void OnEnable()
     {
