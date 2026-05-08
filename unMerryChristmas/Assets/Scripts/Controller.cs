@@ -17,6 +17,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private LineRenderer trajectoryLine;
     [SerializeField] private int trajectoryPoints = 30;
     [SerializeField] private float trajectoryTimeStep = 0.1f;
+    [SerializeField] private LayerMask trajectoryCollisionMask;
 
     [SerializeField] private InputAction _moveLeft;
     [SerializeField] private InputAction _moveRight;
@@ -436,17 +437,24 @@ public class Controller : MonoBehaviour
 
     void DrawTrajectory()
     {
+        if (trajectoryLine == null) return;
+
         trajectoryLine.enabled = true;
 
         float force = Mathf.Clamp(holdTime * throwForce, 5f, 15f);
 
         Vector3 startPosition = holdPoint.position;
 
-        Vector3 throwDirection = (transform.forward + Vector3.up * 0.5f).normalized;
+        Vector3 throwDirection =
+            (transform.forward + Vector3.up * 0.5f).normalized;
 
         Vector3 startVelocity = throwDirection * force;
 
+        Vector3 previousPoint = startPosition;
+
         trajectoryLine.positionCount = trajectoryPoints;
+
+        int pointCount = 0;
 
         for (int i = 0; i < trajectoryPoints; i++)
         {
@@ -457,9 +465,20 @@ public class Controller : MonoBehaviour
                 startVelocity * t +
                 0.5f * Physics.gravity * t * t;
 
-            trajectoryLine.SetPosition(i, point);
+            if (Physics.Linecast(previousPoint, point, out RaycastHit hit, trajectoryCollisionMask))
+            {
+                trajectoryLine.positionCount = pointCount + 1;
+                trajectoryLine.SetPosition(pointCount, hit.point);
+                break;
+            }
+
+            trajectoryLine.SetPosition(pointCount, point);
+
+            previousPoint = point;
+            pointCount++;
         }
     }
+
 
     void GatherInput()
     {

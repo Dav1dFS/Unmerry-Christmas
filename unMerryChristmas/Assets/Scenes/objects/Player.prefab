@@ -220,6 +220,9 @@ MonoBehaviour:
   trajectoryLine: {fileID: 883897292137462492}
   trajectoryPoints: 40
   trajectoryTimeStep: 0.08
+  trajectoryCollisionMask:
+    serializedVersion: 2
+    m_Bits: 256
   _moveLeft:
     m_Name: Move Left
     m_Type: 1
@@ -547,7 +550,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 51b9ce10a64115e42a29c256ab8bfccb, type: 2}
+  - {fileID: 2100000, guid: a563daeb017239d4fb48dbcaf8629b21, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -580,8 +583,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 1
+        time: 0.021858215
+        value: 0.52147293
         inSlope: 0
         outSlope: 0
         tangentMode: 0
