@@ -14,6 +14,10 @@ public class Controller : MonoBehaviour
     [SerializeField] private float _rollCooldown = 1.5f;
     [SerializeField] private Rigidbody _rb;
 
+    [SerializeField] private LineRenderer trajectoryLine;
+    [SerializeField] private int trajectoryPoints = 30;
+    [SerializeField] private float trajectoryTimeStep = 0.1f;
+
     [SerializeField] private InputAction _moveLeft;
     [SerializeField] private InputAction _moveRight;
     [SerializeField] private InputAction _moveUp;
@@ -406,6 +410,11 @@ public class Controller : MonoBehaviour
         if (isAiming)
         {
             holdTime += Time.deltaTime;
+            DrawTrajectory();
+        }
+        else
+        {
+            trajectoryLine.enabled = false;
         }
         if (_pushedObject != null)
         {
@@ -423,6 +432,33 @@ public class Controller : MonoBehaviour
     void FixedUpdate()
     {
         Move();
+    }
+
+    void DrawTrajectory()
+    {
+        trajectoryLine.enabled = true;
+
+        float force = Mathf.Clamp(holdTime * throwForce, 5f, 15f);
+
+        Vector3 startPosition = holdPoint.position;
+
+        Vector3 throwDirection = (transform.forward + Vector3.up * 0.5f).normalized;
+
+        Vector3 startVelocity = throwDirection * force;
+
+        trajectoryLine.positionCount = trajectoryPoints;
+
+        for (int i = 0; i < trajectoryPoints; i++)
+        {
+            float t = i * trajectoryTimeStep;
+
+            Vector3 point =
+                startPosition +
+                startVelocity * t +
+                0.5f * Physics.gravity * t * t;
+
+            trajectoryLine.SetPosition(i, point);
+        }
     }
 
     void GatherInput()
