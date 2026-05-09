@@ -3300,6 +3300,26 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 883897292137462492, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: m_Positions.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 883897292137462492, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: m_Parameters.textureMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 883897292137462492, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: m_Parameters.widthMultiplier
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 883897292137462492, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
+      value: 0.06284332
+      objectReference: {fileID: 0}
+    - target: {fileID: 883897292137462492, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 0.6503105
+      objectReference: {fileID: 0}
     - target: {fileID: 944156596086110503, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_Constraints
       value: 80
@@ -3319,6 +3339,10 @@ PrefabInstance:
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: pushableLayer.m_Bits
       value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: trajectoryCollisionMask.m_Bits
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _dropGift.m_SingletonActionBindings.Array.size

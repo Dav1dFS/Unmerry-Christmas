@@ -26,7 +26,6 @@ public class Controller : MonoBehaviour
     [SerializeField] private InputAction _sprint;
     [SerializeField] private InputAction _jump;
     [SerializeField] private InputAction _interact;
-    [SerializeField] private InputAction _throw;
     [SerializeField] private InputAction _roll;
     [SerializeField] private InputAction _spawnGift;
     [SerializeField] private InputAction _dropGift;
@@ -54,6 +53,13 @@ public class Controller : MonoBehaviour
     [SerializeField] private float pickupRange = 1.5f;
     [SerializeField] private float pushableRange = 0.8f;
 
+    [SerializeField] private float aimHoldThreshold = 0.2f;
+    [SerializeField] private float maxThrowChargeTime = 2f;
+
+    private bool isHoldingInteract = false;
+    private bool hasEnteredAimMode = false;
+
+
     private PickupObject heldObject;
     private PushableObject _pushedObject;
     private ExplosivePresent _giftInHand;
@@ -69,15 +75,13 @@ public class Controller : MonoBehaviour
         _sprint.Enable();
         _jump.Enable();
         _interact.Enable();
-        _throw.Enable();
         _roll.Enable();
         _spawnGift.Enable();
         _dropGift.Enable();
 
         _jump.started += _ => jump = true;
-        _interact.started += _ => checkHands();
-        _throw.started += _ => TryStartAiming();
-        _throw.canceled += _ => TryStartThrowing();
+        _interact.started += _ => StartInteractHold();
+        _interact.canceled += _ => ReleaseInteractHold();
         _roll.started += _ => TryStartRoll();
         _spawnGift.started += _ => TrySpawnGift();
         _dropGift.started += _ => DropGift();
@@ -104,7 +108,6 @@ public class Controller : MonoBehaviour
         _sprint.Disable();
         _jump.Disable();
         _interact.Disable();
-        _throw.Disable();
         _roll.Disable();
         _spawnGift.Disable();
         _dropGift.Disable();
@@ -121,6 +124,39 @@ public class Controller : MonoBehaviour
         }
         StartRoll();
     }
+
+    void StartInteractHold()
+{
+    if (_pushedObject != null) return;
+
+    isHoldingInteract = true;
+    hasEnteredAimMode = false;
+    holdTime = 0f;
+}
+
+void ReleaseInteractHold()
+{
+    if (!isHoldingInteract) return;
+
+    isHoldingInteract = false;
+
+    
+    if (hasEnteredAimMode)
+    {
+        if (heldObject != null)
+        {
+            throwObject();
+        }
+
+        isAiming = false;
+        holdTime = 0f;
+    }
+   
+    else
+    {
+        checkHands();
+    }
+}
 
     void TrySpawnGift()
     {
@@ -223,7 +259,9 @@ public class Controller : MonoBehaviour
         if (heldObject != null)
         {
             isAiming = false;
-            float force = Mathf.Clamp(holdTime * throwForce, 5f, 15f);
+            float normalizedCharge =Mathf.Clamp01((holdTime - aimHoldThreshold) / maxThrowChargeTime);
+
+            float force =Mathf.Lerp(5f, 15f, normalizedCharge);
 
             Rigidbody objectRb = heldObject.GetComponent<Rigidbody>();
             if (objectRb != null)
@@ -408,9 +446,22 @@ public class Controller : MonoBehaviour
                 rollCooldownTimer = _rollCooldown;
             }
         }
-        if (isAiming)
+        if (isHoldingInteract && heldObject != null)
         {
             holdTime += Time.deltaTime;
+
+            if (!hasEnteredAimMode && holdTime >= aimHoldThreshold)
+            {
+                if (AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
+                {
+                    hasEnteredAimMode = true;
+                    isAiming = true;
+                }
+            }
+        }
+
+        if (isAiming)
+        {
             DrawTrajectory();
         }
         else
@@ -441,7 +492,9 @@ public class Controller : MonoBehaviour
 
         trajectoryLine.enabled = true;
 
-        float force = Mathf.Clamp(holdTime * throwForce, 5f, 15f);
+        float normalizedCharge =Mathf.Clamp01((holdTime - aimHoldThreshold) / maxThrowChargeTime);
+
+        float force =Mathf.Lerp(5f, 15f, normalizedCharge);
 
         Vector3 startPosition = holdPoint.position;
 
