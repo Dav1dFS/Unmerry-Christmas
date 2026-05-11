@@ -48,17 +48,41 @@ public class BackYardTaskTracker : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        AbilityTokenManager.OnAbilityUnlocked += HandleAbilityUnlocked;
     }
 
     private void OnDestroy()
     {
+        AbilityTokenManager.OnAbilityUnlocked -= HandleAbilityUnlocked;
         if (Instance == this) Instance = null;
     }
 
-    /// <summary>
-    /// Called by task scripts when they complete their objective.
-    /// Silently ignored for Locked or already-Completed tasks.
-    /// </summary>
+    private void HandleAbilityUnlocked(PlayerAbility ability)
+    {
+        if (ability == PlayerAbility.Throwing)
+        {
+            UnlockTask(TaskId.BurstPipe);
+            UnlockTask(TaskId.BirdbathDemolition);
+            UnlockTask(TaskId.ShedHeist);
+            // IceSlide unlocks only after BurstPipe is completed (handled in IceSlideTracker)
+        }
+        if (ability == PlayerAbility.Ziplining)
+            UnlockTask(TaskId.TheHighWall);
+    }
+    public static void UnlockTask(TaskId id)
+    {
+        if (Instance == null) return;
+        if (Instance._states.TryGetValue(id, out var state) && state == TaskState.Locked)
+        {
+            Instance._states[id] = TaskState.Available;
+            Debug.Log($"[BackYardTaskTracker] Unlocked: {id}");
+        }
+    }
     public static void ReportTask(TaskId id)
     {
         if (Instance == null) return;
@@ -74,5 +98,12 @@ public class BackYardTaskTracker : MonoBehaviour
         return Instance != null
             && Instance._states.TryGetValue(id, out var s)
             && s == TaskState.Completed;
+    }
+
+    public static bool IsAvailable(TaskId id)
+    {
+        return Instance != null
+            && Instance._states.TryGetValue(id, out var s)
+            && s == TaskState.Available;
     }
 }

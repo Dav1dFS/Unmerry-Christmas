@@ -15,13 +15,13 @@ public class TutorialPromptTrigger : MonoBehaviour
     }
 
     [SerializeField] private PromptId _promptId;
-    [SerializeField] private string _promptText;
+    [SerializeField] private string   _promptText;
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
 
-        // TODO: replace with HUD toast call when HUD system is implemented
+        UIManager.Instance?.ShowTutorialPrompt(_promptText);
         Debug.Log($"[PROMPT] {_promptId}: {_promptText}");
 
         gameObject.SetActive(false);

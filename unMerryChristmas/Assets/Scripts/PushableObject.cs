@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [System.Flags]
@@ -11,8 +12,11 @@ public class PushableObject : MonoBehaviour
     [SerializeField] private float _linearDrag = 8f;
     [SerializeField] private float _angularDrag = 8f;
 
+    public event Action OnDisplaced;
+
     private Rigidbody rb;
     private Vector3 _startPosition;
+    private bool _displacedFired;
 
     // Idle: fully frozen so walking into it does nothing
     private const RigidbodyConstraints IdleConstraints =
@@ -35,6 +39,7 @@ public class PushableObject : MonoBehaviour
     public void OnGrab()
     {
         _startPosition = rb.position;
+        _displacedFired = false;
         rb.constraints = GrabbedConstraints;
         rb.linearDamping = _linearDrag;
         rb.angularDamping = _angularDrag;
@@ -53,7 +58,13 @@ public class PushableObject : MonoBehaviour
             rb.position.x - _startPosition.x,
             rb.position.z - _startPosition.z
         );
-        return displacement.magnitude < maxPushDistance;
+        bool within = displacement.magnitude < maxPushDistance;
+        if (!within && !_displacedFired)
+        {
+            _displacedFired = true;
+            OnDisplaced?.Invoke();
+        }
+        return within;
     }
 
     // Applies force at a specific point on the surface, creating natural torque when off-center

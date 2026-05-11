@@ -1,12 +1,15 @@
+using System;
 using UnityEngine;
 
 public class CollectableManager : MonoBehaviour
 {
-
     public static CollectableManager Instance { get; private set; }
 
-    [SerializeField] private int TotalCollectables = 3;
-    private int CollectableCollected = 0;
+    public static event Action<int, int> OnPageCollected;   // (collected, total)
+    public static event Action OnAllPagesCollected;
+
+    public const int TotalPages = 20;
+    public int CollectedCount { get; private set; }
 
     private void Awake()
     {
@@ -15,21 +18,19 @@ public class CollectableManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     public void Collect()
-    { CollectableCollected++;
-        Debug.Log($"Collectable collected! Total collected: {CollectableCollected}/{TotalCollectables}");
-        if (CollectableCollected >= TotalCollectables)
-        {
-            Debug.Log("All collectables collected!");
-            // You can trigger any event or action here when all collectables are collected.
-        }
-    }
+    {
+        if (CollectedCount >= TotalPages) return;
 
+        CollectedCount++;
+        Debug.Log($"[CollectableManager] Drawing page collected: {CollectedCount}/{TotalPages}");
+        OnPageCollected?.Invoke(CollectedCount, TotalPages);
+
+        if (CollectedCount >= TotalPages)
+            OnAllPagesCollected?.Invoke();
+    }
 }

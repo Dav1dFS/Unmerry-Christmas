@@ -3,13 +3,13 @@ using UnityEngine.InputSystem;
 
 public class Controller : MonoBehaviour
 {
-    [SerializeField] private float _walkSpeed = 3f;
-    [SerializeField] private float _sprintSpeed = 5f;
-    [SerializeField] private float _acceleration = 5f;
-    [SerializeField] private float _deceleration = 10f;
-    [SerializeField] private float _rotationSpeed = 7.5f;
+    [SerializeField] private float _walkSpeed = 5f;
+    [SerializeField] private float _sprintSpeed = 10f;
+    [SerializeField] private float _acceleration = 10f;
+    [SerializeField] private float _deceleration = 15f;
+    [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private float throwForce = 10f;
-    [SerializeField] private float _rollForce = 5f;
+    [SerializeField] private float _rollForce = 8f;
     [SerializeField] private float _rollDuration = 0.4f;
     [SerializeField] private float _rollCooldown = 1.5f;
     [SerializeField] private Rigidbody _rb;
@@ -35,7 +35,7 @@ public class Controller : MonoBehaviour
     private float _currentSpeed;
     private int _lockedH = 0;
     private int _lockedV = 0;
-    private float jumpForce = 3.5f;
+    private float jumpForce = 8f;
     private bool jump = false;
     private bool isGrounded = true;
     private bool isAiming = false;
@@ -46,6 +46,8 @@ public class Controller : MonoBehaviour
     private float rollCooldownTimer = 0f;
     private Vector3 rollDirection;
 
+    public bool IsRolling => isRolling;
+
     [SerializeField] private float pickupRange = 1.5f;
     [SerializeField] private float pushableRange = 0.8f;
 
@@ -54,13 +56,6 @@ public class Controller : MonoBehaviour
     private ExplosivePresent _giftInHand;
     private Vector3 _contactLocalPos; // contact point on the object's face, in object local space
     private Vector3 _playerLocalPos;  // player position in object local space at grab time
-
-    private void Awake()
-    {
-        _rb.constraints = RigidbodyConstraints.FreezeRotationX |
-                          RigidbodyConstraints.FreezeRotationY |
-                          RigidbodyConstraints.FreezeRotationZ;
-    }
 
     private void OnEnable()
     {
@@ -284,7 +279,6 @@ public class Controller : MonoBehaviour
         PickupObject closestObject = null;
         Collider closestCollectable = null;
         PushableObject closestPushable = null;
-        IInteractable closestInteractable = null;
 
         foreach (Collider hit in hits)
         {
@@ -297,7 +291,6 @@ public class Controller : MonoBehaviour
                 closestCollectable = hit;
                 closestObject = null;
                 closestPushable = null;
-                closestInteractable = null;
             }
             else if (hit.CompareTag("Token"))
             {
@@ -305,7 +298,6 @@ public class Controller : MonoBehaviour
                 closestCollectable = hit;
                 closestObject = null;
                 closestPushable = null;
-                closestInteractable = null;
             }
             else
             {
@@ -314,9 +306,7 @@ public class Controller : MonoBehaviour
                 {
                     closestDistance = distance;
                     closestObject = pickup;
-                    closestCollectable = null;
                     closestPushable = null;
-                    closestInteractable = null;
                 }
                 else
                 {
@@ -325,21 +315,6 @@ public class Controller : MonoBehaviour
                     {
                         closestDistance = distance;
                         closestPushable = pushable;
-                        closestCollectable = null;
-                        closestObject = null;
-                        closestInteractable = null;
-                    }
-                    else
-                    {
-                        IInteractable interactable = hit.GetComponent<IInteractable>();
-                        if (interactable != null)
-                        {
-                            closestDistance = distance;
-                            closestInteractable = interactable;
-                            closestCollectable = null;
-                            closestObject = null;
-                            closestPushable = null;
-                        }
                     }
                 }
             }
@@ -349,14 +324,12 @@ public class Controller : MonoBehaviour
         {
             if (closestCollectable.CompareTag("Token"))
             {
-                AbilityToken token = closestCollectable.GetComponentInParent<AbilityToken>();
+                AbilityToken token = closestCollectable.GetComponent<AbilityToken>();
                 if (token != null)
                     AbilityTokenManager.Instance.Unlock(token.Ability);
             }
             else
             {
-                DrawingPageCollectable page = closestCollectable.GetComponent<DrawingPageCollectable>();
-                if (page != null) page.OnCollect();
                 CollectableManager.Instance.Collect();
             }
             Destroy(closestCollectable.gameObject);
@@ -386,10 +359,6 @@ public class Controller : MonoBehaviour
             _contactLocalPos = closestPushable.transform.InverseTransformPoint(contactWorldPos);
             _playerLocalPos  = closestPushable.transform.InverseTransformPoint(transform.position);
             _pushedObject.OnGrab();
-        }
-        else if (closestInteractable != null)
-        {
-            closestInteractable.Interact();
         }
     }
 
@@ -451,6 +420,56 @@ public class Controller : MonoBehaviour
         GatherInput();
         UpdateSpeed();
         Look();
+        UpdateContextHint();
+    }
+
+    void UpdateContextHint()
+    {
+        // Don't show hints while carrying/pushing/aiming
+        if (heldObject != null || _pushedObject != null || _giftInHand != null)
+        {
+            UIManager.Instance?.HideContextHint();
+            return;
+        }
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
+
+        IInteractable closest = null;
+        float closestDist = Mathf.Infinity;
+        bool nearPushable = false;
+
+        foreach (var hit in hits)
+        {
+            float d = Vector3.Distance(transform.position, hit.transform.position);
+            if (d >= closestDist) continue;
+
+            IInteractable interactable = hit.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                closest = interactable;
+                closestDist = d;
+            }
+        }
+
+        // Also check for nearby pushable objects
+        Collider[] pushHits = Physics.OverlapSphere(transform.position, pushableRange, pushableLayer);
+        foreach (var hit in pushHits)
+        {
+            float d = Vector3.Distance(transform.position, hit.transform.position);
+            if (d < closestDist && hit.GetComponent<PushableObject>() != null)
+            {
+                nearPushable = true;
+                closest = null;
+                closestDist = d;
+            }
+        }
+
+        if (nearPushable)
+            UIManager.Instance?.ShowContextHint("Hold E — Push");
+        else if (closest != null)
+            UIManager.Instance?.ShowContextHint(closest.GetHintText());
+        else
+            UIManager.Instance?.HideContextHint();
     }
 
     void FixedUpdate()
