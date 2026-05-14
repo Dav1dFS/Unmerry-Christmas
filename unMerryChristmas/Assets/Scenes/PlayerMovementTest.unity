@@ -3301,12 +3301,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 883897292137462492, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: m_Parameters.alignment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 883897292137462492, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_Positions.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 883897292137462492, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_Parameters.textureMode
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 883897292137462492, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: m_Parameters.textureScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 883897292137462492, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: m_Parameters.textureScale.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 883897292137462492, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_Parameters.widthMultiplier
