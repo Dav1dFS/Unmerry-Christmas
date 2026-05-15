@@ -398,31 +398,6 @@ MonoBehaviour:
       m_Action: Interact
       m_Flags: 0
     m_Flags: 0
-  _throw:
-    m_Name: Throw
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: ddfa3277-e0ae-4a20-9df5-bbba8c42f425
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 1b1b01d9-8dd7-4d42-bd6c-0c1054052897
-      m_Path: <Keyboard>/f
-      m_Interactions: Hold
-      m_Processors: 
-      m_Groups: 
-      m_Action: Throw
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 37f2da45-fd20-462c-89f7-b9383b6507a2
-      m_Path: <Gamepad>/rightShoulder
-      m_Interactions: Hold
-      m_Processors: 
-      m_Groups: 
-      m_Action: Throw
-      m_Flags: 0
-    m_Flags: 0
   _roll:
     m_Name: Roll
     m_Type: 0
@@ -476,6 +451,8 @@ MonoBehaviour:
   _giftBombPrefab: {fileID: 1457871387852763970, guid: 491bd01bc2901454cba22f9183dba17a, type: 3}
   pickupRange: 1.5
   pushableRange: 0.8
+  aimHoldThreshold: 0.2
+  maxThrowChargeTime: 2
 --- !u!54 &944156596086110503
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -578,13 +555,13 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 0.5
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.021858215
-        value: 0.52147293
+        time: 0.03824997
+        value: 0.3496971
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -628,7 +605,7 @@ LineRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 1
-    textureScale: {x: 1, y: 1}
+    textureScale: {x: 3, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
   m_UseWorldSpace: 1
