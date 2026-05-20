@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 public class Controller : MonoBehaviour
 {
@@ -65,6 +66,8 @@ public class Controller : MonoBehaviour
     private ExplosivePresent _giftInHand;
     private Vector3 _contactLocalPos; // contact point on the object's face, in object local space
     private Vector3 _playerLocalPos;  // player position in object local space at grab time
+
+    [SerializeField] private EventReference jumpSound;
 
     private void OnEnable()
     {
@@ -606,6 +609,9 @@ void ReleaseInteractHold()
         if (jump && isGrounded && _pushedObject == null)
         {
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+            AudioManager.instance.PlayOneShot(jumpSound, this.transform.position);
+
             jump = false;
             isGrounded = false;
         }
