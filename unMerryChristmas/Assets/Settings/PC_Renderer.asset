@@ -28,10 +28,11 @@ MonoBehaviour:
   - {fileID: 7833122117494664109}
   - {fileID: 5597043810759701150}
   - {fileID: 1875200560430897099}
-  m_RendererFeatureMap: ad6b866f10d7b46c9e72a104b1b1ac4dcbd71877f90c061a
+  - {fileID: 5821021486121646096}
+  m_RendererFeatureMap: ad6b866f10d7b46c9e72a104b1b1ac4dcbd71877f90c061a10783256336cc850
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
-  postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
+  postProcessData: {fileID: 0}
   m_AssetVersion: 3
   m_PrepassLayerMask:
     serializedVersion: 2
@@ -50,13 +51,13 @@ MonoBehaviour:
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 1
-  m_RenderingMode: 2
+  m_RenderingMode: 0
   m_DepthPrimingMode: 0
-  m_CopyDepthMode: 0
+  m_CopyDepthMode: 1
   m_DepthAttachmentFormat: 0
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
-  m_IntermediateTextureMode: 0
+  m_IntermediateTextureMode: 1
 --- !u!114 &1875200560430897099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +118,27 @@ MonoBehaviour:
     mask: {fileID: 4800000, guid: 19ae7b440d27f4f9990007afdc74ddaf, type: 3}
     outline: {fileID: 4800000, guid: fb375234a1509436fa2a7d37f08912f8, type: 3}
     clear: {fileID: 4800000, guid: b854aa374420b4b47992044f7c9a0719, type: 3}
+--- !u!114 &5821021486121646096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1614fc811f8f184697d9bee70ab9fe5, type: 3}
+  m_Name: DecalRendererFeature
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalRendererFeature
+  m_Active: 1
+  m_Settings:
+    technique: 0
+    maxDrawDistance: 1000
+    decalLayers: 0
+    dBufferSettings:
+      surfaceData: 2
+    screenSpaceSettings:
+      normalBlend: 0
 --- !u!114 &7833122117494664109
 MonoBehaviour:
   m_ObjectHideFlags: 0
