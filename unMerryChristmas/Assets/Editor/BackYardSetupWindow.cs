@@ -11,6 +11,15 @@ public class BackYardSetupWindow : EditorWindow
     // ── Scroll ────────────────────────────────────────────────────────────────
     private Vector2 _scroll;
 
+    // ── Token & Page Rewards ──────────────────────────────────────────────────
+    private bool _fRewards = true;
+    private GameObject _pushingToken;
+    private GameObject _rollingToken;
+    private GameObject _throwingToken;   // if placed in BackYard
+    private GameObject _pageAfterGarden;
+    private GameObject _pageAfterShed;
+    private GameObject _pageAfterHighWall;
+
     // ── Task 1 ────────────────────────────────────────────────────────────────
     private GameObject _windowTriggerGO;
 
@@ -72,6 +81,29 @@ public class BackYardSetupWindow : EditorWindow
             MessageType.Info);
 
         _scroll = EditorGUILayout.BeginScrollView(_scroll);
+
+        // ── Token & Page Rewards ──────────────────────────────────────────────
+        _fRewards = EditorGUILayout.Foldout(_fRewards, "Token & Page Rewards (spawn on task completion)", true, EditorStyles.foldoutHeader);
+        if (_fRewards)
+        {
+            EditorGUI.indentLevel++;
+            EditorGUILayout.HelpBox(
+                "Tokens/pages listed here will be hidden at start and revealed when their linked task completes. " +
+                "TokenEffect (glow + spin) is added to all tokens automatically.",
+                MessageType.None);
+            EditorGUILayout.LabelField("Ability Tokens");
+            _pushingToken  = GOField("Pushing Token  (reveals after: free)",           _pushingToken);
+            _rollingToken  = GOField("Rolling Token  (reveals after: free)",           _rollingToken);
+            _throwingToken = GOField("Throwing Token (reveals after: ShedHeist)",      _throwingToken);
+            Space();
+            EditorGUILayout.LabelField("Drawing Pages (task-gated)");
+            _pageAfterGarden   = GOField("Page after GardenChaos",    _pageAfterGarden);
+            _pageAfterShed     = GOField("Page after ShedHeist (BY-2)", _pageAfterShed);
+            _pageAfterHighWall = GOField("Page after TheHighWall (BY-3)", _pageAfterHighWall);
+            if (GUILayout.Button("Apply Token & Page Rewards")) ApplyRewards();
+            EditorGUI.indentLevel--;
+        }
+        Space();
 
         // ── Task 1 ────────────────────────────────────────────────────────────
         _f1 = EditorGUILayout.Foldout(_f1, "Task 1 — Window Climb Trigger", true, EditorStyles.foldoutHeader);
@@ -531,6 +563,44 @@ public class BackYardSetupWindow : EditorWindow
         }
 
         Done("Task 9: Shed Heist applied (shelf contents still need manual wiring).");
+    }
+
+    void ApplyRewards()
+    {
+        // Tokens that are always free (no task gate) still get TokenEffect
+        ApplyTokenEffect(_pushingToken);
+        ApplyTokenEffect(_rollingToken);
+
+        // Throwing token gated behind ShedHeist
+        if (_throwingToken != null)
+        {
+            ApplyTokenEffect(_throwingToken);
+            ApplyTaskReward(_throwingToken, BackYardTaskTracker.TaskId.ShedHeist);
+        }
+
+        // Pages gated behind tasks
+        if (_pageAfterGarden   != null) ApplyTaskReward(_pageAfterGarden,   BackYardTaskTracker.TaskId.GardenChaos);
+        if (_pageAfterShed     != null) ApplyTaskReward(_pageAfterShed,     BackYardTaskTracker.TaskId.ShedHeist);
+        if (_pageAfterHighWall != null) ApplyTaskReward(_pageAfterHighWall, BackYardTaskTracker.TaskId.TheHighWall);
+
+        Done("Token & Page Rewards applied.");
+    }
+
+    static void ApplyTokenEffect(GameObject go)
+    {
+        if (go == null) return;
+        EnsureComponent<TokenEffect>(go);
+        Debug.Log($"[BackYardSetup] TokenEffect added to {go.name}");
+    }
+
+    static void ApplyTaskReward(GameObject go, BackYardTaskTracker.TaskId task)
+    {
+        if (go == null) return;
+        var reward = EnsureComponent<TaskReward>(go);
+        var so = new SerializedObject(reward);
+        var p  = so.FindProperty("_requiredTask");
+        if (p != null) { p.enumValueIndex = (int)task; so.ApplyModifiedProperties(); }
+        Debug.Log($"[BackYardSetup] TaskReward on {go.name} → {task}");
     }
 
     // ── Shared utilities ──────────────────────────────────────────────────────
