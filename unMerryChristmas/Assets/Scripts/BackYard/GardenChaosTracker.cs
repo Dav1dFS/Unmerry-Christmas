@@ -10,8 +10,14 @@ public class GardenChaosTracker : MonoBehaviour
 
     private void OnEnable()
     {
-        _chairA.OnToppled += () => { _chairsDown++; TryComplete(); };
-        _chairB.OnToppled += () => { _chairsDown++; TryComplete(); };
+        if (_chairA != null) _chairA.OnToppled += () => { _chairsDown++; TryComplete(); };
+        if (_chairB != null) _chairB.OnToppled += () => { _chairsDown++; TryComplete(); };
+    }
+
+    private void OnDisable()
+    {
+        if (_chairA != null) _chairA.OnToppled -= () => { _chairsDown++; TryComplete(); };
+        if (_chairB != null) _chairB.OnToppled -= () => { _chairsDown++; TryComplete(); };
     }
 
     // Called by TippablePatioTable when the table tips over
@@ -24,7 +30,8 @@ public class GardenChaosTracker : MonoBehaviour
     private void TryComplete()
     {
         if (_completed) return;
-        if (!_tableDown || _chairsDown < 2) return;
+        // Complete when table is down (chairs are optional)
+        if (!_tableDown) return;
         _completed = true;
         BackYardTaskTracker.ReportTask(BackYardTaskTracker.TaskId.GardenChaos);
     }

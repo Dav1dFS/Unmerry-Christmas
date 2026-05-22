@@ -35,7 +35,7 @@ public class Controller : MonoBehaviour
     private float _currentSpeed;
     private int _lockedH = 0;
     private int _lockedV = 0;
-    private float jumpForce = 8f;
+    private float jumpForce = 6f; // Increased for proper bench/table clearance (mass 2.0)
     private bool jump = false;
     private bool isGrounded = true;
     private bool isAiming = false;
@@ -310,6 +310,14 @@ public class Controller : MonoBehaviour
                 }
                 else
                 {
+                    IInteractable interactable = hit.GetComponent<IInteractable>();
+                    if (interactable != null)
+                    {
+                        closestDistance = distance;
+                        interactable.Interact();
+                        return;
+                    }
+
                     PushableObject pushable = hit.GetComponent<PushableObject>();
                     if (pushable != null)
                     {
@@ -522,6 +530,9 @@ public class Controller : MonoBehaviour
             _input = Vector3.zero;
             return;
         }
+
+        // Prevent spinning by clearing angular velocity (constraints alone aren't enough)
+        _rb.angularVelocity = Vector3.zero;
 
         if (isRolling)
         {
