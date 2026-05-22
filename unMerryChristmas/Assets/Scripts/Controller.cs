@@ -68,6 +68,12 @@ public class Controller : MonoBehaviour
     private Vector3 _playerLocalPos;  // player position in object local space at grab time
 
     [SerializeField] private EventReference jumpSound;
+    [SerializeField] private EventReference landSound;
+    [SerializeField] private EventReference grabSound;
+    [SerializeField] private EventReference throwSound;
+    [SerializeField] private EventReference chargeThrowSound;
+    private FMOD.Studio.EventInstance chargeThrowInstance;
+    private bool _wasGrounded = true;
 
     private void OnEnable()
     {
@@ -153,6 +159,7 @@ void ReleaseInteractHold()
 
         isAiming = false;
         holdTime = 0f;
+        StopChargeSound();
     }
    
     else
@@ -199,10 +206,12 @@ void ReleaseInteractHold()
             float force = Mathf.Clamp(holdTime * throwForce, 5f, 15f);
             Vector3 throwDirection = transform.forward + Vector3.up * 0.5f;
             giftRb.AddForce(throwDirection.normalized * force, ForceMode.Impulse);
+            AudioManager.instance.PlayOneShot(throwSound, this.transform.position);
         }
 
         isAiming = false;
         holdTime = 0f;
+        StopChargeSound();
     }
 
     void DropGift()
@@ -221,6 +230,16 @@ void ReleaseInteractHold()
         Rigidbody giftRb = gift.GetComponent<Rigidbody>();
         if (giftRb != null)
             giftRb.isKinematic = false;
+    }
+
+    private void StopChargeSound()
+    {
+        if (chargeThrowInstance.isValid())
+        {
+            chargeThrowInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            chargeThrowInstance.release();
+            chargeThrowInstance.clearHandle();
+        }
     }
 
     void TryStartAiming()
@@ -254,6 +273,9 @@ void ReleaseInteractHold()
         {
             isAiming = true;
             holdTime = 0f;
+            chargeThrowInstance = RuntimeManager.CreateInstance(chargeThrowSound);
+            RuntimeManager.AttachInstanceToGameObject(chargeThrowInstance, transform, _rb);
+            chargeThrowInstance.start();
         }
     }
 
@@ -275,6 +297,7 @@ void ReleaseInteractHold()
                 DropObject();
                 Vector3 throwDirection = transform.forward + Vector3.up * 0.5f;
                 objectRb.AddForce(throwDirection.normalized * force, ForceMode.Impulse);
+                AudioManager.instance.PlayOneShot(throwSound, this.transform.position);
             }
         }
     }
@@ -382,6 +405,7 @@ void ReleaseInteractHold()
         {
             heldObject = closestObject;
             heldObject.OnPickup(holdPoint);
+            AudioManager.instance.PlayOneShot(grabSound, this.transform.position);
         }
         else if (closestPushable != null)
         {
@@ -417,6 +441,7 @@ void ReleaseInteractHold()
         jump = false;
         isAiming = false;
         holdTime = 0f;
+        StopChargeSound();
     }
 
     void DropObject()
@@ -427,15 +452,35 @@ void ReleaseInteractHold()
 
     void Update()
     {
-        //check if rb is on the ground and set isGrounded to true
-        if (Physics.Raycast(transform.position, Vector3.down, 1.1f))
+        bool currentlyGrounded = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.1f);
+
+        if (currentlyGrounded && !_wasGrounded)
         {
-            isGrounded = true;
+            float surfaceValue = 0f; // Default surface
+
+            if (hit.collider.CompareTag("Wood"))
+            {
+                surfaceValue = 0f;
+            }
+            else if (hit.collider.CompareTag("Stone"))
+            {
+                surfaceValue = 1f;
+            }
+            else if (hit.collider.CompareTag("Metal"))
+            {
+                surfaceValue = 2f;
+            }
+            else if (hit.collider.CompareTag("Snow"))
+            {
+                surfaceValue = 3f;
+            }
+
+            AudioManager.instance.PlayOneShotWithParameter(landSound, transform.position, "SurfaceType", surfaceValue);
         }
-        else
-        {
-            isGrounded = false;
-        }
+
+        isGrounded = currentlyGrounded;
+        _wasGrounded = isGrounded;
+
         if (rollCooldownTimer > 0f)
         {
             rollCooldownTimer -= Time.deltaTime;
@@ -459,6 +504,9 @@ void ReleaseInteractHold()
                 {
                     hasEnteredAimMode = true;
                     isAiming = true;
+                    chargeThrowInstance = RuntimeManager.CreateInstance(chargeThrowSound);
+                    RuntimeManager.AttachInstanceToGameObject(chargeThrowInstance, transform, _rb);
+                    chargeThrowInstance.start();
                 }
             }
         }

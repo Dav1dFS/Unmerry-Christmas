@@ -7,6 +7,11 @@ TagManager:
   - Pickable
   - Collectable
   - Token
+  - CinemachineTarget
+  - Snow
+  - Wood
+  - Metal
+  - Stone
   layers:
   - Default
   - TransparentFX
@@ -17,7 +22,6 @@ TagManager:
   - Pushable
   - Highlight
   - Wall
-  - 
   - 
   - 
   - 

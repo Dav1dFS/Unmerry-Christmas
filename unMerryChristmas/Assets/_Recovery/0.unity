@@ -1481,7 +1481,7 @@ GameObject:
   - component: {fileID: 1091049409}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Snow
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2295,7 +2295,7 @@ GameObject:
   - component: {fileID: 1440136120}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Snow
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2452,7 +2452,7 @@ GameObject:
   - component: {fileID: 1573208968}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Snow
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3385,10 +3385,6 @@ PrefabInstance:
       value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: grabSound.Path
-      value: event:/GRAB
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: jumpSound.Path
       value: event:/JUMP
       objectReference: {fileID: 0}
@@ -3401,32 +3397,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1457871387852763970, guid: 491bd01bc2901454cba22f9183dba17a, type: 3}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: throwSound.Path
-      value: event:/THROW
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _dropGift.m_Name
       value: Drop Gift
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _spawnGift.m_Name
       value: Spawn Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: grabSound.Guid.Data1
-      value: 209456607
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: grabSound.Guid.Data2
-      value: 1282261059
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: grabSound.Guid.Data3
-      value: 180471454
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: grabSound.Guid.Data4
-      value: 1114848777
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: jumpSound.Guid.Data1
@@ -3463,42 +3439,6 @@ PrefabInstance:
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: pushableLayer.m_Bits
       value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: chargeThrowSound.Path
-      value: event:/CHARGE THROW
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: throwSound.Guid.Data1
-      value: 1326845461
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: throwSound.Guid.Data2
-      value: 1274649613
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: throwSound.Guid.Data3
-      value: -1592581741
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: throwSound.Guid.Data4
-      value: 2070766535
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: chargeThrowSound.Guid.Data1
-      value: 1677248901
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: chargeThrowSound.Guid.Data2
-      value: 1187315395
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: chargeThrowSound.Guid.Data3
-      value: 2061116038
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: chargeThrowSound.Guid.Data4
-      value: -1316923458
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: trajectoryCollisionMask.m_Bits
