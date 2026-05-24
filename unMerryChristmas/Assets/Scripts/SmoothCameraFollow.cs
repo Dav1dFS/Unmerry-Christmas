@@ -3,7 +3,7 @@ using UnityEngine;
 public class SmoothCameraFollow : MonoBehaviour
 {
     [SerializeField] private Transform _target;
-    [SerializeField] private Vector3 _defaultOffset = new Vector3(0f, 1.5f, -1f);
+    [SerializeField] private Vector3 _defaultOffset = new Vector3(0f, 1.5f, -0.7f);
     [SerializeField] private float _smoothTime = 0.2f;
     [SerializeField] private float _fieldOfView = 50f;
 

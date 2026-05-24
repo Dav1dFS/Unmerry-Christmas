@@ -1,87 +1,96 @@
 using UnityEngine;
 
-/// <summary>
-/// Debug version of GnomePlacementZone with detailed logging
-/// to troubleshoot gnome placement issues.
-/// </summary>
 [RequireComponent(typeof(Collider))]
 public class GnomePlacementZoneDebug : MonoBehaviour
 {
     public System.Action OnGnomePlaced;
     public bool IsFilled { get; private set; }
-
-    private GnomePlacementZone _originalZone;
     private string _zoneName;
 
-    private void Start()
+    private void Awake()
     {
         _zoneName = gameObject.name;
         var col = GetComponent<Collider>();
-        if (!col.isTrigger)
-        {
-            Debug.LogWarning($"[{_zoneName}] Collider is NOT set as trigger! Setting it now...");
-            col.isTrigger = true;
-        }
-        else
-        {
-            Debug.Log($"[{_zoneName}] Collider is properly set as trigger ✓");
-        }
-
-        Debug.Log($"[{_zoneName}] Zone initialized. Waiting for gnome placement...");
+        col.isTrigger = true;
+        Debug.Log($"[{_zoneName}] Zone initialized with trigger collider");
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"[{_zoneName}] OnTriggerEnter: {other.gameObject.name}");
-        CheckGnomeAndPlace(other, "OnTriggerEnter");
+        Debug.Log($"[{_zoneName}] OnTriggerEnter: {other.gameObject.name} (tag: {other.gameObject.tag})");
+        CheckAndPlace(other);
     }
 
     private void OnTriggerStay(Collider other)
     {
-        // Only check if not already filled
         if (!IsFilled)
         {
-            CheckGnomeAndPlace(other, "OnTriggerStay");
+            Debug.Log($"[{_zoneName}] OnTriggerStay: {other.gameObject.name}");
+            CheckAndPlace(other);
         }
     }
 
-    private void CheckGnomeAndPlace(Collider other, string triggerType)
+    private void CheckAndPlace(Collider other)
     {
         if (IsFilled)
         {
-            Debug.Log($"[{_zoneName}] Already filled, ignoring {other.gameObject.name}");
+            Debug.Log($"[{_zoneName}] Already filled");
             return;
         }
 
-        // Check tag
         if (!other.CompareTag("Gnome"))
         {
-            Debug.Log($"[{_zoneName}] {triggerType}: {other.gameObject.name} - NOT a gnome (tag: {other.gameObject.tag})");
+            Debug.Log($"[{_zoneName}] {other.gameObject.name} is not a Gnome (tag: {other.gameObject.tag})");
             return;
         }
 
-        Debug.Log($"[{_zoneName}] {triggerType}: {other.gameObject.name} is a GNOME! Checking rigidbody...");
-
-        // Get rigidbody
         Rigidbody rb = other.attachedRigidbody;
+        Debug.Log($"[{_zoneName}] Gnome rigidbody: {(rb != null ? rb.name : "NULL")}");
+
         if (rb == null)
         {
-            Debug.LogWarning($"[{_zoneName}] Gnome {other.gameObject.name} has NO rigidbody!");
+            Debug.Log($"[{_zoneName}] No rigidbody found");
             return;
         }
 
-        Debug.Log($"[{_zoneName}] Gnome {other.gameObject.name} rigidbody state: isKinematic={rb.isKinematic}");
-
-        // Check if held (kinematic = being held)
+        Debug.Log($"[{_zoneName}] Rigidbody isKinematic: {rb.isKinematic}");
         if (rb.isKinematic)
         {
-            Debug.Log($"[{_zoneName}] Gnome {other.gameObject.name} is HELD (kinematic). Need to drop it.");
+            Debug.Log($"[{_zoneName}] Gnome is kinematic (held), not placing");
             return;
         }
 
-        // SUCCESS - Gnome is in zone and dropped!
-        Debug.Log($"[{_zoneName}] ✓ GNOME PLACED! {other.gameObject.name} registered in zone!");
+        Debug.Log($"[{_zoneName}] ✓ PLACING GNOME: {other.gameObject.name}");
+        PlaceGnome(other.gameObject);
+    }
+
+    private void PlaceGnome(GameObject gnome)
+    {
         IsFilled = true;
+
+        var zoneCollider = GetComponent<Collider>();
+        var bounds = zoneCollider.bounds;
+
+        var gnomeCollider = gnome.GetComponent<Collider>();
+        float gnomeHeight = 0;
+        if (gnomeCollider != null)
+        {
+            gnomeHeight = gnomeCollider.bounds.size.y;
+        }
+
+        Vector3 newPos = new Vector3(bounds.center.x, bounds.max.y + gnomeHeight / 2, bounds.center.z);
+        gnome.transform.position = newPos;
+        gnome.transform.rotation = Quaternion.Euler(-90, 180, 0);
+
+        var rb = gnome.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        Debug.Log($"[{_zoneName}] Gnome placed at {newPos}");
         OnGnomePlaced?.Invoke();
     }
 }

@@ -49,6 +49,11 @@ public class TaskReward : MonoBehaviour
         Reveal();
     }
 
+    public void SetRequiredTask(BackYardTaskTracker.TaskId taskId)
+    {
+        _requiredTask = taskId;
+    }
+
     private void Hide()
     {
         foreach (var col in _colliders) col.enabled = false;
