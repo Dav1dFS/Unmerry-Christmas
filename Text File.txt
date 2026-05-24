@@ -1,0 +1,6 @@
+# Track FMOD Bank files as Large File Storage
+*.bank filter=lfs diff=lfs merge=lfs -text
+
+# Optional: Track raw audio if you keep it in the repo
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
