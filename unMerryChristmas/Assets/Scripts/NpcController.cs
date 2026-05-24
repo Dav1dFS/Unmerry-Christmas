@@ -23,8 +23,8 @@ public class NpcController : MonoBehaviour
     [SerializeField] private float _alertDuration = 6f;
 
     [SerializeField] private float _watchDuration = 3f;
-    [SerializeField] private float _lookAroundSpeed = 90f; // degrees per second while looking around
-    [SerializeField] private int _lookAroundTurns = 6; // number of times to look around when alerted
+    [SerializeField] private float _lookAroundSpeed = 45f; // degrees per second while looking around
+    [SerializeField] private int _lookAroundTurns = 3; // number of times to look around when alerted
     [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private LayerMask _obstacleMask; // walls/obstacles that block vision
 
@@ -83,7 +83,7 @@ public class NpcController : MonoBehaviour
         if (_player != null)
         {
             float playerHeight = _player.position.y - transform.position.y;
-            Debug.Log($"playerHeight: {playerHeight:F2} | DetectionMinHeight: {DetectionMinHeight}");
+           // Debug.Log($"playerHeight: {playerHeight:F2} | DetectionMinHeight: {DetectionMinHeight}");
         }
         _stateTimer -= Time.deltaTime;
         if (_gracePeriodTimer > 0f) _gracePeriodTimer -= Time.deltaTime;
@@ -218,10 +218,10 @@ public class NpcController : MonoBehaviour
 
         _watchTimer -= Time.deltaTime;
 
-        if (_watchTimer <= 0f || !CanSeePlayer())
+        if (_watchTimer <= 0f)
         {
             PlayerFreezeManager.Instance?.UnFreeze();
-            _gracePeriodTimer = _gracePeriod; // start grace period where player can't be detected
+            _gracePeriodTimer = _gracePeriod;
             _currentKeyItemIndex = (_currentKeyItemIndex + 1) % keyItems.Count;
             EnterWalking();
         }
@@ -269,9 +269,13 @@ public class NpcController : MonoBehaviour
         float angle = Vector3.Angle(transform.forward, dirToPlayer.normalized);
         if (angle > DetectionAngle) return false;
 
-        // if the player is below a certain height relative to the NPC, they can't be seen (prevents seeing through windows)
-        float playerHeight = _player.position.y - transform.position.y;
-        if (playerHeight < -DetectionMinHeight) return false;
+        // height check ignored when alerted — NPC looks at any height
+        if (CurrentState != NpcStates.Alerted)
+        {
+            float playerHeight = _player.position.y - transform.position.y;
+            if (playerHeight < -DetectionMinHeight) return false;
+        }
+
         if (Physics.Raycast(origin.position, dirToPlayer.normalized, distance, _obstacleMask))
             return false;
 

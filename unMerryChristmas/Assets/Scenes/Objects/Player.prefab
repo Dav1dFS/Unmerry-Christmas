@@ -68,7 +68,7 @@ MeshRenderer:
   m_SmallMeshCulling: 1
   m_ForceMeshLod: -1
   m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 3
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
@@ -369,7 +369,7 @@ MonoBehaviour:
     m_Name: Spawn Gift
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: d1d87d4a-af62-4c3a-8835-9a24b16554e2
+    m_Id: 409f129a-2c16-4387-9c01-cc36f006bfd5
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
@@ -378,7 +378,7 @@ MonoBehaviour:
     m_Name: Drop Gift
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: ed2be41f-d3ab-46ac-803a-439bf100cc61
+    m_Id: e4dd9e33-f004-4b15-92b8-2132310e354c
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
