@@ -8,6 +8,7 @@ public class DrawingBookMenu : MonoBehaviour
     [SerializeField] private TaskListPage     _taskListPage;
     [SerializeField] private InputAction      _toggleBookAction;
 
+
     private bool _open;
 
     private void OnEnable()
