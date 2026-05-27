@@ -121,3 +121,4 @@ fmod_editor.log
 Thumbs.db
 .vscode/
 .idea/
+*.md

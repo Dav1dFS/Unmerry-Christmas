@@ -19,6 +19,14 @@ public class ThrowableImpact : MonoBehaviour
             return;
         }
 
+        IBreakable breakable = col.gameObject.GetComponentInParent<IBreakable>();
+        if (breakable != null)
+        {
+            breakable.Break();
+            _thrown = false;
+            return;
+        }
+
         // if it hits something else reset the flag
         if (!col.gameObject.CompareTag("Player"))
             _thrown = false;

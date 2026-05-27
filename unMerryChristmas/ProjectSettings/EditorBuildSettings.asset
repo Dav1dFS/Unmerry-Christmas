@@ -6,9 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/PlayerMovementTest.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/UI/MainMenu.unity
+    guid: 1293dcacb61c44c3baaf13480189dd38
+  - enabled: 1
+    path: Assets/Scenes/Scenarios/BackYardScenario.unity
+    guid: cb25d160b1bb04dd98a8006879ff3d6f
+  - enabled: 1
+    path: Assets/Scenes/Scenarios/KitchenScenario.unity
+    guid: 5344648e088c347a193e8b534973d7b6
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9e7be553448fa2546aea5752021cbcf7, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_UseUCBPForAssetBundles: 0

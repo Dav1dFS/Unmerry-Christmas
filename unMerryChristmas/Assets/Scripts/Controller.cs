@@ -40,7 +40,7 @@ public class Controller : MonoBehaviour
     private float _currentSpeed;
     private int _lockedH = 0;
     private int _lockedV = 0;
-    private float jumpForce = 8f;
+    private float jumpForce = 6f; // Increased for proper bench/table clearance (mass 2.0)
     private bool jump = false;
     private bool isGrounded = true;
     private bool isAiming = false;
@@ -50,6 +50,8 @@ public class Controller : MonoBehaviour
     private float rollTimer = 0f;
     private float rollCooldownTimer = 0f;
     private Vector3 rollDirection;
+
+    public bool IsRolling => isRolling;
 
     [SerializeField] private float pickupRange = 1.5f;
     [SerializeField] private float pushableRange = 0.8f;
@@ -377,6 +379,14 @@ void ReleaseInteractHold()
                 }
                 else
                 {
+                    IInteractable interactable = hit.GetComponent<IInteractable>();
+                    if (interactable != null)
+                    {
+                        closestDistance = distance;
+                        interactable.Interact();
+                        return;
+                    }
+
                     PushableObject pushable = hit.GetComponent<PushableObject>();
                     if (pushable != null)
                     {
@@ -530,6 +540,56 @@ void ReleaseInteractHold()
         GatherInput();
         UpdateSpeed();
         Look();
+        UpdateContextHint();
+    }
+
+    void UpdateContextHint()
+    {
+        // Don't show hints while carrying/pushing/aiming
+        if (heldObject != null || _pushedObject != null || _giftInHand != null)
+        {
+            UIManager.Instance?.HideContextHint();
+            return;
+        }
+
+        Collider[] hits = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
+
+        IInteractable closest = null;
+        float closestDist = Mathf.Infinity;
+        bool nearPushable = false;
+
+        foreach (var hit in hits)
+        {
+            float d = Vector3.Distance(transform.position, hit.transform.position);
+            if (d >= closestDist) continue;
+
+            IInteractable interactable = hit.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                closest = interactable;
+                closestDist = d;
+            }
+        }
+
+        // Also check for nearby pushable objects
+        Collider[] pushHits = Physics.OverlapSphere(transform.position, pushableRange, pushableLayer);
+        foreach (var hit in pushHits)
+        {
+            float d = Vector3.Distance(transform.position, hit.transform.position);
+            if (d < closestDist && hit.GetComponent<PushableObject>() != null)
+            {
+                nearPushable = true;
+                closest = null;
+                closestDist = d;
+            }
+        }
+
+        if (nearPushable)
+            UIManager.Instance?.ShowContextHint("Hold E — Push");
+        else if (closest != null)
+            UIManager.Instance?.ShowContextHint(closest.GetHintText());
+        else
+            UIManager.Instance?.HideContextHint();
     }
 
     void FixedUpdate()
@@ -629,6 +689,9 @@ void ReleaseInteractHold()
             _input = Vector3.zero;
             return;
         }
+
+        // Prevent spinning by clearing angular velocity (constraints alone aren't enough)
+        _rb.angularVelocity = Vector3.zero;
 
         if (isRolling)
         {
