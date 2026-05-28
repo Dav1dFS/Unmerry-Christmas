@@ -66,13 +66,13 @@ MonoBehaviour:
   m_Name: Outline
   m_EditorClassIdentifier: LineworkLite::LineworkLite.FreeOutline.Outline
   material: {fileID: 0}
-  isActive: 0
+  isActive: 1
   RenderingLayer:
     serializedVersion: 0
     m_Bits: 4
   layerMask:
     serializedVersion: 2
-    m_Bits: 72
+    m_Bits: 4294967295
   renderQueue: 0
   occlusion: 1
   maskingStrategy: 0

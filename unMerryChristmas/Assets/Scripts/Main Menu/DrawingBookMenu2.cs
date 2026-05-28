@@ -24,6 +24,17 @@ public class DrawingBookMenu2 : MonoBehaviour
     [SerializeField] private DrawingPagesPage _drawingPagesPage;
     [SerializeField] private TaskListPage _taskListPage;
 
+    // ── Page index constants ──────────────────────────────────────────────────
+    // TODO(HUD): Wire these indices to the actual tab/page order once the
+    //            BookmarkTabGroup and PageFlipController APIs are finalised.
+    //            Call OpenToPage(BookPage.X) from HUD buttons or in-world events.
+    public enum BookPage
+    {
+        Tutorial     = 0,   // TutorialPage  — abilities list
+        Tasks        = 1,   // TaskListPage  — task checklist
+        DrawingPages = 2,   // DrawingPagesPage — collected pages count
+    }
+
     public bool IsOpen => _isOpen;  //  o UIManager usa isto
 
     private Vector2 _hiddenPos;
@@ -53,12 +64,35 @@ public class DrawingBookMenu2 : MonoBehaviour
         else Open();
     }
 
+    /// <summary>
+    /// Opens the book and navigates directly to a specific page.
+    /// Called from HUD buttons, in-world triggers, or task/ability events.
+    /// </summary>
+    /// <example>
+    /// // From HUD "Tasks" button:
+    /// UIManager.Instance?.OpenBookToPage(BookPage.Tasks);
+    ///
+    /// // When an ability is unlocked, jump the player to the abilities list:
+    /// UIManager.Instance?.OpenBookToPage(BookPage.Tutorial);
+    /// </example>
+    public void OpenToPage(BookPage page)
+    {
+        Open(); // ensures book is open and pages are refreshed
+
+        // TODO(HUD): Once BookmarkTabGroup exposes a SelectTab(int) or equivalent,
+        //            call it here to jump to the correct tab:
+        //
+        //   _tabGroup?.SelectTab((int)page);
+        //
+        // Until then, the book opens to whichever tab was last active.
+    }
+
     public void Open()
     {
         if (_isOpen) return;
         _isOpen = true;
 
-        // Refresh das p�ginas ao abrir
+        // Refresh das p�ginas ao abrir
         _tutorialPage?.Refresh();
         _drawingPagesPage?.Refresh();
         _taskListPage?.Refresh();
