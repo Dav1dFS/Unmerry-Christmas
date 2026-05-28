@@ -192,7 +192,7 @@ public partial class Controller
         {
             heldObject = closestPickup;
             heldObject.OnPickup(holdPoint);
-            AudioManager.instance.PlayOneShot(grabSound, transform.position);
+            AudioManager.instance?.PlayOneShot(grabSound, transform.position);
         }
         else if (closestPushable != null)
         {
@@ -236,7 +236,7 @@ public partial class Controller
             DropObject();
             Vector3 throwDir = transform.forward + Vector3.up * 0.5f;
             objectRb.AddForce(throwDir.normalized * force, ForceMode.Impulse);
-            AudioManager.instance.PlayOneShot(throwSound, transform.position);
+            AudioManager.instance?.PlayOneShot(throwSound, transform.position);
         }
     }
 

@@ -20,7 +20,14 @@ public partial class Controller
         bool currentlyGrounded = Physics.Raycast(
             transform.position, Vector3.down, out RaycastHit hit, 1.1f);
 
-        if (currentlyGrounded && !_wasGrounded)
+        // Capture the transition BEFORE updating state, then update state immediately.
+        // State must advance regardless of whether audio plays — a null AudioManager
+        // must never cause the landing sound to re-fire every subsequent frame.
+        bool justLanded = currentlyGrounded && !_wasGrounded;
+        isGrounded   = currentlyGrounded;
+        _wasGrounded = isGrounded;
+
+        if (justLanded)
         {
             // Map surface tag to FMOD parameter value
             float surfaceValue = hit.collider.tag switch
@@ -30,11 +37,8 @@ public partial class Controller
                 "Snow"  => 3f,
                 _       => 0f,  // "Wood" and everything else
             };
-            AudioManager.instance.PlayOneShotWithParameter(
+            AudioManager.instance?.PlayOneShotWithParameter(
                 landSound, transform.position, "SurfaceType", surfaceValue);
         }
-
-        isGrounded   = currentlyGrounded;
-        _wasGrounded = isGrounded;
     }
 }

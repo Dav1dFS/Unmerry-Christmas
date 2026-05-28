@@ -22,12 +22,13 @@ public class TutorialToast : MonoBehaviour
     {
         if (_current != null) StopCoroutine(_current);
         _label.text = text;
+        // Must activate BEFORE StartCoroutine — coroutines cannot start on inactive GameObjects.
+        gameObject.SetActive(true);
         _current = StartCoroutine(ShowRoutine());
     }
 
     private IEnumerator ShowRoutine()
     {
-        gameObject.SetActive(true);
         yield return Fade(0f, 1f);
         yield return new WaitForSeconds(_displayDuration);
         yield return Fade(1f, 0f);

@@ -96,13 +96,15 @@ public partial class Controller
                 * Time.fixedDeltaTime);
         }
 
-        // Jump is consumed here so physics force is applied in FixedUpdate
+        // Jump is consumed here so physics force is applied in FixedUpdate.
+        // IMPORTANT: clear flags BEFORE the audio call so a missing AudioManager
+        // can never prevent the state from advancing (infinite-jump safeguard).
         if (jump && isGrounded && _pushedObject == null)
         {
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            AudioManager.instance.PlayOneShot(jumpSound, transform.position);
-            jump       = false;
+            jump       = false;   // must be before audio — exception must not leave these set
             isGrounded = false;
+            AudioManager.instance?.PlayOneShot(jumpSound, transform.position);
         }
     }
 }

@@ -16,7 +16,7 @@ public class ContextualHint : MonoBehaviour
 
     public void Show(string text)
     {
-        _label.text = text;
+        if (_label != null) _label.text = text;
         _group.alpha = 1f;
         gameObject.SetActive(true);
     }

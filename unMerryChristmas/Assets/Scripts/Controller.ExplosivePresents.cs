@@ -52,7 +52,7 @@ public partial class Controller
             float   force    = Mathf.Clamp(holdTime * throwForce, 5f, 15f);
             Vector3 throwDir = transform.forward + Vector3.up * 0.5f;
             rb.AddForce(throwDir.normalized * force, ForceMode.Impulse);
-            AudioManager.instance.PlayOneShot(throwSound, transform.position);
+            AudioManager.instance?.PlayOneShot(throwSound, transform.position);
         }
 
         isAiming = false;
