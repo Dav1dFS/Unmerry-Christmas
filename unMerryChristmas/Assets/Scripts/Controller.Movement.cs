@@ -14,7 +14,7 @@ public partial class Controller
 
     private void GatherInput()
     {
-        if (PlayerFreezeManager.Instance.isFrozen)
+        if (PlayerFreezeManager.Instance?.isFrozen == true)
         {
             _input = Vector3.zero;
             return;
@@ -64,7 +64,7 @@ public partial class Controller
 
     private void Move()
     {
-        if (PlayerFreezeManager.Instance.isFrozen)
+        if (PlayerFreezeManager.Instance?.isFrozen == true)
         {
             _input = Vector3.zero;
             return;

@@ -29,14 +29,21 @@ public partial class Controller
 
         if (justLanded)
         {
-            // Map surface tag to FMOD parameter value
-            float surfaceValue = hit.collider.tag switch
+            // Map surface tag to FMOD parameter value.
+            // Guard against a null collider: in rare cases (collider destroyed the
+            // same frame, or certain trigger overlap results) hit.collider can be null
+            // even when Physics.Raycast returns true.
+            float surfaceValue = 0f;
+            if (hit.collider != null)
             {
-                "Stone" => 1f,
-                "Metal" => 2f,
-                "Snow"  => 3f,
-                _       => 0f,  // "Wood" and everything else
-            };
+                surfaceValue = hit.collider.tag switch
+                {
+                    "Stone" => 1f,
+                    "Metal" => 2f,
+                    "Snow"  => 3f,
+                    _       => 0f,  // "Wood" and everything else
+                };
+            }
             AudioManager.instance?.PlayOneShotWithParameter(
                 landSound, transform.position, "SurfaceType", surfaceValue);
         }

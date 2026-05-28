@@ -16,25 +16,26 @@ public partial class Controller
             return;
         }
 
-        // ── Find closest interactable in pickup range ─────────────────────────
-        Collider[]    hits        = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
-        IInteractable closest     = null;
-        float         closestDist = Mathf.Infinity;
-        bool          nearPushable = false;
-        Collider      closestHit   = null;
+        // ── Find closest interactable of ANY type in pickup range ─────────────
+        // This covers IInteractable (ShedDoor, MovingBox…), PickupObject (stones,
+        // gnomes…), DrawingPageCollectable, and AbilityToken — all of which share
+        // the pickupLayer but do NOT necessarily implement IInteractable.
+        Collider[] hits        = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
+        string     hintText    = null;
+        float      closestDist = Mathf.Infinity;
+        Collider   closestHit  = null;
 
         foreach (Collider hit in hits)
         {
             float d = Vector3.Distance(transform.position, hit.transform.position);
             if (d >= closestDist) continue;
 
-            IInteractable interactable = hit.GetComponent<IInteractable>();
-            if (interactable != null)
-            {
-                closest      = interactable;
-                closestDist  = d;
-                closestHit   = hit;
-            }
+            string text = GetHintForCollider(hit);
+            if (text == null) continue;
+
+            hintText    = text;
+            closestDist = d;
+            closestHit  = hit;
         }
 
         // ── Also check for pushables in the (smaller) push range ──────────────
@@ -44,24 +45,20 @@ public partial class Controller
             float d = Vector3.Distance(transform.position, hit.transform.position);
             if (d < closestDist && hit.GetComponent<PushableObject>() != null)
             {
-                nearPushable = true;
-                closest      = null;
-                closestHit   = hit;
-                closestDist  = d;
+                hintText    = "Hold E — Push";
+                closestHit  = hit;
+                closestDist = d;
             }
         }
 
         // ── Context hint text ─────────────────────────────────────────────────
-        if (nearPushable)
-            UIManager.Instance?.ShowContextHint("Hold E — Push");
-        else if (closest != null)
-            UIManager.Instance?.ShowContextHint(closest.GetHintText());
+        if (hintText != null)
+            UIManager.Instance?.ShowContextHint(hintText);
         else
             UIManager.Instance?.HideContextHint();
 
         // ── Object outline (InteractableHighlight) ────────────────────────────
-        // Find the InteractableHighlight on the closest object (if any).
-        // We search up the hierarchy so the component can live on the root even
+        // Walk up the hierarchy so the component can live on the root even
         // when the collider is on a child mesh.
         InteractableHighlight newHighlight = closestHit != null
             ? closestHit.GetComponentInParent<InteractableHighlight>()
@@ -69,12 +66,36 @@ public partial class Controller
 
         if (newHighlight != _currentHighlight)
         {
-            // Un-highlight the previous object
             _currentHighlight?.SetHighlighted(false);
-            // Highlight the new closest one
             newHighlight?.SetHighlighted(true);
             _currentHighlight = newHighlight;
         }
+    }
+
+    /// <summary>
+    /// Returns the context hint string for any collider the player can interact with,
+    /// or null if this collider represents nothing actionable.
+    /// Covers all interaction paths: IInteractable, pickups, collectables, tokens.
+    /// </summary>
+    private string GetHintForCollider(Collider col)
+    {
+        // IInteractable objects provide their own text (ShedDoor, MovingBox, etc.)
+        IInteractable interactable = col.GetComponent<IInteractable>();
+        if (interactable != null) return interactable.GetHintText();
+
+        // Ability tokens and drawing-page collectables (tag-based detection)
+        if (col.CompareTag("Token"))       return "E — Collect";
+        if (col.CompareTag("Collectable")) return "E — Collect";
+
+        // Physical pickups (stones, gnomes, candy, …)
+        if (col.GetComponent<PickupObject>() != null)
+        {
+            bool canThrow = AbilityTokenManager.Instance != null
+                         && AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing);
+            return canThrow ? "E — Pick up  |  Hold E — Throw" : "E — Pick up";
+        }
+
+        return null;
     }
 
     /// <summary>Clears any active outline immediately (e.g. when hands become busy).</summary>

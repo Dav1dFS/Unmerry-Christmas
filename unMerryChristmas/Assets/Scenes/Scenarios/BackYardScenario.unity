@@ -662,7 +662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 727caef91b10c42bd90d8a4fbe1838dc, type: 3}
       propertyPath: m_TagString
-      value: Collectable
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 3395117845397126384, guid: 727caef91b10c42bd90d8a4fbe1838dc, type: 3}
       propertyPath: m_Layer
@@ -978,27 +978,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4505177a385314a40b527f2b0ce8ce7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawingBookMenu
-  _bookPanel: {fileID: 70329079}
-  _tutorialPage: {fileID: 1429502435}
-  _drawingPagesPage: {fileID: 166745872}
-  _taskListPage: {fileID: 187393083}
-  _toggleBookAction:
-    m_Name: Toggle Book
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: ed688b94-9f0f-4182-85d8-eb52d89484e8
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: ac03a916-bf9b-4f4f-8493-f2ec33d13395
-      m_Path: <Keyboard>/tab
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Toggle Book
-      m_Flags: 0
-    m_Flags: 0
 --- !u!222 &70329082
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4629,7 +4608,15 @@ MonoBehaviour:
   _taskCompleteFlash: {fileID: 1488382417}
   _contextualHint: {fileID: 211985427}
   _drawingBookMenu: {fileID: 70329081}
-  _pauseMenu: {fileID: 1694015880}
+  _pauseAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 36379911-7bde-490c-8112-bdd5c2433ea3
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &1260937822
 GameObject:
   m_ObjectHideFlags: 0

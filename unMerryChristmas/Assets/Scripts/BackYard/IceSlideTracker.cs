@@ -7,8 +7,16 @@ public class IceSlideTracker : MonoBehaviour
 
     private bool _completed;
 
-    private void OnEnable()  => _compostBin.OnOpenedByCollision += HandleCompostCollision;
-    private void OnDisable() => _compostBin.OnOpenedByCollision -= HandleCompostCollision;
+    private void OnEnable()
+    {
+        if (_compostBin != null) _compostBin.OnOpenedByCollision += HandleCompostCollision;
+        else Debug.LogWarning("[IceSlideTracker] _compostBin is not assigned — wire it in the Inspector or run the BackYard Auto-Wire tool.", this);
+    }
+
+    private void OnDisable()
+    {
+        if (_compostBin != null) _compostBin.OnOpenedByCollision -= HandleCompostCollision;
+    }
 
     private void HandleCompostCollision()
     {

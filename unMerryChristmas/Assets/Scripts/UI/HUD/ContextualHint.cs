@@ -16,6 +16,10 @@ public class ContextualHint : MonoBehaviour
 
     public void Show(string text)
     {
+        // Lazy-init guard: Awake() is skipped when a parent Canvas/Panel is inactive
+        // at scene load. GetComponent is safe here — RequireComponent guarantees it exists.
+        _group ??= GetComponent<CanvasGroup>();
+
         if (_label != null) _label.text = text;
         _group.alpha = 1f;
         gameObject.SetActive(true);
