@@ -107,9 +107,14 @@ public partial class Controller
                 Vector3 contactWorld = _pushedObject.transform.TransformPoint(_contactLocalPos);
                 _pushedObject.ApplyPushForce(_input.ToIso().normalized, contactWorld);
             }
-            Vector3 targetWorld = _pushedObject.transform.TransformPoint(_playerLocalPos);
-            Vector3 targetPos   = new Vector3(targetWorld.x, transform.position.y, targetWorld.z);
-            _rb.linearVelocity  = new Vector3(
+            // Target = box centre + fixed world-space XZ offset captured at grab time.
+            // Using world-space (not local) means box Y-rotation never orbits the player.
+            Vector3 boxPos    = _pushedObject.transform.position;
+            Vector3 targetPos = new Vector3(
+                boxPos.x + _playerWorldOffset.x,
+                transform.position.y,
+                boxPos.z + _playerWorldOffset.z);
+            _rb.linearVelocity = new Vector3(
                 (targetPos.x - transform.position.x) / Time.fixedDeltaTime,
                 yVel,
                 (targetPos.z - transform.position.z) / Time.fixedDeltaTime);

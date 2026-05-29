@@ -10,7 +10,7 @@ public partial class Controller
     // ── Settings ─────────────────────────────────────────────────────────────
     [Header("Interaction — Pickup & Push")]
     [SerializeField] private float pickupRange   = 1.5f;
-    [SerializeField] private float pushableRange = 0.8f;
+    [SerializeField] private float pushableRange = 0.1f;
 
     [Header("Interaction — Throw")]
     [SerializeField] private float throwForce         = 10f;
@@ -32,7 +32,7 @@ public partial class Controller
     private PickupObject   heldObject;
     private PushableObject _pushedObject;
     private Vector3        _contactLocalPos;
-    private Vector3        _playerLocalPos;
+    private Vector3        _playerWorldOffset; // world-space XZ offset from box centre, not local — immune to box rotation
 
     private bool  isAiming          = false;
     private float holdTime          = 0f;
@@ -67,21 +67,14 @@ public partial class Controller
         else
             trajectoryLine.enabled = false;
 
-        // Release pushed object if player walks too far away
         if (_pushedObject != null)
-        {
-            if (!_pushedObject.IsWithinPushDistance())
-                ReleasePushable();
-            else
-                ClearAbilityInputs();
-        }
+            ClearAbilityInputs();
     }
 
     // ── Interact hold / release ───────────────────────────────────────────────
 
     private void StartInteractHold()
     {
-        if (_pushedObject != null) return;
         isHoldingInteract = true;
         hasEnteredAimMode = false;
         holdTime          = 0f;
@@ -166,7 +159,7 @@ public partial class Controller
                     }
 
                     PushableObject pushable = hit.GetComponent<PushableObject>();
-                    if (pushable != null)
+                    if (pushable != null && d <= pushableRange)
                     {
                         closestDist     = d;
                         closestPushable = pushable;
@@ -199,17 +192,29 @@ public partial class Controller
             if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Pushing))
                 return;
 
-            // Find precise contact point on the pushable's surface via raycast
-            Vector3 dirToObj = (closestPushable.transform.position - transform.position).normalized;
+            // Find contact point on the pushable's side face via horizontal raycast.
+            // Always project to the XZ plane so grabs from above or below hit a side
+            // face rather than the top/bottom, giving consistent push behaviour.
+            Vector3 toObj = closestPushable.transform.position - transform.position;
+            Vector3 horizontalDir = new Vector3(toObj.x, 0f, toObj.z);
+            if (horizontalDir.sqrMagnitude < 0.001f)
+                horizontalDir = new Vector3(transform.forward.x, 0f, transform.forward.z);
+            Vector3 dirToObj   = horizontalDir.normalized;
+            Vector3 rayOrigin  = new Vector3(transform.position.x,
+                                             closestPushable.transform.position.y,
+                                             transform.position.z);
             Vector3 contactWorldPos;
-            if (Physics.Raycast(transform.position, dirToObj, out RaycastHit contactHit, pickupRange * 2f, pushableLayer))
+            if (Physics.Raycast(rayOrigin, dirToObj, out RaycastHit contactHit, pickupRange * 2f, pushableLayer))
                 contactWorldPos = contactHit.point;
             else
-                contactWorldPos = closestPushable.GetComponent<Collider>().ClosestPoint(transform.position);
+                contactWorldPos = closestPushable.GetComponent<Collider>().ClosestPoint(rayOrigin);
 
             _pushedObject    = closestPushable;
             _contactLocalPos = closestPushable.transform.InverseTransformPoint(contactWorldPos);
-            _playerLocalPos  = closestPushable.transform.InverseTransformPoint(transform.position);
+
+            // Store offset in world space so box rotation never drags the player sideways.
+            Vector3 offset = transform.position - closestPushable.transform.position;
+            _playerWorldOffset = new Vector3(offset.x, 0f, offset.z);
             _pushedObject.OnGrab();
         }
     }
