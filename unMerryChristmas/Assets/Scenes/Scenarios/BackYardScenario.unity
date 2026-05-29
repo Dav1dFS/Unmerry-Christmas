@@ -685,6 +685,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 727caef91b10c42bd90d8a4fbe1838dc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 876544802}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 727caef91b10c42bd90d8a4fbe1838dc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 876544805}
   m_SourcePrefab: {fileID: 100100000, guid: 727caef91b10c42bd90d8a4fbe1838dc, type: 3}
 --- !u!1001 &63294408
 PrefabInstance:
@@ -808,6 +811,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3571270016373765556, guid: 20630ced65c4d43c980c286b3a9fc6b3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 63294418}
+    - targetCorrespondingSourceObject: {fileID: 3571270016373765556, guid: 20630ced65c4d43c980c286b3a9fc6b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 63294419}
+    - targetCorrespondingSourceObject: {fileID: 1643174962414756321, guid: 20630ced65c4d43c980c286b3a9fc6b3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1749073013}
   m_SourcePrefab: {fileID: 100100000, guid: 20630ced65c4d43c980c286b3a9fc6b3, type: 3}
 --- !u!4 &63294409 stripped
 Transform:
@@ -926,6 +935,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &63294419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63294410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!1 &70329079
 GameObject:
   m_ObjectHideFlags: 0
@@ -1623,6 +1644,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f27eceb01d788643aefa10607b31147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupObject
+--- !u!114 &316213469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316213462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!1 &344197563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1905,6 +1938,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &413030643 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1643174962414756321, guid: 971e7da6c155040e5a60352a1f5ab174, type: 3}
+  m_PrefabInstance: {fileID: 1853213459}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &413030647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413030643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!1 &440290305
 GameObject:
   m_ObjectHideFlags: 0
@@ -2527,6 +2577,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7783162774452947165, guid: 217f901c4774a474cb13635430c48f32, type: 3}
       insertIndex: -1
       addedObject: {fileID: 316213466}
+    - targetCorrespondingSourceObject: {fileID: 7783162774452947165, guid: 217f901c4774a474cb13635430c48f32, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 316213469}
   m_SourcePrefab: {fileID: 100100000, guid: 217f901c4774a474cb13635430c48f32, type: 3}
 --- !u!1 &545790054
 GameObject:
@@ -3078,6 +3131,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3571270016373765556, guid: 80387c1ef343e446e920fb2b3d6e8748, type: 3}
       insertIndex: -1
       addedObject: {fileID: 738133271}
+    - targetCorrespondingSourceObject: {fileID: 3571270016373765556, guid: 80387c1ef343e446e920fb2b3d6e8748, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 738133272}
+    - targetCorrespondingSourceObject: {fileID: 1643174962414756321, guid: 80387c1ef343e446e920fb2b3d6e8748, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1782872572}
   m_SourcePrefab: {fileID: 100100000, guid: 80387c1ef343e446e920fb2b3d6e8748, type: 3}
 --- !u!4 &738133261 stripped
 Transform:
@@ -3220,6 +3279,18 @@ MonoBehaviour:
   m_Script: {fileID: 806717353}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp-Editor::GlowControllerOnTokenEffect
+--- !u!114 &738133272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738133262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!1 &791868948
 GameObject:
   m_ObjectHideFlags: 0
@@ -3849,6 +3920,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &876544805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876544798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!114 &899404541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4266,6 +4349,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f27eceb01d788643aefa10607b31147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupObject
+--- !u!114 &1084436842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084436835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!1 &1172541221
 GameObject:
   m_ObjectHideFlags: 0
@@ -4392,6 +4487,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f27eceb01d788643aefa10607b31147, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupObject
+--- !u!114 &1174605994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174605986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!1 &1238615453
 GameObject:
   m_ObjectHideFlags: 0
@@ -5673,6 +5780,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7783162774452947165, guid: 217f901c4774a474cb13635430c48f32, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1084436839}
+    - targetCorrespondingSourceObject: {fileID: 7783162774452947165, guid: 217f901c4774a474cb13635430c48f32, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1084436842}
   m_SourcePrefab: {fileID: 100100000, guid: 217f901c4774a474cb13635430c48f32, type: 3}
 --- !u!1001 &1665441708
 PrefabInstance:
@@ -5760,6 +5870,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7783162774452947165, guid: 217f901c4774a474cb13635430c48f32, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1174605991}
+    - targetCorrespondingSourceObject: {fileID: 7783162774452947165, guid: 217f901c4774a474cb13635430c48f32, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1174605994}
   m_SourcePrefab: {fileID: 100100000, guid: 217f901c4774a474cb13635430c48f32, type: 3}
 --- !u!1 &1694015878
 GameObject:
@@ -5885,6 +5998,23 @@ MonoBehaviour:
   _doorPivot: {fileID: 6353911809309996280}
   _openAngle: 110
   _openSpeed: 3
+--- !u!1 &1749073009 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1643174962414756321, guid: 20630ced65c4d43c980c286b3a9fc6b3, type: 3}
+  m_PrefabInstance: {fileID: 63294408}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1749073013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749073009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!1001 &1764427129
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5968,6 +6098,23 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1394704776}
   m_SourcePrefab: {fileID: 100100000, guid: 88dc6ae491363493f864687bcf6a87be, type: 3}
+--- !u!1 &1782872568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1643174962414756321, guid: 80387c1ef343e446e920fb2b3d6e8748, type: 3}
+  m_PrefabInstance: {fileID: 738133260}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1782872572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1782872568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!1 &1787937309
 GameObject:
   m_ObjectHideFlags: 0
@@ -6078,6 +6225,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3571270016373765556, guid: 971e7da6c155040e5a60352a1f5ab174, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1853213462}
+    - targetCorrespondingSourceObject: {fileID: 1643174962414756321, guid: 971e7da6c155040e5a60352a1f5ab174, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 413030647}
   m_SourcePrefab: {fileID: 100100000, guid: 971e7da6c155040e5a60352a1f5ab174, type: 3}
 --- !u!4 &1853213460 stripped
 Transform:
@@ -8294,6 +8444,7 @@ GameObject:
   - component: {fileID: 2047064288160842199}
   - component: {fileID: 5423381803352797646}
   - component: {fileID: 5442243054402234853}
+  - component: {fileID: 5442243054402234854}
   m_Layer: 3
   m_Name: MovingBox_3
   m_TagString: Untagged
@@ -11048,6 +11199,7 @@ GameObject:
   - component: {fileID: 303610001683640063}
   - component: {fileID: 7141333653457954135}
   - component: {fileID: 4406925992096180428}
+  - component: {fileID: 7141333653457954136}
   m_Layer: 3
   m_Name: MovingBox_1
   m_TagString: Untagged
@@ -11874,9 +12026,9 @@ GameObject:
   - component: {fileID: 4597363465085450854}
   - component: {fileID: 7687710855873875614}
   - component: {fileID: 751413974898589655}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: stone winter small 2
-  m_TagString: Untagged
+  m_TagString: Pickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13539,9 +13691,9 @@ GameObject:
   - component: {fileID: 2911450816252373817}
   - component: {fileID: 8614498533960190852}
   - component: {fileID: 4849361186394475104}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: stone winter small
-  m_TagString: Untagged
+  m_TagString: Pickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13891,6 +14043,7 @@ GameObject:
   - component: {fileID: 8286181805550948955}
   - component: {fileID: 136656969}
   - component: {fileID: 136656970}
+  - component: {fileID: 8286181805550948956}
   m_Layer: 3
   m_Name: Gnome_2
   m_TagString: Gnome
@@ -14088,6 +14241,7 @@ GameObject:
   - component: {fileID: 7623789645045845647}
   - component: {fileID: 7623789645045845648}
   - component: {fileID: 7623789645045845649}
+  - component: {fileID: 7623789645045845650}
   m_Layer: 6
   m_Name: stone_bench_1
   m_TagString: Untagged
@@ -14340,6 +14494,7 @@ GameObject:
   - component: {fileID: 937602392191241774}
   - component: {fileID: 899404541}
   - component: {fileID: 899404542}
+  - component: {fileID: 4353364988310220174}
   m_Layer: 3
   m_Name: Gnome_1
   m_TagString: Gnome
@@ -14347,6 +14502,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4353364988310220174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4353364988310220173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!33 &4398487121045649550
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -14493,6 +14660,7 @@ GameObject:
   - component: {fileID: 3956140383103942133}
   - component: {fileID: 2210271136726860060}
   - component: {fileID: 1705140946}
+  - component: {fileID: 4444164544172697424}
   m_Layer: 0
   m_Name: ShedDoor
   m_TagString: Untagged
@@ -14500,6 +14668,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4444164544172697424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4444164544172697423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!1 &4455592871542959557
 GameObject:
   m_ObjectHideFlags: 0
@@ -15666,6 +15846,7 @@ GameObject:
   - component: {fileID: 6019046043187112606}
   - component: {fileID: 5543471505006322032}
   - component: {fileID: 5545025076343890299}
+  - component: {fileID: 8386552658448850517}
   m_Layer: 3
   m_Name: MovingBox_2
   m_TagString: Untagged
@@ -16118,6 +16299,18 @@ MonoBehaviour:
   _snowCover: {fileID: 0}
   _rewardPrefab: {fileID: 1394704772}
   _rewardSpawnPoint: {fileID: 0}
+--- !u!114 &5442243054402234854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533780390546546690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!23 &5448116545407839650
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -17288,6 +17481,7 @@ GameObject:
   - component: {fileID: 5278482188006824409}
   - component: {fileID: 6231715601711044516}
   - component: {fileID: 2542382651748506351}
+  - component: {fileID: 7972524576532819220}
   m_Layer: 3
   m_Name: MovingBox_4
   m_TagString: Untagged
@@ -17853,9 +18047,9 @@ GameObject:
   - component: {fileID: 5628723040700149302}
   - component: {fileID: 8790372701113961912}
   - component: {fileID: 4935979428719626807}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: stone winter small 3
-  m_TagString: Untagged
+  m_TagString: Pickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19385,9 +19579,9 @@ GameObject:
   - component: {fileID: 8840651884732692579}
   - component: {fileID: 1736363238670111056}
   - component: {fileID: 8315609373085009086}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: stone winter small 4
-  m_TagString: Untagged
+  m_TagString: Pickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19561,6 +19755,18 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 656816909286024795, guid: 54c2c874c1e164eab8f8955397a5cfba, type: 3}
+--- !u!114 &7141333653457954136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2249090342864572202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!4 &7153629552084600837
 Transform:
   m_ObjectHideFlags: 0
@@ -19932,6 +20138,7 @@ GameObject:
   - component: {fileID: 5409668937739406246}
   - component: {fileID: 156400626}
   - component: {fileID: 156400627}
+  - component: {fileID: 9045869878707479164}
   m_Layer: 3
   m_Name: Gnome_3
   m_TagString: Gnome
@@ -20548,6 +20755,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7623789645045845650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4226268880960552473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!23 &7625651455926554753
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -21419,6 +21638,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5926758985766025228}
   m_Mesh: {fileID: 656816909286024795, guid: 2cb2e8787f8a3481ea60026314e023bd, type: 3}
+--- !u!114 &7972524576532819220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5926758985766025228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!23 &7992695321240651541
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -21745,9 +21976,9 @@ GameObject:
   - component: {fileID: 7693523043695437117}
   - component: {fileID: 7303246443800356452}
   - component: {fileID: 1690029004048185391}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: stone winter small 5
-  m_TagString: Untagged
+  m_TagString: Pickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21914,6 +22145,18 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 5812663929371996868, guid: 90b333a2c28b9418c8f112f84cdc31a2, type: 3}
+--- !u!114 &8286181805550948956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4047156188715886582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!23 &8290529817949025130
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -22251,6 +22494,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5226161338837683019}
   m_Mesh: {fileID: 656816909286024795, guid: 614478fcb9fc541d78df89434de540b6, type: 3}
+--- !u!114 &8386552658448850517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5226161338837683019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!64 &8388765608814314633
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23043,9 +23298,9 @@ GameObject:
   - component: {fileID: 6978157186335055720}
   - component: {fileID: 6826698328759292620}
   - component: {fileID: 7853262493204913500}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: stone winter small 6
-  m_TagString: Untagged
+  m_TagString: Pickable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23436,6 +23691,18 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &9045869878707479164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388611256018289582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
 --- !u!64 &9057710005054327129
 MeshCollider:
   m_ObjectHideFlags: 0

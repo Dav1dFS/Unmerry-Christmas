@@ -37,6 +37,17 @@ public class InteractableHighlight : MonoBehaviour
         // Cache all renderers including children (e.g. multi-mesh objects).
         // includeInactive: false — don't outline parts that are disabled at start.
         _renderers = GetComponentsInChildren<Renderer>(includeInactive: false);
+
+        // IMPORTANT: Unity's default renderingLayerMask is 0xFFFFFFFF (all bits set),
+        // which means bit 2 is already on every renderer before we touch anything.
+        // FreeOutline Outline 2 watches for bit 2 — so without this strip every object
+        // would be permanently outlined the moment Outline 2 is active.
+        // We clear bit 2 here so objects start without the highlight, and SetHighlighted
+        // adds / removes it dynamically as the player looks around.
+        foreach (Renderer r in _renderers)
+        {
+            if (r != null) r.renderingLayerMask &= ~OutlineLayerBit;
+        }
     }
 
     /// <summary>

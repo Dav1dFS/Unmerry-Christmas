@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -18,17 +19,25 @@ public class UIManager : MonoBehaviour
     [Header("Input")]
     [SerializeField] private InputAction _pauseAction;
 
+    // FreeOutline Outline 2 watches rendering layer bit 2.
+    // Unity's default renderingLayerMask for all renderers is 0xFFFFFFFF (all bits set),
+    // so every object in the scene would be permanently outlined without this strip.
+    // InteractableHighlight.SetHighlighted(true) re-adds bit 2 on demand.
+    private const uint OutlineInteractBit = 1u << 2;
+
     private void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        StripOutlineLayer(); // initial scene
     }
 
     private void OnEnable()
     {
         AbilityTokenManager.OnAbilityUnlocked += OnAbilityUnlocked;
         BackYardTaskTracker.OnTaskCompleted += OnTaskCompleted;
+        SceneManager.sceneLoaded += OnSceneLoaded;
         _pauseAction.Enable();
         _pauseAction.started += OnPausePressed;
     }
@@ -37,8 +46,23 @@ public class UIManager : MonoBehaviour
     {
         AbilityTokenManager.OnAbilityUnlocked -= OnAbilityUnlocked;
         BackYardTaskTracker.OnTaskCompleted -= OnTaskCompleted;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         _pauseAction.started -= OnPausePressed;
         _pauseAction.Disable();
+    }
+
+    // Runs after every scene load (including additive). Strips bit 2 from every
+    // renderer so nothing is outlined by default. Covers objects that don't have
+    // an InteractableHighlight component (collectables, tokens, terrain, etc.).
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        => StripOutlineLayer();
+
+    private void StripOutlineLayer()
+    {
+        var renderers = FindObjectsByType<Renderer>(
+            FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (Renderer r in renderers)
+            r.renderingLayerMask &= ~OutlineInteractBit;
     }
 
     // ── Input ────────────────────────────────────────────────────────────────
