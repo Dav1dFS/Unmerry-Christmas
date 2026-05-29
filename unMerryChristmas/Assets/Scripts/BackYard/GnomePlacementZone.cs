@@ -7,13 +7,14 @@ public class GnomePlacementZone : MonoBehaviour
     public event Action OnGnomePlaced;
     public bool IsFilled { get; private set; }
 
-    [SerializeField] private GameObject acceptedGnome;
-    [SerializeField] private int gnomeIndex = 1; // 1, 2, or 3
+    // Derived at runtime from this zone's own name (e.g. "GnomePlacementZone_2" → 2).
+    // Never serialized, so stale Inspector values can't interfere.
+    private int gnomeIndex = 0;
 
-    private static readonly Vector3[]    HardcodedPositions = {
+    private static readonly Vector3[] HardcodedPositions = {
         new Vector3(5.853f,  0.09834625f, -15.920486f),
-        new Vector3(5.848f,  0.09834611f, -14.428000f),
-        new Vector3(5.856f,  0.09834640f, -15.335675f),
+        new Vector3(5.848f,  0.09834611f, -15.34f),
+        new Vector3(5.856f,  0.09834640f, -14.4f),
     };
     private static readonly Quaternion[] HardcodedRotations = {
         new Quaternion(-0.5f, -0.5f, -0.5f,  0.5f),
@@ -25,12 +26,26 @@ public class GnomePlacementZone : MonoBehaviour
     private void Awake()
     {
         GetComponent<Collider>().isTrigger = true;
+
+        // Always derive index from zone name — never rely on serialized value
+        string[] parts = gameObject.name.Split('_');
+        if (parts.Length > 0 && int.TryParse(parts[parts.Length - 1], out int parsed))
+        {
+            gnomeIndex = parsed;
+            Debug.Log($"[GnomePlacementZone] '{gameObject.name}' → gnomeIndex={gnomeIndex}");
+        }
+        else
+            Debug.LogError($"[GnomePlacementZone] Cannot parse gnome index from name '{gameObject.name}'. Expected format: GnomePlacementZone_N", this);
     }
 
     private bool IsAcceptedGnome(GameObject gnome)
     {
-        if (acceptedGnome == null) return true;
-        return gnome == acceptedGnome || gnome.transform.IsChildOf(acceptedGnome.transform);
+        string expectedName = "Gnome_" + gnomeIndex + "_";
+        string exactName    = "Gnome_" + gnomeIndex;
+        bool accepted = gnome.name == exactName || gnome.name.StartsWith(expectedName);
+
+        Debug.Log($"[GnomePlacementZone] Zone '{gameObject.name}' (index={gnomeIndex}) vs gnome '{gnome.name}' → {(accepted ? "ACCEPTED" : "REJECTED")}");
+        return accepted;
     }
 
     private void OnTriggerEnter(Collider other) => TryPlace(other);
@@ -44,12 +59,13 @@ public class GnomePlacementZone : MonoBehaviour
         PickupObject pickup = other.GetComponentInParent<PickupObject>();
         if (pickup == null || !pickup.HasBeenPickedUp) return;
 
-        if (!IsAcceptedGnome(other.gameObject)) return;
-
         Rigidbody rb = other.attachedRigidbody;
         if (rb == null || rb.isKinematic) return;
 
-        PlaceGnome(other.gameObject, rb);
+        Debug.Log($"[GnomePlacementZone] TryPlace: zone='{gameObject.name}' other='{other.gameObject.name}' rb='{rb.gameObject.name}'");
+        if (!IsAcceptedGnome(rb.gameObject)) return;
+
+        PlaceGnome(rb.gameObject, rb);
     }
 
     private void PlaceGnome(GameObject gnome, Rigidbody rb)
@@ -61,13 +77,14 @@ public class GnomePlacementZone : MonoBehaviour
         rb.linearVelocity  = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        // Apply hardcoded world transform for this gnome index
+        // Apply hardcoded world transform
         int i = Mathf.Clamp(gnomeIndex - 1, 0, 2);
         gnome.transform.SetPositionAndRotation(HardcodedPositions[i], HardcodedRotations[i]);
         gnome.transform.localScale = HardcodedScale;
 
-        // Remove from pickup layer
-        gnome.tag = "Untagged";
+        // Move to Default layer and remove Gnome tag
+        gnome.tag   = "Untagged";
+        gnome.layer = LayerMask.NameToLayer("Default");
 
         // Disable all PickupObject components so it can't be grabbed again
         foreach (var p in gnome.GetComponentsInChildren<PickupObject>(true))
