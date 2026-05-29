@@ -76,6 +76,13 @@ public class UIManager : MonoBehaviour
     public void OpenBook()   => _drawingBookMenu?.Open();
     public void CloseBook()  => _drawingBookMenu?.Close();
 
+    public void LoadMainMenu()
+    {
+        _drawingBookMenu?.Close();
+        PlayerFreezeManager.Instance?.SetMenuFrozen(false);
+        SceneManager.LoadScene("MainMenu");
+    }
+
     // ── Page-targeted book opening ────────────────────────────────────────────
     // TODO(HUD): The HUD colleague should call these from the on-screen buttons
     //            (or keyboard shortcuts) mapped to each section.
