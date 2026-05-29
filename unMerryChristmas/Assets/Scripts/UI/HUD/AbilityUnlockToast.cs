@@ -38,12 +38,13 @@ public class AbilityUnlockToast : MonoBehaviour
         if (!AbilityNames.TryGetValue(ability, out string name)) return;
         if (_current != null) StopCoroutine(_current);
         _label.text = $"New note added\n<size=70%><i>{name}</i></size>";
+        // Must activate BEFORE StartCoroutine — coroutines cannot start on inactive GameObjects.
+        gameObject.SetActive(true);
         _current = StartCoroutine(ShowRoutine());
     }
 
     private IEnumerator ShowRoutine()
     {
-        gameObject.SetActive(true);
         yield return Fade(0f, 1f);
         yield return new WaitForSeconds(_displayDuration);
         yield return Fade(1f, 0f);

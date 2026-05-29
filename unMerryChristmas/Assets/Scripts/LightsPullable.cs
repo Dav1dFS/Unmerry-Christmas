@@ -78,7 +78,6 @@ public class LightsPullable : MonoBehaviour, IInteractable
 
         if (_lightsRigidbody != null) _lightsRigidbody.isKinematic = false;
         transform.SetParent(null);
-        Debug.Log("[LightsPullable] Lights torn down.");
     }
 
     // Called by Controller when player presses Interact near the fallen pile.
@@ -100,6 +99,5 @@ public class LightsPullable : MonoBehaviour, IInteractable
         _tangledVisual.SetActive(true);
         gameObject.SetActive(false);
         BackYardTaskTracker.ReportTask(BackYardTaskTracker.TaskId.LightsOut);
-        Debug.Log("[LightsPullable] Lights tangled. Task LightsOut complete.");
     }
 }

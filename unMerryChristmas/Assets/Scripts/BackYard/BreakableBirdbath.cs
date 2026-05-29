@@ -12,10 +12,7 @@ public class BreakableBirdbath : MonoBehaviour, IBreakable
     {
         if (_basinBroken) return;
         if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
-        {
-            Debug.Log("[BreakableBirdbath] Throwing not yet unlocked.");
             return;
-        }
 
         _basinBroken = true;
         if (_intactVisual        != null) _intactVisual.SetActive(false);

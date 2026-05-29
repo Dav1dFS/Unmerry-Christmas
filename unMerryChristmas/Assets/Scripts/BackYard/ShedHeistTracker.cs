@@ -23,7 +23,6 @@ public class ShedHeistTracker : MonoBehaviour
     {
         if (_completed) return;
         _cleared++;
-        Debug.Log($"[ShedHeistTracker] Shelf cleared: {_cleared}/{_totalShelves}");
         if (_cleared >= _totalShelves)
         {
             _completed = true;

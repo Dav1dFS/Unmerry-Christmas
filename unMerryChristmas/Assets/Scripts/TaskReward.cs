@@ -69,6 +69,5 @@ public class TaskReward : MonoBehaviour
         foreach (var rend in _renderers) rend.enabled = true;
 
         BackYardTaskTracker.OnTaskCompleted -= OnTaskCompleted;
-        Debug.Log($"[TaskReward] Revealed reward on '{gameObject.name}' after task {_requiredTask}.");
     }
 }
