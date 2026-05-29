@@ -29,4 +29,5 @@ public class PlayerFreezeManager : MonoBehaviour
 
     // Called by menus to block player input while open
     public void SetMenuFrozen(bool value) => _menuFrozen = value;
+
 }
