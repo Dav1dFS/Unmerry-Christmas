@@ -1084,6 +1084,8 @@ MonoBehaviour:
   _closedVisual: {fileID: 0}
   _openVisual: {fileID: 0}
   _snowCover: {fileID: 0}
+  _rewardPrefab: {fileID: 0}
+  _rewardSpawnPoint: {fileID: 0}
 --- !u!4 &874699721250548279 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7bd454f6b38ec4e9292c0a247f165bc0, type: 3}
@@ -1491,6 +1493,8 @@ MonoBehaviour:
   _closedVisual: {fileID: 0}
   _openVisual: {fileID: 0}
   _snowCover: {fileID: 0}
+  _rewardPrefab: {fileID: 0}
+  _rewardSpawnPoint: {fileID: 0}
 --- !u!1001 &2011401707244648640
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5862,6 +5866,8 @@ MonoBehaviour:
   _closedVisual: {fileID: 0}
   _openVisual: {fileID: 0}
   _snowCover: {fileID: 0}
+  _rewardPrefab: {fileID: 0}
+  _rewardSpawnPoint: {fileID: 0}
 --- !u!1001 &4948951016950508746
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7062,6 +7068,8 @@ MonoBehaviour:
   _closedVisual: {fileID: 0}
   _openVisual: {fileID: 0}
   _snowCover: {fileID: 0}
+  _rewardPrefab: {fileID: 0}
+  _rewardSpawnPoint: {fileID: 0}
 --- !u!4 &6416436814888645177 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 2cb2e8787f8a3481ea60026314e023bd, type: 3}
@@ -7607,7 +7615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aefc16d5840cf4d308c4cb9d2037b1d6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -50.12
+      value: -44.79
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aefc16d5840cf4d308c4cb9d2037b1d6, type: 3}
       propertyPath: m_LocalPosition.y

@@ -67,6 +67,7 @@ public partial class Controller
         if (PlayerFreezeManager.Instance?.isFrozen == true)
         {
             _input = Vector3.zero;
+            _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, 0f);
             return;
         }
 
@@ -75,7 +76,11 @@ public partial class Controller
 
         if (isRolling)
         {
-            _rb.MovePosition(transform.position + rollDirection * _rollForce * Time.fixedDeltaTime);
+            // Velocity-based so the physics solver can block the roll against walls
+            _rb.linearVelocity = new Vector3(
+                rollDirection.x * _rollForce,
+                _rb.linearVelocity.y,
+                rollDirection.z * _rollForce);
         }
         else if (_pushedObject != null)
         {
@@ -84,16 +89,18 @@ public partial class Controller
                 Vector3 contactWorld = _pushedObject.transform.TransformPoint(_contactLocalPos);
                 _pushedObject.ApplyPushForce(_input.ToIso().normalized, contactWorld);
             }
+            // Convert desired position delta to velocity so PhysX handles collisions
             Vector3 targetWorld = _pushedObject.transform.TransformPoint(_playerLocalPos);
-            _rb.MovePosition(new Vector3(targetWorld.x, transform.position.y, targetWorld.z));
+            Vector3 targetPos   = new Vector3(targetWorld.x, transform.position.y, targetWorld.z);
+            _rb.linearVelocity  = new Vector3(
+                (targetPos.x - transform.position.x) / Time.fixedDeltaTime,
+                _rb.linearVelocity.y,
+                (targetPos.z - transform.position.z) / Time.fixedDeltaTime);
         }
         else
         {
-            _rb.MovePosition(transform.position
-                + transform.forward
-                * (_input != Vector3.zero ? 1f : 0f)
-                * _currentSpeed
-                * Time.fixedDeltaTime);
+            Vector3 moveDir    = transform.forward * (_input != Vector3.zero ? _currentSpeed : 0f);
+            _rb.linearVelocity = new Vector3(moveDir.x, _rb.linearVelocity.y, moveDir.z);
         }
 
         // Jump is consumed here so physics force is applied in FixedUpdate.
