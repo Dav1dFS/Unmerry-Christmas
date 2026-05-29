@@ -17,8 +17,8 @@ public class TippablePatioTable : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
     }
 
-    private void OnEnable()  => _pushable.OnDisplaced += Tip;
-    private void OnDisable() => _pushable.OnDisplaced -= Tip;
+    private void OnEnable()  => _pushable.OnReleased += Tip;
+    private void OnDisable() => _pushable.OnReleased -= Tip;
 
     private void Tip()
     {

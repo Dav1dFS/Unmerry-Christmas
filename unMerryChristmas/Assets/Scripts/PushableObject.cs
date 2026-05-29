@@ -1,34 +1,33 @@
 using System;
 using UnityEngine;
 
-[System.Flags]
-public enum PushAxis { None = 0, X = 1, Z = 2, Both = X | Z }
-
 public class PushableObject : MonoBehaviour
 {
-    [SerializeField] public PushAxis allowedAxes = PushAxis.Both;
-    [SerializeField] public float maxPushDistance = 5f;
-    [SerializeField] private float _pushForce = 800f;
-    [SerializeField] private float _linearDrag = 8f;
+    [SerializeField] private float _pushForce   = 800f;
+    [SerializeField] private float _linearDrag  = 8f;
     [SerializeField] private float _angularDrag = 8f;
+    [SerializeField] private bool  _lockRotation = false;
 
-    public event Action OnDisplaced;
+    public event Action OnReleased;
 
     private Rigidbody rb;
-    private Vector3 _startPosition;
-    private bool _displacedFired;
+    private bool _grabbed;
 
-    // Idle: fully frozen so walking into it does nothing
     private const RigidbodyConstraints IdleConstraints =
         RigidbodyConstraints.FreezePositionX |
         RigidbodyConstraints.FreezePositionZ |
         RigidbodyConstraints.FreezeRotation;
 
-    // Grabbed: allow XZ translation and Y rotation (natural spinning), freeze Y position and XZ tipping
+    // Grabbed with rotation allowed: XZ translation free, Y rotation free, Y position and XZ tipping frozen
     private const RigidbodyConstraints GrabbedConstraints =
         RigidbodyConstraints.FreezePositionY |
         RigidbodyConstraints.FreezeRotationX |
         RigidbodyConstraints.FreezeRotationZ;
+
+    // Grabbed with rotation locked: XZ translation free, all rotation frozen, Y position frozen
+    private const RigidbodyConstraints GrabbedConstraintsLocked =
+        RigidbodyConstraints.FreezePositionY |
+        RigidbodyConstraints.FreezeRotation;
 
     void Awake()
     {
@@ -36,46 +35,33 @@ public class PushableObject : MonoBehaviour
         rb.constraints = IdleConstraints;
     }
 
+    void FixedUpdate()
+    {
+        // While idle, allow gravity but prevent upward collision deflection
+        if (!_grabbed && rb.linearVelocity.y > 0f)
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+    }
+
     public void OnGrab()
     {
-        _startPosition = rb.position;
-        _displacedFired = false;
-        rb.constraints = GrabbedConstraints;
-        rb.linearDamping = _linearDrag;
+        _grabbed          = true;
+        rb.constraints    = _lockRotation ? GrabbedConstraintsLocked : GrabbedConstraints;
+        rb.linearDamping  = _linearDrag;
         rb.angularDamping = _angularDrag;
     }
 
     public void OnRelease()
     {
-        rb.linearVelocity = Vector3.zero;
+        _grabbed           = false;
+        rb.linearVelocity  = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.constraints = IdleConstraints;
+        rb.constraints     = IdleConstraints;
+        OnReleased?.Invoke();
     }
 
-    public bool IsWithinPushDistance()
-    {
-        Vector2 displacement = new Vector2(
-            rb.position.x - _startPosition.x,
-            rb.position.z - _startPosition.z
-        );
-        bool within = displacement.magnitude < maxPushDistance;
-        if (!within && !_displacedFired)
-        {
-            _displacedFired = true;
-            OnDisplaced?.Invoke();
-        }
-        return within;
-    }
-
-    // Applies force at a specific point on the surface, creating natural torque when off-center
     public void ApplyPushForce(Vector3 direction, Vector3 worldContactPoint)
     {
-        if (!IsWithinPushDistance()) return;
-        Vector3 filtered = new Vector3(
-            (allowedAxes & PushAxis.X) != 0 ? direction.x : 0f,
-            0f,
-            (allowedAxes & PushAxis.Z) != 0 ? direction.z : 0f
-        );
-        rb.AddForceAtPosition(filtered * _pushForce, worldContactPoint);
+        Vector3 horizontal = new Vector3(direction.x, 0f, direction.z);
+        rb.AddForceAtPosition(horizontal * _pushForce, worldContactPoint);
     }
 }

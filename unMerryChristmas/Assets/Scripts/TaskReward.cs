@@ -3,8 +3,8 @@ using UnityEngine;
 // Attach to a token or drawing page that should only become accessible
 // after a specific task is completed.
 //
-// On Start: hides itself (inactive collider, hidden renderer).
-// When the linked task completes: re-enables the collider and renderer,
+// On Start: hides itself (inactive collider, hidden renderer, disabled effects).
+// When the linked task completes: re-enables the collider, renderer, and effects,
 // making the reward visible and collectible.
 //
 // Works for both AbilityToken and DrawingPageCollectable objects.
@@ -16,12 +16,16 @@ public class TaskReward : MonoBehaviour
 
     private Collider[]      _colliders;
     private Renderer[]      _renderers;
+    private Light[]         _effectLights;
+    private TokenEffect[]   _tokenEffects;
     private bool            _revealed;
 
     private void Awake()
     {
-        _colliders = GetComponentsInChildren<Collider>(true);
-        _renderers = GetComponentsInChildren<Renderer>(true);
+        _colliders    = GetComponentsInChildren<Collider>(true);
+        _renderers    = GetComponentsInChildren<Renderer>(true);
+        _effectLights = GetComponentsInChildren<Light>(true);
+        _tokenEffects = GetComponentsInChildren<TokenEffect>(true);
     }
 
     private void Start()
@@ -56,8 +60,10 @@ public class TaskReward : MonoBehaviour
 
     private void Hide()
     {
-        foreach (var col in _colliders) col.enabled = false;
-        foreach (var rend in _renderers) rend.enabled = false;
+        foreach (var col in _colliders)    col.enabled = false;
+        foreach (var rend in _renderers)   rend.enabled = false;
+        foreach (var fx in _tokenEffects)  fx.enabled = false;
+        foreach (var light in _effectLights) light.enabled = false;
     }
 
     private void Reveal()
@@ -65,8 +71,10 @@ public class TaskReward : MonoBehaviour
         if (_revealed) return;
         _revealed = true;
 
-        foreach (var col in _colliders) col.enabled = true;
-        foreach (var rend in _renderers) rend.enabled = true;
+        foreach (var col in _colliders)    col.enabled = true;
+        foreach (var rend in _renderers)   rend.enabled = true;
+        foreach (var fx in _tokenEffects)  fx.enabled = true;
+        foreach (var light in _effectLights) light.enabled = true;
 
         BackYardTaskTracker.OnTaskCompleted -= OnTaskCompleted;
     }

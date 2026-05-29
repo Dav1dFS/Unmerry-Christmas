@@ -5,8 +5,7 @@ public class MovingBox : MonoBehaviour, IInteractable
     [SerializeField] private GameObject _closedVisual;
     [SerializeField] private GameObject _openVisual;   // pre-arranged spilled contents mesh
     [SerializeField] private GameObject _snowCover;    // optional snow pile on top of box
-    [SerializeField] private GameObject _rewardPrefab; // StuffedBear (only on last box)
-    [SerializeField] private Transform _rewardSpawnPoint; // where to spawn reward (defaults to box position)
+    [SerializeField] private GameObject _rewardObject; // StuffedBear scene object (only on last box, starts inactive)
 
     public event Action OnOpened;
     private bool _isOpen;
@@ -28,11 +27,13 @@ public class MovingBox : MonoBehaviour, IInteractable
         if (_closedVisual != null) _closedVisual.SetActive(false);
         if (_openVisual   != null) _openVisual.SetActive(true);
 
-        // Spawn reward if this box has one configured
-        if (_rewardPrefab != null)
+        // Reveal reward by enabling its renderers and colliders
+        if (_rewardObject != null)
         {
-            Vector3 spawnPos = _rewardSpawnPoint != null ? _rewardSpawnPoint.position : transform.position;
-            Instantiate(_rewardPrefab, spawnPos, Quaternion.identity);
+            foreach (var r in _rewardObject.GetComponentsInChildren<Renderer>(true))
+                r.enabled = true;
+            foreach (var c in _rewardObject.GetComponentsInChildren<Collider>(true))
+                c.enabled = true;
         }
 
         // Disable entire box after brief delay (or immediately if no visual)

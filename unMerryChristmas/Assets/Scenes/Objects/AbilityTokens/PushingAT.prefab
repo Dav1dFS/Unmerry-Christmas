@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3992720001272807542}
+  - component: {fileID: 100000000000000001}
   m_Layer: 0
   m_Name: PushingAT
   m_TagString: Token
@@ -33,6 +34,27 @@ Transform:
   - {fileID: 5807234329083767474}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &100000000000000001
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3571270016373765556}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2282339587685921303
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -88,6 +110,14 @@ PrefabInstance:
     - target: {fileID: 3888133574223310713, guid: 74f170ca115e44ca184b6ddbc803eb72, type: 3}
       propertyPath: _ability
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4631947672084674073, guid: 74f170ca115e44ca184b6ddbc803eb72, type: 3}
+      propertyPath: m_Mass
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4631947672084674073, guid: 74f170ca115e44ca184b6ddbc803eb72, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
