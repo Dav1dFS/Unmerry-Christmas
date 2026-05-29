@@ -7,67 +7,71 @@ public class GnomePlacementZone : MonoBehaviour
     public event Action OnGnomePlaced;
     public bool IsFilled { get; private set; }
 
+    [SerializeField] private GameObject acceptedGnome;
+    [SerializeField] private int gnomeIndex = 1; // 1, 2, or 3
+
+    private static readonly Vector3[]    HardcodedPositions = {
+        new Vector3(5.853f,  0.09834625f, -15.920486f),
+        new Vector3(5.848f,  0.09834611f, -14.428000f),
+        new Vector3(5.856f,  0.09834640f, -15.335675f),
+    };
+    private static readonly Quaternion[] HardcodedRotations = {
+        new Quaternion(-0.5f, -0.5f, -0.5f,  0.5f),
+        new Quaternion( 0.5f,  0.5f,  0.5f, -0.5f),
+        new Quaternion(-0.5f, -0.5f, -0.5f,  0.5f),
+    };
+    private static readonly Vector3 HardcodedScale = new Vector3(11.343484f, 11.343477f, 11.343477f);
+
     private void Awake()
     {
-        var col = GetComponent<Collider>();
-        col.isTrigger = true;
+        GetComponent<Collider>().isTrigger = true;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private bool IsAcceptedGnome(GameObject gnome)
+    {
+        if (acceptedGnome == null) return true;
+        return gnome == acceptedGnome || gnome.transform.IsChildOf(acceptedGnome.transform);
+    }
+
+    private void OnTriggerEnter(Collider other) => TryPlace(other);
+    private void OnTriggerStay(Collider other)  => TryPlace(other);
+
+    private void TryPlace(Collider other)
     {
         if (IsFilled) return;
         if (!other.CompareTag("Gnome")) return;
 
-        Rigidbody rb = other.attachedRigidbody;
-        // Only count when the gnome is dropped (non-kinematic = not currently held)
-        if (rb == null || rb.isKinematic) return;
+        PickupObject pickup = other.GetComponentInParent<PickupObject>();
+        if (pickup == null || !pickup.HasBeenPickedUp) return;
 
-        PlaceGnome(other.gameObject);
-    }
-
-    // Fallback: re-check every fixed frame in case the gnome lands after the trigger fires
-    private void OnTriggerStay(Collider other)
-    {
-        if (IsFilled) return;
-        if (!other.CompareTag("Gnome")) return;
+        if (!IsAcceptedGnome(other.gameObject)) return;
 
         Rigidbody rb = other.attachedRigidbody;
         if (rb == null || rb.isKinematic) return;
 
-        PlaceGnome(other.gameObject);
+        PlaceGnome(other.gameObject, rb);
     }
 
-    private void PlaceGnome(GameObject gnome)
+    private void PlaceGnome(GameObject gnome, Rigidbody rb)
     {
         IsFilled = true;
 
-        // Position gnome on top of the zone
-        var zoneCollider = GetComponent<Collider>();
-        var bounds = zoneCollider.bounds;
+        // Freeze physics before touching the transform
+        rb.isKinematic = true;
+        rb.linearVelocity  = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
 
-        // Get gnome's height
-        var gnomeCollider = gnome.GetComponent<Collider>();
-        float gnomeHeight = 0;
-        if (gnomeCollider != null)
-        {
-            gnomeHeight = gnomeCollider.bounds.size.y;
-        }
+        // Apply hardcoded world transform for this gnome index
+        int i = Mathf.Clamp(gnomeIndex - 1, 0, 2);
+        gnome.transform.SetPositionAndRotation(HardcodedPositions[i], HardcodedRotations[i]);
+        gnome.transform.localScale = HardcodedScale;
 
-        // Position gnome center at zone top
-        Vector3 newPos = new Vector3(bounds.center.x, bounds.max.y + gnomeHeight / 2, bounds.center.z);
-        gnome.transform.position = newPos;
+        // Remove from pickup layer
+        gnome.tag = "Untagged";
 
-        // Apply -90 on X axis and 180 on Y axis
-        gnome.transform.rotation = Quaternion.Euler(-90, 180, 0);
-
-        // Freeze gnome in place
-        var rb = gnome.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.isKinematic = true;
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-        }
+        // Disable all PickupObject components so it can't be grabbed again
+        foreach (var p in gnome.GetComponentsInChildren<PickupObject>(true))
+            p.enabled = false;
 
         OnGnomePlaced?.Invoke();
     }

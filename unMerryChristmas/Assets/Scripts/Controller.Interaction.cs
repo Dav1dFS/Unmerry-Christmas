@@ -148,7 +148,7 @@ public partial class Controller
             else
             {
                 PickupObject pickup = hit.GetComponent<PickupObject>();
-                if (pickup != null)
+                if (pickup != null && pickup.enabled)
                 {
                     closestDist     = d;
                     closestPickup   = pickup;
