@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/CHARACTER SFX.bank
   Name: CHARACTER SFX
   StudioPath: bank:/CHARACTER SFX
-  lastModified: 639152486126631002
+  lastModified: 639156251804759604
   FileSizes: []
   Exists: 1
 --- !u!114 &-4923200008085835702
@@ -33,7 +33,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639152486126679180
+  lastModified: 639151665506717945
   FileSizes: []
   Exists: 1
 --- !u!114 &-3461222147888988838
@@ -121,7 +121,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: 2030495756001880170}
   cacheVersion: 131858
-  cacheTime: 639152486126683724
+  cacheTime: 639156251805170254
   SerializableEventsDict:
   - key: event:/MUSIC
     index: 0
@@ -177,7 +177,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639152486126683724
+  lastModified: 639156251805170254
   FileSizes:
   - Name: 
     Value: 1118
@@ -275,7 +275,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/MUSIC.bank
   Name: MUSIC
   StudioPath: bank:/MUSIC
-  lastModified: 639152486126673090
+  lastModified: 639156251804996352
   FileSizes: []
   Exists: 1
 --- !u!114 &8763867568933048276

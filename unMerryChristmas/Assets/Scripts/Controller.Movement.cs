@@ -10,6 +10,9 @@ public partial class Controller
     [SerializeField] private float _deceleration  = 15f;
     [SerializeField] private float _rotationSpeed = 10f;
 
+    [Header("Animation References")]
+    [SerializeField] private Animator _animator; 
+
     // ── Input gathering ───────────────────────────────────────────────────────
 
     private void GatherInput()
@@ -20,23 +23,34 @@ public partial class Controller
             return;
         }
 
-        // Sanitize stale locks — if the key that owns the lock is no longer
-        // physically pressed (e.g. after focus loss or a missed canceled event)
-        // clear it and restore the opposite direction if that key is still held.
-        if (_lockedH == -1 && !_moveLeft.IsPressed())
-            _lockedH = _moveRight.IsPressed() ? 1 : 0;
-        else if (_lockedH == 1 && !_moveRight.IsPressed())
-            _lockedH = _moveLeft.IsPressed() ? -1 : 0;
+        // Dynamic State Selection: Direct evaluation bypasses fragile Event Callbacks.
+        bool leftPressed  = _moveLeft.IsPressed();
+        bool rightPressed = _moveRight.IsPressed();
+        bool upPressed    = _moveUp.IsPressed();
+        bool downPressed  = _moveDown.IsPressed();
 
-        if (_lockedV == 1 && !_moveUp.IsPressed())
-            _lockedV = _moveDown.IsPressed() ? -1 : 0;
-        else if (_lockedV == -1 && !_moveDown.IsPressed())
-            _lockedV = _moveUp.IsPressed() ? 1 : 0;
+        // Horizontal Evaluation
+        if (leftPressed && rightPressed)
+        {
+            if (_lockedH == 0) _lockedH = -1; // Fallback default
+        }
+        else if (leftPressed)   _lockedH = -1;
+        else if (rightPressed)  _lockedH = 1;
+        else                    _lockedH = 0;
+
+        // Vertical Evaluation
+        if (upPressed && downPressed)
+        {
+            if (_lockedV == 0) _lockedV = 1; // Fallback default
+        }
+        else if (upPressed)    _lockedV = 1;
+        else if (downPressed)  _lockedV = -1;
+        else                   _lockedV = 0;
 
         _input = new Vector3(_lockedH, 0, _lockedV);
     }
 
-    // ── Speed ─────────────────────────────────────────────────────────────────
+    // ── Speed & Animations ────────────────────────────────────────────────────
 
     private void UpdateSpeed()
     {
@@ -46,6 +60,15 @@ public partial class Controller
             : (_sprint.IsPressed() && _pushedObject == null) ? _sprintSpeed : _walkSpeed;
         float rate = _input != Vector3.zero ? _acceleration : _deceleration;
         _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, rate * Time.deltaTime);
+
+        // ── ANIMATION HANDLING ──
+        if (_animator != null)
+        {
+            // Set the Walk boolean parameter to true if moving, false if stopped.
+            // This directly drives your existing transitions!
+            bool isMoving = _input != Vector3.zero;
+            _animator.SetBool("Walk", isMoving);
+        }
     }
 
     // ── Rotation ──────────────────────────────────────────────────────────────
@@ -121,15 +144,12 @@ public partial class Controller
         }
 
         // Discard any jump press queued while the player was airborne.
-        // Without this, a button press at the apex (velocity ≈ 0, still in the
-        // air) would wait for the first moment isGrounded becomes true and then
-        // fire — producing a mid-descent "double jump".
         if (!isGrounded) jump = false;
 
         if (jump && isGrounded && _pushedObject == null)
         {
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            jump       = false;   // must be before audio — exception must not leave these set
+            jump       = false;   
             isGrounded = false;
             AudioManager.instance?.PlayOneShot(jumpSound, transform.position);
         }

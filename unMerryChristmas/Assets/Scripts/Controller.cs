@@ -61,27 +61,13 @@ public partial class Controller : MonoBehaviour
         _interact.Enable();   _roll.Enable();
         _spawnGift.Enable();  _dropGift.Enable();
 
-        // Action bindings
-        // Jump is only registered while grounded — prevents mid-air presses from
-        // being queued and firing at the next grounded moment (spam double-jump).
+        // Action bindings (Only tracking discrete event triggers)
         _jump.started      += _ => { if (isGrounded) jump = true; };
         _interact.started  += _ => StartInteractHold();
         _interact.canceled += _ => ReleaseInteractHold();
         _roll.started      += _ => TryStartRoll();
         _spawnGift.started += _ => TrySpawnGift();
         _dropGift.started  += _ => DropGift();
-
-        // Directional lock — newest key always wins so the player can change
-        // direction at any time without needing to release the previous key first.
-        // canceled restores the opposite axis if still held.
-        _moveLeft.started   += _ => _lockedH = -1;
-        _moveLeft.canceled  += _ => { if (_lockedH == -1) _lockedH = _moveRight.IsPressed() ?  1 : 0; };
-        _moveRight.started  += _ => _lockedH =  1;
-        _moveRight.canceled += _ => { if (_lockedH ==  1) _lockedH = _moveLeft.IsPressed()  ? -1 : 0; };
-        _moveUp.started     += _ => _lockedV =  1;
-        _moveUp.canceled    += _ => { if (_lockedV ==  1) _lockedV = _moveDown.IsPressed()  ? -1 : 0; };
-        _moveDown.started   += _ => _lockedV = -1;
-        _moveDown.canceled  += _ => { if (_lockedV == -1) _lockedV = _moveUp.IsPressed()    ?  1 : 0; };
     }
 
     private void OnDisable()
