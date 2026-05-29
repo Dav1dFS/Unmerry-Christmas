@@ -999,9 +999,66 @@ MonoBehaviour:
   m_GameObject: {fileID: 70329079}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4505177a385314a40b527f2b0ce8ce7f, type: 3}
+  m_Script: {fileID: 11500000, guid: 58ae0979ef403de4a8765d62ae848247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrawingBookMenu
+  _bookRoot: {fileID: 0}
+  _darkOverlay: {fileID: 0}
+  _overlayMaxAlpha: 0.6
+  _slideDuration: 0.5
+  _slideInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _slideOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _tabGroup: {fileID: 0}
+  _pageFlip: {fileID: 0}
+  _tutorialPage: {fileID: 0}
+  _drawingPagesPage: {fileID: 0}
+  _taskListPage: {fileID: 0}
 --- !u!222 &70329082
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5243,7 +5300,7 @@ MonoBehaviour:
   _contextualHint: {fileID: 211985427}
   _drawingBookMenu: {fileID: 70329081}
   _pauseAction:
-    m_Name: 
+    m_Name: Pause
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 36379911-7bde-490c-8112-bdd5c2433ea3
@@ -6957,22 +7014,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenu
   _pausePanel: {fileID: 1694015878}
   _togglePauseAction:
-    m_Name: Toggle Pause
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 5a1f9288-753e-4fc2-a0dc-b43508934387
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 43dda8be-99dd-4614-928d-363dfb8802e7
-      m_Path: <Keyboard>/escape
-      m_Interactions: 
+    m_UseReference: 1
+    m_Action:
+      m_Name: Toggle Pause
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 60fe5a8a-cbb2-4bd4-8a2c-1f67489139f2
       m_Processors: 
-      m_Groups: 
-      m_Action: Toggle Pause
+      m_Interactions: 
+      m_SingletonActionBindings: []
       m_Flags: 0
-    m_Flags: 0
+    m_Reference: {fileID: -343866759260971824, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!114 &1694015881
 MonoBehaviour:
   m_ObjectHideFlags: 0
