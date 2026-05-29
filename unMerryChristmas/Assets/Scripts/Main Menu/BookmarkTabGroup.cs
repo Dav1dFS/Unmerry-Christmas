@@ -23,6 +23,11 @@ public class BookmarkTabGroup : MonoBehaviour
     {
         SelectTab(index, false);
     }
+    public void FocusCurrentPage()
+    {
+        if (_activeIndex >= 0 && _activeIndex < _tabs.Count)
+            _pageFlip?.FocusCurrentPage();
+    }
 
     private void OnTabSelected(int index)
     {

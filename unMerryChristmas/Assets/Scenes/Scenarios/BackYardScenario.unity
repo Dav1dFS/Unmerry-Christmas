@@ -4242,6 +4242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _fadeInDuration: 0.25
   _fadeInDelay: 0.05
+  _firstSelected: {fileID: 2138428154}
 --- !u!225 &605499666
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -5119,6 +5120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _fadeInDuration: 0.25
   _fadeInDelay: 0.05
+  _firstSelected: {fileID: 0}
 --- !u!225 &719870090
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -7015,6 +7017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _fadeInDuration: 0.25
   _fadeInDelay: 0.05
+  _firstSelected: {fileID: 0}
 --- !u!225 &953067901
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -9049,6 +9052,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _fadeInDuration: 0.25
   _fadeInDelay: 0.05
+  _firstSelected: {fileID: 906890047}
 --- !u!225 &1336205970
 CanvasGroup:
   m_ObjectHideFlags: 0
