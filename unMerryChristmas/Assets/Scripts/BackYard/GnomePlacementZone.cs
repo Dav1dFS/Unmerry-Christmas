@@ -32,10 +32,7 @@ public class GnomePlacementZone : MonoBehaviour
         if (parts.Length > 0 && int.TryParse(parts[parts.Length - 1], out int parsed))
         {
             gnomeIndex = parsed;
-            Debug.Log($"[GnomePlacementZone] '{gameObject.name}' → gnomeIndex={gnomeIndex}");
         }
-        else
-            Debug.LogError($"[GnomePlacementZone] Cannot parse gnome index from name '{gameObject.name}'. Expected format: GnomePlacementZone_N", this);
     }
 
     private bool IsAcceptedGnome(GameObject gnome)
@@ -44,7 +41,6 @@ public class GnomePlacementZone : MonoBehaviour
         string exactName    = "Gnome_" + gnomeIndex;
         bool accepted = gnome.name == exactName || gnome.name.StartsWith(expectedName);
 
-        Debug.Log($"[GnomePlacementZone] Zone '{gameObject.name}' (index={gnomeIndex}) vs gnome '{gnome.name}' → {(accepted ? "ACCEPTED" : "REJECTED")}");
         return accepted;
     }
 
@@ -62,7 +58,6 @@ public class GnomePlacementZone : MonoBehaviour
         Rigidbody rb = other.attachedRigidbody;
         if (rb == null || rb.isKinematic) return;
 
-        Debug.Log($"[GnomePlacementZone] TryPlace: zone='{gameObject.name}' other='{other.gameObject.name}' rb='{rb.gameObject.name}'");
         if (!IsAcceptedGnome(rb.gameObject)) return;
 
         PlaceGnome(rb.gameObject, rb);
