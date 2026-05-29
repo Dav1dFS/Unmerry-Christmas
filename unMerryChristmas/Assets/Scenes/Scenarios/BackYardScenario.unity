@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7814667439189292901, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: _promptText
-      value: Press Tab to open your drawing book.
+      value: Press Start to open your drawing book.
       objectReference: {fileID: 0}
     - target: {fileID: 8673521180932437383, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -250,6 +250,10 @@ PrefabInstance:
       value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _animator
+      value: 
+      objectReference: {fileID: 1982643551}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _rollForce
       value: 5
       objectReference: {fileID: 0}
@@ -269,6 +273,10 @@ PrefabInstance:
       propertyPath: _acceleration
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _cameraFollow
+      value: 
+      objectReference: {fileID: 1576096880}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _deceleration
       value: 10
@@ -294,6 +302,10 @@ PrefabInstance:
       value: Spawn Gift
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _toggleCamera.m_Name
+      value: Toggle Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: pushableLayer.m_Bits
       value: 64
       objectReference: {fileID: 0}
@@ -303,6 +315,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _spawnGift.m_SingletonActionBindings.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
@@ -346,12 +362,36 @@ PrefabInstance:
       value: Drop Gift
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[0].m_Id
+      value: 47fb38a5-f4b7-4481-a54b-4902e1d99f2c
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[1].m_Id
+      value: 74896c1c-7f2c-4c6e-bc47-90cc2617a627
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[0].m_Action
       value: Spawn Gift
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[1].m_Action
       value: Spawn Gift
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[0].m_Path
+      value: <Gamepad>/leftShoulder
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <Keyboard>/r
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Toggle Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[1].m_Action
+      value: Toggle Camera
       objectReference: {fileID: 0}
     - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_LocalScale.x
@@ -1622,7 +1662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7814667439189292901, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: _promptText
-      value: Hold Shift to run.
+      value: Hold L2 to run.
       objectReference: {fileID: 0}
     - target: {fileID: 8673521180932437383, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2289,7 +2329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7814667439189292901, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: _promptText
-      value: Use WASD to move.
+      value: Use LeftStick to move.
       objectReference: {fileID: 0}
     - target: {fileID: 8673521180932437383, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2371,7 +2411,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7814667439189292901, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: _promptText
-      value: Press E near an object to grab and carry it.
+      value: Press X near an object to grab and carry it.
       objectReference: {fileID: 0}
     - target: {fileID: 8673521180932437383, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2986,7 +3026,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7814667439189292901, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: _promptText
-      value: Press E near interactive objects to use them.
+      value: Press X near interactive objects to use them.
       objectReference: {fileID: 0}
     - target: {fileID: 8673521180932437383, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5385,7 +5425,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7814667439189292901, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: _promptText
-      value: Press Space to jump.
+      value: Press A to jump.
       objectReference: {fileID: 0}
     - target: {fileID: 8673521180932437383, guid: 04f816a39716f463dac4e25aa4c4cdb3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6666,6 +6706,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SmoothCameraFollow
   _target: {fileID: 1982643548}
   _defaultOffset: {x: -7.5, y: 5, z: -6}
+  _alternateOffset: {x: 103, y: 66, z: 67.2}
   _smoothTime: 0.2
   _fieldOfView: 50
 --- !u!1 &1585495358
@@ -8430,6 +8471,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
   m_PrefabInstance: {fileID: 27609495}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1982643551 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8593914665987783247, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+  m_PrefabInstance: {fileID: 27609495}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1994136339
 GameObject:
   m_ObjectHideFlags: 0
@@ -9062,7 +9108,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
@@ -16922,6 +16968,7 @@ GameObject:
   - component: {fileID: 4838147788375366574}
   - component: {fileID: 6705080481821397620}
   - component: {fileID: 2067016135}
+  - component: {fileID: 6705080481821397621}
   m_Layer: 0
   m_Name: Birdbath
   m_TagString: Untagged
@@ -19973,11 +20020,32 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!65 &6705080481821397621
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5219493208131944724}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 3.349581, z: 1}
+  m_Center: {x: -0, y: 1.6844838, z: -0}
 --- !u!33 &6725203850890955945
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -24040,6 +24108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8246409634193442257}
   - component: {fileID: 149852219799244768}
+  - component: {fileID: 8735559900991971180}
   m_Layer: 0
   m_Name: compost_bin
   m_TagString: Untagged
@@ -24047,6 +24116,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!65 &8735559900991971180
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8735559900991971179}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.6652924, y: 2.546639, z: 1.8324183}
+  m_Center: {x: -0.33264422, y: 4.372886, z: 7.830059}
 --- !u!65 &8790372701113961912
 BoxCollider:
   m_ObjectHideFlags: 0

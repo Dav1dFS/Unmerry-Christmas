@@ -71,6 +71,34 @@ public partial class Controller
         }
     }
 
+    // ── Dynamic Camera Conversion Helper ──────────────────────────────────────
+
+    /// <summary>
+    /// Projects raw 2D horizontal/vertical inputs onto the ground plane 
+    /// relative to the current Main Camera perspective.
+    /// </summary>
+    private Vector3 GetCameraRelativeDirection(Vector3 rawInput)
+    {
+        if (rawInput == Vector3.zero) return Vector3.zero;
+
+        Camera mainCam = Camera.main;
+        if (mainCam == null) return rawInput.normalized;
+
+        // Extract camera alignment planes
+        Vector3 camForward = mainCam.transform.forward;
+        Vector3 camRight = mainCam.transform.right;
+
+        // Flatten vectors completely onto the horizontal floor plane
+        camForward.y = 0f;
+        camRight.y = 0f;
+
+        camForward.Normalize();
+        camRight.Normalize();
+
+        // Combine inputs dynamically based on current screen perspective
+        return (camForward * rawInput.z) + (camRight * rawInput.x);
+    }
+
     // ── Rotation ──────────────────────────────────────────────────────────────
 
     private void Look()
@@ -92,7 +120,9 @@ public partial class Controller
 
         if (_input != Vector3.zero)
         {
-            Quaternion targetRot = Quaternion.LookRotation(_input.ToIso(), Vector3.up);
+            // Swapped out old .ToIso() static bias for our smart camera perspective tracking!
+            Vector3 relativeDir = GetCameraRelativeDirection(_input);
+            Quaternion targetRot = Quaternion.LookRotation(relativeDir, Vector3.up);
             transform.rotation   = Quaternion.Slerp(transform.rotation, targetRot, _rotationSpeed * Time.deltaTime);
         }
     }
@@ -127,8 +157,10 @@ public partial class Controller
         {
             if (_input != Vector3.zero)
             {
+                // Replaced hardcoded .ToIso() with modern camera tracking matrix while pushing objects
+                Vector3 currentPushDir = GetCameraRelativeDirection(_input).normalized;
                 Vector3 contactWorld = _pushedObject.transform.TransformPoint(_contactLocalPos);
-                _pushedObject.ApplyPushForce(_input.ToIso().normalized, contactWorld);
+                _pushedObject.ApplyPushForce(currentPushDir, contactWorld);
             }
             Vector3 targetWorld = _pushedObject.transform.TransformPoint(_playerLocalPos);
             Vector3 targetPos   = new Vector3(targetWorld.x, transform.position.y, targetWorld.z);
@@ -139,6 +171,8 @@ public partial class Controller
         }
         else
         {
+            // Calculate velocity relative to our forward look vector, which now shifts beautifully
+            // alongside the dynamic camera tracking rules inside Look()
             Vector3 moveDir    = transform.forward * (_input != Vector3.zero ? _currentSpeed : 0f);
             _rb.linearVelocity = new Vector3(moveDir.x, yVel, moveDir.z);
         }

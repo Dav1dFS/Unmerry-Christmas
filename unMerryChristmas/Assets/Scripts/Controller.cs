@@ -25,6 +25,7 @@ public partial class Controller : MonoBehaviour
     [SerializeField] private InputAction _roll;
     [SerializeField] private InputAction _spawnGift;
     [SerializeField] private InputAction _dropGift;
+    [SerializeField] private InputAction _toggleCamera;
 
     // ── Shared input state (used by Movement) ────────────────────────────────
     private Vector3 _input;
@@ -68,6 +69,12 @@ public partial class Controller : MonoBehaviour
         _roll.started      += _ => TryStartRoll();
         _spawnGift.started += _ => TrySpawnGift();
         _dropGift.started  += _ => DropGift();
+
+            // ... your other enabled inputs
+        _toggleCamera.Enable();
+
+        // Bind the toggle method when the button is pressed
+        _toggleCamera.started += _ => ToggleCameraOffset();
     }
 
     private void OnDisable()
@@ -77,6 +84,7 @@ public partial class Controller : MonoBehaviour
         _sprint.Disable();     _jump.Disable();
         _interact.Disable();   _roll.Disable();
         _spawnGift.Disable();  _dropGift.Disable();
+        _toggleCamera.Disable();
     }
 
     // ── Update / FixedUpdate dispatch ────────────────────────────────────────
