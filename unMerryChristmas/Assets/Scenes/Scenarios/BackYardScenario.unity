@@ -4768,11 +4768,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eb6ad35e81554baa832ee0f218ce4c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PushableObject
-  allowedAxes: -1
-  maxPushDistance: 5
   _pushForce: 400
   _linearDrag: 8
   _angularDrag: 8
+  _lockRotation: 1
 --- !u!114 &1093602671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4887,7 +4886,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1093602669}
   serializedVersion: 5
-  m_Mass: 75
+  m_Mass: 25
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
