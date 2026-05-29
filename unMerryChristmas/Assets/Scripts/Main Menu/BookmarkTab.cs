@@ -4,7 +4,13 @@ using UnityEngine.EventSystems;
 using System;
 using System.Collections;
 
-public class BookmarkTab : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler
+public class BookmarkTab : MonoBehaviour,
+    IPointerEnterHandler,
+    IPointerExitHandler,
+    IPointerDownHandler,
+    IPointerUpHandler,
+    ISelectHandler,
+    IDeselectHandler
 {
     [Header("Sprites")]
     [SerializeField] private Sprite _normalSprite;
@@ -14,7 +20,7 @@ public class BookmarkTab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [Header("References")]
     [SerializeField] private Button _button;
     [SerializeField] private Image _tabImage;
-    [SerializeField] private RectTransform _icon;       // arrasta o filho icon aqui
+    [SerializeField] private RectTransform _icon;
 
     [Header("Slide Animation")]
     [SerializeField] private float _slideOutX = -200f;
@@ -25,120 +31,164 @@ public class BookmarkTab : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private float _hoverScale = 0.85f;
     [SerializeField] private float _pressedScale = 0.9f;
     [SerializeField] private float _selectedScale = 0.8f;
-    [SerializeField] private float _scaleSpeed = 12f;   // lerp speed
+
+    public int Index { get; private set; }
 
     private Action<int> _onClicked;
-    private int _index;
-    private bool _isSelected = false;
+    private bool _isSelected;
+    private bool _isHighlighted;
+
     private Vector2 _originalPos;
+
     private Coroutine _slideRoutine;
-    private float _targetScale;
     private Coroutine _scaleRoutine;
 
     private void Awake()
     {
         _originalPos = GetComponent<RectTransform>().anchoredPosition;
-        _targetScale = _normalScale;
     }
 
     public void Init(int index, Action<int> callback)
     {
-        _index = index;
+        Index = index;
         _onClicked = callback;
-        _button.onClick.AddListener(() => _onClicked(_index));
+
+        _button.onClick.RemoveAllListeners();
+        _button.onClick.AddListener(() => _onClicked?.Invoke(Index));
+
         SetSelected(false);
     }
 
-    public void SetSelected(bool selected)
+    // ---------------- STATE ----------------
+
+   public void SetSelected(bool selected)
     {
         _isSelected = selected;
-        _tabImage.sprite = selected ? _selectedSprite : _normalSprite;
-        _button.interactable = !selected;
 
-        // Slide
-        if (_slideRoutine != null) StopCoroutine(_slideRoutine);
-        _slideRoutine = StartCoroutine(
-            SlideTo(selected ? _slideOutX : _originalPos.x, _slideDuration));
+        StopSlide();
+        StartSlide(selected ? _slideOutX : _originalPos.x);
 
-        // Scale do icon
-        SetIconScale(selected ? _selectedScale : _normalScale);
+        UpdateVisual();
     }
 
-    // Pointer events
+    public void OnSelect(BaseEventData eventData)
+    {
+        _isHighlighted = true;
+        UpdateVisual();
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        _isHighlighted = false;
+        UpdateVisual();
+    }
+
+    // ---------------- POINTER ----------------
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (_isSelected) return;
-        _tabImage.sprite = _hoverSprite;
-        SetIconScale(_hoverScale);
+        _isHighlighted = true;
+        UpdateVisual();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (_isSelected) return;
-        _tabImage.sprite = _normalSprite;
-        SetIconScale(_normalScale);
+        _isHighlighted = false;
+        UpdateVisual();
     }
-
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (_isSelected) return;
         SetIconScale(_pressedScale);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (_isSelected) return;
-        // Volta para hover porque o rato ainda está por cima
-        SetIconScale(_hoverScale);
-    }
+        UpdateVisual();
+    }   
 
-    // Scale helper
+    // ---------------- ICON SCALE ----------------
 
     private void SetIconScale(float target)
     {
-        if (_icon == null)
-        {
-            Debug.LogWarning($"[BookmarkTab] {gameObject.name}: _icon é null!", this);
-            return;
-        }
-        if (_scaleRoutine != null) StopCoroutine(_scaleRoutine);
+        if (_icon == null) return;
+
+        if (_scaleRoutine != null)
+            StopCoroutine(_scaleRoutine);
+
         _scaleRoutine = StartCoroutine(ScaleTo(target));
     }
 
     private IEnumerator ScaleTo(float target)
     {
-        Vector3 from = _icon.localScale;
-        Vector3 to = Vector3.one * target;
-        float elapsed = 0f;
+        Vector3 start = _icon.localScale;
+        Vector3 end = Vector3.one * target;
+
+        float t = 0f;
         float duration = 0.15f;
 
-        while (elapsed < duration)
+        while (t < 1f)
         {
-            elapsed += Time.unscaledDeltaTime;
-            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
-            _icon.localScale = Vector3.LerpUnclamped(from, to, t);
+            t += Time.unscaledDeltaTime / duration;
+            float smoothed = Mathf.SmoothStep(0f, 1f, t);
+
+            _icon.localScale = Vector3.Lerp(start, end, smoothed);
             yield return null;
         }
-        _icon.localScale = to;
+
+        _icon.localScale = end;
     }
 
-    // Slide helper
+    // ---------------- SLIDE ----------------
 
-    private IEnumerator SlideTo(float targetX, float duration)
+    private void StartSlide(float targetX)
+    {
+        _slideRoutine = StartCoroutine(SlideTo(targetX));
+    }
+
+    private void StopSlide()
+    {
+        if (_slideRoutine != null)
+            StopCoroutine(_slideRoutine);
+    }
+
+    private void UpdateVisual()
+    {
+        if (_isSelected)
+        {
+            _tabImage.sprite = _selectedSprite;
+            SetIconScale(_selectedScale);
+            return;
+        }
+
+        if (_isHighlighted)
+        {
+            _tabImage.sprite = _hoverSprite;
+            SetIconScale(_hoverScale);
+            return;
+        }
+
+        _tabImage.sprite = _normalSprite;
+        SetIconScale(_normalScale);
+    }
+
+    private IEnumerator SlideTo(float targetX)
     {
         RectTransform rt = GetComponent<RectTransform>();
-        Vector2 startPos = rt.anchoredPosition;
-        Vector2 endPos = new Vector2(targetX, startPos.y);
-        float elapsed = 0f;
 
-        while (elapsed < duration)
+        Vector2 start = rt.anchoredPosition;
+        Vector2 end = new Vector2(targetX, start.y);
+
+        float t = 0f;
+
+        while (t < 1f)
         {
-            elapsed += Time.unscaledDeltaTime;
-            float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / duration));
-            rt.anchoredPosition = Vector2.LerpUnclamped(startPos, endPos, t);
+            t += Time.unscaledDeltaTime / _slideDuration;
+            float smoothed = Mathf.SmoothStep(0f, 1f, t);
+
+            rt.anchoredPosition = Vector2.Lerp(start, end, smoothed);
             yield return null;
         }
-        rt.anchoredPosition = endPos;
+
+        rt.anchoredPosition = end;
     }
 }
