@@ -59,6 +59,7 @@ MonoBehaviour:
   m_Offset: {x: 0, y: 0, z: 0.5}
   m_Size: {x: 1, y: 1, z: 1}
   m_FadeFactor: 1
+  m_VisibleInScene: 1
   version: 1
   m_DecalLayerMask: 1
 --- !u!114 &1122930962309254070
@@ -222,7 +223,7 @@ MonoBehaviour:
   trajectoryTimeStep: 0.08
   trajectoryCollisionMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 4294967295
   _moveLeft:
     m_Name: Move Left
     m_Type: 1
@@ -453,6 +454,41 @@ MonoBehaviour:
   pushableRange: 0.8
   aimHoldThreshold: 0.2
   maxThrowChargeTime: 2
+  jumpSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  landSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  grabSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  throwSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  chargeThrowSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!54 &944156596086110503
 Rigidbody:
   m_ObjectHideFlags: 0

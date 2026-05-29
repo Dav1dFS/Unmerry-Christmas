@@ -6,31 +6,47 @@ public class BookmarkTabGroup : MonoBehaviour
     [SerializeField] private List<BookmarkTab> _tabs;
     [SerializeField] private PageFlipController _pageFlip;
 
-    private int _activeIndex = 0;
+    private int _activeIndex = -1;
 
     private void Start()
     {
         for (int i = 0; i < _tabs.Count; i++)
         {
-            int idx = i;
-            _tabs[i].Init(idx, OnTabClicked);
+            int index = i;
+            _tabs[i].Init(index, OnTabSelected);
         }
-        // Mostra a primeira página sem animação
-        _tabs[0].SetSelected(true);
-        _pageFlip.ShowPageImmediate(0);
+
+        SelectTab(0, instant: true);
     }
 
     public void SelectTab(int index)
     {
-        OnTabClicked(index);
+        SelectTab(index, false);
     }
 
-    private void OnTabClicked(int index)
+    private void OnTabSelected(int index)
     {
-        if (index == _activeIndex) return;
-        _tabs[_activeIndex].SetSelected(false);
+        SelectTab(index, false);
+    }
+
+    private void SelectTab(int index, bool instant)
+    {
+        if (index == _activeIndex)
+            return;
+
+        if (_activeIndex >= 0 && _activeIndex < _tabs.Count)
+            _tabs[_activeIndex].SetSelected(false);
+
         _activeIndex = index;
+
         _tabs[_activeIndex].SetSelected(true);
-        _pageFlip.FlipToPage(index);
+
+        if (_pageFlip != null)
+        {
+            if (instant)
+                _pageFlip.ShowPageImmediate(index);
+            else
+                _pageFlip.FlipToPage(index);
+        }
     }
 }
