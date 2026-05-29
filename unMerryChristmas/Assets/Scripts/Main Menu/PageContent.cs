@@ -1,10 +1,14 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class PageContent : MonoBehaviour
 {
     [SerializeField] private float _fadeInDuration = 0.25f;
     [SerializeField] private float _fadeInDelay = 0.05f; // pequeno delay após o flip terminar
+
+    [SerializeField] private Button _firstSelected; // primeiro botão a focar nesta página
+
 
     private CanvasGroup _group;
     private Coroutine _fadeRoutine;
@@ -20,6 +24,9 @@ public class PageContent : MonoBehaviour
         gameObject.SetActive(true);
         if (_fadeRoutine != null) StopCoroutine(_fadeRoutine);
         _fadeRoutine = StartCoroutine(FadeIn());
+
+        if (_firstSelected != null)
+            StartCoroutine(SelectAfterFrame(_firstSelected));
     }
 
     public void Hide()
@@ -57,6 +64,10 @@ public class PageContent : MonoBehaviour
         _group.blocksRaycasts = true;
         _group.interactable = true;
     }
-
+    private IEnumerator SelectAfterFrame(Button btn)
+    {
+        yield return null;
+        UnityEngine.EventSystems.EventSystem.current?.SetSelectedGameObject(btn.gameObject);
+    }
 
 }

@@ -156,5 +156,8 @@ public class DrawingBookMenu2 : MonoBehaviour
             _darkOverlay.alpha = overlayTargetAlpha;
 
         onComplete?.Invoke();
+
+        if (overlayTargetAlpha > 0f) // só ao abrir, não ao fechar
+            _tabGroup?.FocusCurrentPage();
     }
 }

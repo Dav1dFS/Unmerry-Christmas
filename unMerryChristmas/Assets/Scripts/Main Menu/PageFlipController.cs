@@ -54,6 +54,11 @@ public class PageFlipController : MonoBehaviour
         bool flipRight = targetIndex > _currentIndex;
         StartCoroutine(FlipRoutine(targetIndex, flipRight));
     }
+    public void FocusCurrentPage()
+    {
+        if (_currentIndex >= 0 && _currentIndex < _pages.Length)
+            _pages[_currentIndex].Show(); // o Show() já trata do foco via _firstSelected
+    }
 
     private IEnumerator FlipRoutine(int targetIndex, bool flipRight)
     {
