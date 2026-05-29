@@ -13,10 +13,7 @@ public class Padlock : MonoBehaviour, IBreakable
     {
         if (_broken) return;
         if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
-        {
-            Debug.Log("[Padlock] Throwing not yet unlocked.");
             return;
-        }
 
         _broken = true;
         if (_intactVisual != null) _intactVisual.SetActive(false);

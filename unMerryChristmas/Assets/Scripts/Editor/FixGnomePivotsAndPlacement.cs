@@ -22,7 +22,6 @@ public class FixGnomePivotsAndPlacement
         }
 
         EditorSceneManager.MarkSceneDirty(scene);
-        Debug.Log("[FixGnomePivots] Completed unpacking gnomes.");
     }
 
     private static void UnpackGnomesInHierarchy(GameObject obj)
@@ -55,7 +54,6 @@ public class FixGnomePivotsAndPlacement
             try
             {
                 PrefabUtility.UnpackPrefabInstance(root, PrefabUnpackMode.Completely, InteractionMode.AutomatedAction);
-                Debug.Log($"[FixGnomePivots] Unpacked {gnomeName}");
             }
             catch (System.Exception ex)
             {

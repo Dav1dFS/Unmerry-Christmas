@@ -35,7 +35,6 @@ public class BackYardFixups : MonoBehaviour
             drawingBook.AddComponent<DrawingPageCollectable>();
         }
 
-        Debug.Log("[BackYardFixups] Drawing book configured for collection");
     }
 
     private void FixCardboardBoxRewards()
@@ -57,7 +56,6 @@ public class BackYardFixups : MonoBehaviour
                     {
                         // Only the last box should have the reward, disable others
                         rewardField.SetValue(box, null);
-                        Debug.Log($"[BackYardFixups] Removed reward from {box.gameObject.name} (only last box should have reward)");
                     }
                 }
             }

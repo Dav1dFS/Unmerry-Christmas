@@ -31,7 +31,6 @@ public class AbilityTokenManager : MonoBehaviour
     {
         if (_unlockedAbilities.Add(ability))
         {
-            Debug.Log($"[AbilityTokenManager] Unlocked: {ability}");
             OnAbilityUnlocked?.Invoke(ability);
         }
         else

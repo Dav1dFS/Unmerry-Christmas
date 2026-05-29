@@ -14,10 +14,7 @@ public partial class Controller
     private void TrySpawnGift()
     {
         if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.ExplosingPresents))
-        {
-            Debug.Log("Exploding Presents ability is not unlocked yet!");
             return;
-        }
         if (heldObject != null || _giftInHand != null) return;
 
         GameObject obj = Instantiate(_giftBombPrefab, holdPoint.position, Quaternion.identity);

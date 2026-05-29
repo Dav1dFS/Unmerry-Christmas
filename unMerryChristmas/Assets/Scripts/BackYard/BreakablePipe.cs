@@ -13,10 +13,7 @@ public class BreakablePipe : MonoBehaviour, IBreakable
     {
         if (_broken) return;
         if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
-        {
-            Debug.Log("[BreakablePipe] Throwing not yet unlocked — cannot break pipe.");
             return;
-        }
 
         _broken = true;
         if (_intactVisual != null) _intactVisual.SetActive(false);

@@ -53,7 +53,6 @@ public class TutorialPromptTrigger : MonoBehaviour
         if (!other.CompareTag("Player")) return;
 
         UIManager.Instance?.ShowTutorialPrompt(_promptText);
-        Debug.Log($"[TutorialPrompt] {_promptId}: {_promptText}");
 
         // Deactivate after firing so it only triggers once per scene load
         gameObject.SetActive(false);

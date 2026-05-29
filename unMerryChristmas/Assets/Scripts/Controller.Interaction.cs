@@ -197,10 +197,7 @@ public partial class Controller
         else if (closestPushable != null)
         {
             if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Pushing))
-            {
-                Debug.Log("Pushing ability is not unlocked yet!");
                 return;
-            }
 
             // Find precise contact point on the pushable's surface via raycast
             Vector3 dirToObj = (closestPushable.transform.position - transform.position).normalized;

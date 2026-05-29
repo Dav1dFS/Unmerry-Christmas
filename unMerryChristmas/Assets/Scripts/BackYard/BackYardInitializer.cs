@@ -73,7 +73,6 @@ public class BackYardInitializer : MonoBehaviour
         }
         taskReward.SetRequiredTask(requiredTask);
 
-        Debug.Log($"[BackYardInitializer] Configured {token.name} with task {requiredTask} and ability {ability}");
     }
 
     private void SetAbilityOnToken(AbilityToken token, PlayerAbility ability)

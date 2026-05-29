@@ -80,7 +80,6 @@ public class BackYardTaskTracker : MonoBehaviour
         if (Instance._states.TryGetValue(id, out var state) && state == TaskState.Locked)
         {
             Instance._states[id] = TaskState.Available;
-            Debug.Log($"[BackYardTaskTracker] Unlocked: {id}");
         }
     }
     public static void ReportTask(TaskId id)
@@ -89,7 +88,6 @@ public class BackYardTaskTracker : MonoBehaviour
         if (Instance._states[id] != TaskState.Available) return;
 
         Instance._states[id] = TaskState.Completed;
-        Debug.Log($"[BackYardTaskTracker] Completed: {id}");
         OnTaskCompleted?.Invoke(id);
     }
 

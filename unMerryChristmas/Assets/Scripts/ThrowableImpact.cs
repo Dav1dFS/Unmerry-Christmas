@@ -10,7 +10,6 @@ public class ThrowableImpact : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
     {
-        Debug.Log($"Impact with: {col.gameObject.name} | Was thrown={_thrown}");
         if (!_thrown) return;
 
         // Direct hit on an NPC → alert it (threat, not distraction)

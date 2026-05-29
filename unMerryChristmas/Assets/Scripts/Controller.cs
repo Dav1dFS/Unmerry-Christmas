@@ -34,6 +34,25 @@ public partial class Controller : MonoBehaviour
 
     // ── Lifecycle ────────────────────────────────────────────────────────────
 
+    private void Awake()
+    {
+        // Freeze physics rotation — we drive rotation through transform directly.
+        _rb.freezeRotation = true;
+
+        // Zero friction on every collider so PhysX static friction cannot pin
+        // the player against vertical walls and prevent gravity from pulling them down.
+        var frictionless = new PhysicsMaterial("PlayerFrictionless")
+        {
+            dynamicFriction = 0f,
+            staticFriction  = 0f,
+            frictionCombine = PhysicsMaterialCombine.Minimum,
+            bounciness      = 0f,
+            bounceCombine   = PhysicsMaterialCombine.Minimum,
+        };
+        foreach (var col in GetComponentsInChildren<Collider>())
+            col.sharedMaterial = frictionless;
+    }
+
     private void OnEnable()
     {
         _moveLeft.Enable();   _moveRight.Enable();

@@ -41,10 +41,7 @@ public partial class Controller
         if (_pushedObject != null) return;
 
         if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Rolling))
-        {
-            Debug.Log("Rolling ability is not unlocked yet!");
             return;
-        }
         StartRoll();
     }
 

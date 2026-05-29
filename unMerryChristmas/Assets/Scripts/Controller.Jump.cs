@@ -17,8 +17,21 @@ public partial class Controller
 
     private void UpdateGroundDetection()
     {
+        // If the body is moving upward the player just jumped — no ground possible.
+        // This is timing-independent unlike a cooldown timer, so it can't be beaten
+        // by Update/FixedUpdate interleave or high frame rates.
+        if (_rb.linearVelocity.y > 0.1f)
+        {
+            isGrounded   = false;
+            _wasGrounded = false;
+            return;
+        }
+
+        // Only count surfaces with a mostly-upward normal (> ~45°).
+        // Vertical walls have normal.y ≈ 0 and are excluded by this check.
         bool currentlyGrounded = Physics.Raycast(
-            transform.position, Vector3.down, out RaycastHit hit, 1.1f);
+            transform.position, Vector3.down, out RaycastHit hit, 1.1f)
+            && hit.normal.y > 0.7f;
 
         // Capture the transition BEFORE updating state, then update state immediately.
         // State must advance regardless of whether audio plays — a null AudioManager

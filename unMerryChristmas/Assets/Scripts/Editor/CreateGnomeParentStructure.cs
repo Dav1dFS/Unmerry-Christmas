@@ -22,7 +22,6 @@ public class CreateGnomeParentStructure
         }
 
         EditorSceneManager.MarkSceneDirty(scene);
-        Debug.Log("[CreateGnomeParent] Completed gnome parent structure creation.");
     }
 
     private static void ProcessGnomesInHierarchy(GameObject obj)
@@ -41,14 +40,9 @@ public class CreateGnomeParentStructure
     private static void CreateParentForGnome(GameObject gnome)
     {
         string gnomeName = gnome.name;
-        Debug.Log($"[CreateGnomeParent] Processing {gnomeName}");
 
-        // Check if already has parent structure
         if (gnome.transform.parent != null && gnome.transform.parent.name == $"{gnomeName}_Origin")
-        {
-            Debug.Log($"[CreateGnomeParent] {gnomeName} already has parent structure");
             return;
-        }
 
         // Create origin parent at gnome's current position
         var originName = $"{gnomeName}_Origin";
@@ -84,6 +78,5 @@ public class CreateGnomeParentStructure
             pickup.transform.localPosition = Vector3.zero;
         }
 
-        Debug.Log($"[CreateGnomeParent] Created parent structure for {gnomeName}");
     }
 }

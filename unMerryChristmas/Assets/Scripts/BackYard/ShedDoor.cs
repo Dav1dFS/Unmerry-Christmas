@@ -17,16 +17,11 @@ public class ShedDoor : MonoBehaviour, IInteractable
     public void Unlock()
     {
         _unlocked = true;
-        Debug.Log("[ShedDoor] Unlocked.");
     }
 
     public void Interact()
     {
-        if (!_unlocked)
-        {
-            Debug.Log("[ShedDoor] Still locked.");
-            return;
-        }
+        if (!_unlocked) return;
         if (_open) return;
 
         _open = true;

@@ -52,7 +52,6 @@ public class ExplosivePresent : MonoBehaviour
             }
         }
 
-        Debug.Log("BOOM!");
         Destroy(gameObject);
     }
 }

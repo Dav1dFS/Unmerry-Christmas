@@ -27,7 +27,6 @@ public class CollectableManager : MonoBehaviour
         if (CollectedCount >= TotalPages) return;
 
         CollectedCount++;
-        Debug.Log($"[CollectableManager] Drawing page collected: {CollectedCount}/{TotalPages}");
         OnPageCollected?.Invoke(CollectedCount, TotalPages);
 
         if (CollectedCount >= TotalPages)
