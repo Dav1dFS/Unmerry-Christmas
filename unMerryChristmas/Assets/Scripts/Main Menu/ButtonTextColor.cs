@@ -6,7 +6,9 @@ public class ButtonTextColor : MonoBehaviour,
     IPointerEnterHandler,
     IPointerExitHandler,
     IPointerDownHandler,
-    IPointerUpHandler
+    IPointerUpHandler,
+    ISelectHandler,
+    IDeselectHandler
 {
     [Header("Text Reference")]
     [SerializeField] private TextMeshProUGUI _text;
@@ -18,7 +20,6 @@ public class ButtonTextColor : MonoBehaviour,
 
     private void Awake()
     {
-        // Auto-find se não atribuirmos no Inspector
         if (_text == null)
             _text = GetComponentInChildren<TextMeshProUGUI>();
     }
@@ -46,6 +47,16 @@ public class ButtonTextColor : MonoBehaviour,
     public void OnPointerUp(PointerEventData eventData)
     {
         SetColor(_hoverColor);
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        SetColor(_hoverColor);
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        SetColor(_normalColor);
     }
 
     private void SetColor(Color color)

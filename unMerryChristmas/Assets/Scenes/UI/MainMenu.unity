@@ -680,7 +680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventSystem
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 779747256}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &475543645
@@ -3049,6 +3049,7 @@ MonoBehaviour:
   _titleScreenGroup: {fileID: 1070812570}
   _pressAnyKeyText: {fileID: 731336060}
   _fadeOutDuration: 0.6
+  _firstSelectedButton: {fileID: 779747256}
   _bookMenu: {fileID: 2119030626}
 --- !u!1 &1028914630
 GameObject:
