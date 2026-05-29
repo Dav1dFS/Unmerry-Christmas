@@ -8,53 +8,58 @@ public partial class Controller
     [SerializeField] private EventReference jumpSound;
     [SerializeField] private EventReference landSound;
 
-    private readonly float jumpForce  = 6f; // tuned for bench/table clearance at mass 2.0
+    private readonly float jumpForce  = 6f;
     private bool           jump       = false;
     private bool           isGrounded = true;
-    private bool           _wasGrounded = true;
 
     // ── Ground detection & landing audio ─────────────────────────────────────
+    //
+    // State machine: Grounded / Airborne.
+    //
+    // Grounded → Airborne : raycast stops detecting a floor surface.
+    // Airborne → Grounded : raycast detects a floor AND vertical velocity ≤ 0
+    //                        (player is descending or settled, not still rising).
+    //
+    // The ray is kept short (player half-height + tiny buffer) so "ground"
+    // only registers when the feet are essentially touching the surface.
+    // This removes the false-early-landing window that previously let a
+    // queued jump fire while the player was still visibly airborne.
+
+    private const float GroundRayLength = 0.65f; // just past half-height (0.5 m)
 
     private void UpdateGroundDetection()
     {
-        // If the body is moving upward the player just jumped — no ground possible.
-        // This is timing-independent unlike a cooldown timer, so it can't be beaten
-        // by Update/FixedUpdate interleave or high frame rates.
-        if (_rb.linearVelocity.y > 0.1f)
+        bool hit = Physics.Raycast(
+            transform.position, Vector3.down, out RaycastHit rayHit, GroundRayLength)
+            && rayHit.normal.y > 0.7f;
+
+        bool wasGrounded = isGrounded;
+
+        if (isGrounded)
         {
-            isGrounded   = false;
-            _wasGrounded = false;
-            return;
+            // Leave the ground as soon as the surface disappears below us.
+            if (!hit) isGrounded = false;
+        }
+        else
+        {
+            // Only land when we are moving downward (or settled) AND the
+            // floor is within reach — prevents a ceiling or ledge above
+            // from being misread as a landing surface while jumping.
+            if (hit && _rb.linearVelocity.y <= 0f)
+                isGrounded = true;
         }
 
-        // Only count surfaces with a mostly-upward normal (> ~45°).
-        // Vertical walls have normal.y ≈ 0 and are excluded by this check.
-        bool currentlyGrounded = Physics.Raycast(
-            transform.position, Vector3.down, out RaycastHit hit, 1.1f)
-            && hit.normal.y > 0.7f;
-
-        // Capture the transition BEFORE updating state, then update state immediately.
-        // State must advance regardless of whether audio plays — a null AudioManager
-        // must never cause the landing sound to re-fire every subsequent frame.
-        bool justLanded = currentlyGrounded && !_wasGrounded;
-        isGrounded   = currentlyGrounded;
-        _wasGrounded = isGrounded;
-
-        if (justLanded)
+        if (isGrounded && !wasGrounded)          // just landed
         {
-            // Map surface tag to FMOD parameter value.
-            // Guard against a null collider: in rare cases (collider destroyed the
-            // same frame, or certain trigger overlap results) hit.collider can be null
-            // even when Physics.Raycast returns true.
             float surfaceValue = 0f;
-            if (hit.collider != null)
+            if (rayHit.collider != null)
             {
-                surfaceValue = hit.collider.tag switch
+                surfaceValue = rayHit.collider.tag switch
                 {
                     "Stone" => 1f,
                     "Metal" => 2f,
                     "Snow"  => 3f,
-                    _       => 0f,  // "Wood" and everything else
+                    _       => 0f,
                 };
             }
             AudioManager.instance?.PlayOneShotWithParameter(

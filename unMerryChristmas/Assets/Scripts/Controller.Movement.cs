@@ -19,6 +19,20 @@ public partial class Controller
             _input = Vector3.zero;
             return;
         }
+
+        // Sanitize stale locks — if the key that owns the lock is no longer
+        // physically pressed (e.g. after focus loss or a missed canceled event)
+        // clear it and restore the opposite direction if that key is still held.
+        if (_lockedH == -1 && !_moveLeft.IsPressed())
+            _lockedH = _moveRight.IsPressed() ? 1 : 0;
+        else if (_lockedH == 1 && !_moveRight.IsPressed())
+            _lockedH = _moveLeft.IsPressed() ? -1 : 0;
+
+        if (_lockedV == 1 && !_moveUp.IsPressed())
+            _lockedV = _moveDown.IsPressed() ? -1 : 0;
+        else if (_lockedV == -1 && !_moveDown.IsPressed())
+            _lockedV = _moveUp.IsPressed() ? 1 : 0;
+
         _input = new Vector3(_lockedH, 0, _lockedV);
     }
 
@@ -74,12 +88,16 @@ public partial class Controller
         // Prevent unwanted spin from physics interactions
         _rb.angularVelocity = Vector3.zero;
 
+        // When grounded, clamp preserved Y to ≤ 0: depenetration or contact forces
+        // can write a positive Y into linearVelocity, and reading it back each step
+        // creates a feedback loop that flings the player upward ("intensification").
+        float yVel = isGrounded ? Mathf.Min(_rb.linearVelocity.y, 0f) : _rb.linearVelocity.y;
+
         if (isRolling)
         {
-            // Velocity-based so the physics solver can block the roll against walls
             _rb.linearVelocity = new Vector3(
                 rollDirection.x * _rollForce,
-                _rb.linearVelocity.y,
+                yVel,
                 rollDirection.z * _rollForce);
         }
         else if (_pushedObject != null)
@@ -89,23 +107,25 @@ public partial class Controller
                 Vector3 contactWorld = _pushedObject.transform.TransformPoint(_contactLocalPos);
                 _pushedObject.ApplyPushForce(_input.ToIso().normalized, contactWorld);
             }
-            // Convert desired position delta to velocity so PhysX handles collisions
             Vector3 targetWorld = _pushedObject.transform.TransformPoint(_playerLocalPos);
             Vector3 targetPos   = new Vector3(targetWorld.x, transform.position.y, targetWorld.z);
             _rb.linearVelocity  = new Vector3(
                 (targetPos.x - transform.position.x) / Time.fixedDeltaTime,
-                _rb.linearVelocity.y,
+                yVel,
                 (targetPos.z - transform.position.z) / Time.fixedDeltaTime);
         }
         else
         {
             Vector3 moveDir    = transform.forward * (_input != Vector3.zero ? _currentSpeed : 0f);
-            _rb.linearVelocity = new Vector3(moveDir.x, _rb.linearVelocity.y, moveDir.z);
+            _rb.linearVelocity = new Vector3(moveDir.x, yVel, moveDir.z);
         }
 
-        // Jump is consumed here so physics force is applied in FixedUpdate.
-        // IMPORTANT: clear flags BEFORE the audio call so a missing AudioManager
-        // can never prevent the state from advancing (infinite-jump safeguard).
+        // Discard any jump press queued while the player was airborne.
+        // Without this, a button press at the apex (velocity ≈ 0, still in the
+        // air) would wait for the first moment isGrounded becomes true and then
+        // fire — producing a mid-descent "double jump".
+        if (!isGrounded) jump = false;
+
         if (jump && isGrounded && _pushedObject == null)
         {
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
