@@ -40,7 +40,6 @@ public class BookmarkTab : MonoBehaviour,
     [Header("Icon Scale")]
     [SerializeField] private float _normalScale = 1f;
     [SerializeField] private float _hoverScale = 0.85f;
-    [SerializeField] private float _pressedScale = 0.9f;
     [SerializeField] private float _selectedScale = 0.8f;
 
     public int Index { get; private set; }
@@ -63,10 +62,8 @@ public class BookmarkTab : MonoBehaviour,
     {
         Index = index;
         _onClicked = callback;
-
         _button.onClick.RemoveAllListeners();
         _button.onClick.AddListener(() => _onClicked?.Invoke(Index));
-
         SetSelected(false);
     }
 
@@ -75,10 +72,8 @@ public class BookmarkTab : MonoBehaviour,
     public void SetSelected(bool selected)
     {
         _isSelected = selected;
-
         StopSlide();
         StartSlide(selected ? _slideOutX : _originalPos.x);
-
         UpdateVisual();
     }
 
@@ -89,10 +84,19 @@ public class BookmarkTab : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData) { _isHighlighted = true; UpdateVisual(); }
     public void OnPointerExit(PointerEventData eventData) { _isHighlighted = false; UpdateVisual(); }
-    public void OnPointerDown(PointerEventData eventData) { SetIconScale(_pressedScale); }
-    public void OnPointerUp(PointerEventData eventData) { UpdateVisual(); }
 
-    // Visual — updates sprite, icon scale and positions based on current state
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        // no changes on press — wait for release
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        // only update visual after releasing — SetSelected handles the rest via BookmarkTabGroup
+        UpdateVisual();
+    }
+
+    // Updates sprite, scale and positions for the current state
 
     private void UpdateVisual()
     {
@@ -104,7 +108,6 @@ public class BookmarkTab : MonoBehaviour,
             AnimatePosX(_description, ref _descPosRoutine, _descSelectedX);
             return;
         }
-
         if (_isHighlighted)
         {
             _tabImage.sprite = _hoverSprite;
@@ -113,14 +116,13 @@ public class BookmarkTab : MonoBehaviour,
             AnimatePosX(_description, ref _descPosRoutine, _descHoverX);
             return;
         }
-
         _tabImage.sprite = _normalSprite;
         SetIconScale(_normalScale);
         AnimatePosX(_icon, ref _iconPosRoutine, _iconNormalX);
         AnimatePosX(_description, ref _descPosRoutine, _descNormalX);
     }
 
-    // Icon scale animation
+    // Animates icon localScale
 
     private void SetIconScale(float target)
     {
@@ -135,7 +137,6 @@ public class BookmarkTab : MonoBehaviour,
         Vector3 end = Vector3.one * target;
         float t = 0f;
         float duration = 0.15f;
-
         while (t < 1f)
         {
             t += Time.unscaledDeltaTime / duration;
@@ -145,7 +146,7 @@ public class BookmarkTab : MonoBehaviour,
         _icon.localScale = end;
     }
 
-    // Smooth Pos X animation for icon and description
+    // Animates anchoredPosition.x of a child RectTransform
 
     private void AnimatePosX(RectTransform rt, ref Coroutine routine, float targetX)
     {
@@ -158,11 +159,7 @@ public class BookmarkTab : MonoBehaviour,
     {
         Vector2 start = rt.anchoredPosition;
         Vector2 end = new Vector2(targetX, start.y);
-
-        Debug.Log($"[BookmarkTab] {gameObject.name} SlidePosX {rt.name}: {start.x} ? {targetX}");
-
         float t = 0f;
-
         while (t < 1f)
         {
             t += Time.unscaledDeltaTime / _slideDuration;
@@ -172,7 +169,7 @@ public class BookmarkTab : MonoBehaviour,
         rt.anchoredPosition = end;
     }
 
-    // Tab slide in/out
+    // Slides the tab root left (selected) or back to original position
 
     private void StartSlide(float targetX)
     {
@@ -190,7 +187,6 @@ public class BookmarkTab : MonoBehaviour,
         Vector2 start = rt.anchoredPosition;
         Vector2 end = new Vector2(targetX, start.y);
         float t = 0f;
-
         while (t < 1f)
         {
             t += Time.unscaledDeltaTime / _slideDuration;

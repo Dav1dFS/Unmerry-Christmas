@@ -967,15 +967,14 @@ MonoBehaviour:
   _description: {fileID: 2104360921}
   _slideOutX: -700
   _slideDuration: 0.25
-  _iconNormalX: 0
-  _iconHoverX: 0
-  _iconSelectedX: 0
+  _iconNormalX: 1
+  _iconHoverX: 1
+  _iconSelectedX: 1
   _descNormalX: 56.8
   _descHoverX: 47
   _descSelectedX: 37.5
   _normalScale: 1
   _hoverScale: 0.9
-  _pressedScale: 0.8
   _selectedScale: 0.8
 --- !u!114 &52664445
 MonoBehaviour:
@@ -9214,15 +9213,14 @@ MonoBehaviour:
   _description: {fileID: 625068685}
   _slideOutX: -700
   _slideDuration: 0.25
-  _iconNormalX: 0
-  _iconHoverX: 0
-  _iconSelectedX: 0
+  _iconNormalX: 1
+  _iconHoverX: 1
+  _iconSelectedX: 1
   _descNormalX: 56.8
   _descHoverX: 47
   _descSelectedX: 37.5
   _normalScale: 1
   _hoverScale: 0.9
-  _pressedScale: 0.8
   _selectedScale: 0.8
 --- !u!114 &935355078
 MonoBehaviour:
@@ -10220,15 +10218,14 @@ MonoBehaviour:
   _description: {fileID: 1764941912}
   _slideOutX: -700
   _slideDuration: 0.25
-  _iconNormalX: 0
-  _iconHoverX: 0
-  _iconSelectedX: 0
+  _iconNormalX: 1
+  _iconHoverX: 1
+  _iconSelectedX: 1
   _descNormalX: 56.8
   _descHoverX: 47
   _descSelectedX: 37.5
   _normalScale: 1
   _hoverScale: 0.9
-  _pressedScale: 0.8
   _selectedScale: 0.8
 --- !u!114 &1039547377
 MonoBehaviour:
@@ -15572,15 +15569,14 @@ MonoBehaviour:
   _description: {fileID: 1256685826}
   _slideOutX: -700
   _slideDuration: 0.25
-  _iconNormalX: 0
-  _iconHoverX: 0
-  _iconSelectedX: 0
+  _iconNormalX: 1
+  _iconHoverX: 1
+  _iconSelectedX: 1
   _descNormalX: 56.8
   _descHoverX: 47
   _descSelectedX: 37.5
   _normalScale: 1
   _hoverScale: 0.9
-  _pressedScale: 0.8
   _selectedScale: 0.8
 --- !u!114 &1855168057
 MonoBehaviour:
