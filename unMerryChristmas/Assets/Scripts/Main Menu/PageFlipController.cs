@@ -12,10 +12,6 @@ public class PageFlipController : MonoBehaviour
 
     [Header("Flip Settings")]
     [SerializeField] private float _halfFlipDuration = 0.25f;
-
-    // Curva que começa rápido e abranda no meio (chegar ao -90/90 com ease out)
-    // e começa devagar e acelera na segunda fase (ease in)
-    // Defines no Inspector ou usa as defaults abaixo
     [SerializeField] private AnimationCurve _foldCurve;
     [SerializeField] private AnimationCurve _unfoldCurve;
 
@@ -24,11 +20,10 @@ public class PageFlipController : MonoBehaviour
 
     private void Awake()
     {
-        // Se não foram definidas no Inspector, cria curvas suaves
         if (_foldCurve == null || _foldCurve.length == 0)
             _foldCurve = new AnimationCurve(
-                new Keyframe(0f, 0f, 0f, 2f),      // começa devagar
-                new Keyframe(1f, 1f, 2f, 0f));      // abranda no meio
+                new Keyframe(0f, 0f, 0f, 2f),
+                new Keyframe(1f, 1f, 2f, 0f));   
 
         if (_unfoldCurve == null || _unfoldCurve.length == 0)
             _unfoldCurve = new AnimationCurve(
