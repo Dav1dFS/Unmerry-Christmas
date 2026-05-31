@@ -40,7 +40,17 @@ public class PageContent : MonoBehaviour
         }
         else gameObject.SetActive(false);
     }
-
+    public void ShowImmediate()
+    {
+        if (_fadeRoutine != null) StopCoroutine(_fadeRoutine);
+        gameObject.SetActive(true);
+        if (_group != null)
+        {
+            _group.alpha = 1f;
+            _group.blocksRaycasts = true;
+            _group.interactable = true;
+        }
+    }
     private IEnumerator FadeIn()
     {
         // Começa invisível e sem interacção
