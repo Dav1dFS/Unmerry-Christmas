@@ -158,6 +158,9 @@ public class BookmarkTab : MonoBehaviour,
     {
         Vector2 start = rt.anchoredPosition;
         Vector2 end = new Vector2(targetX, start.y);
+
+        Debug.Log($"[BookmarkTab] {gameObject.name} SlidePosX {rt.name}: {start.x} ? {targetX}");
+
         float t = 0f;
 
         while (t < 1f)
