@@ -717,7 +717,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 843.9, y: -619.2}
+  m_AnchoredPosition: {x: 843.9, y: -577.4}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &191315814
@@ -3175,7 +3175,7 @@ MonoBehaviour:
     other websites and/or sources. Our privacy policy applies only to our game, so
     if you click on a link to another website, you should read their privacy policy.
 
-    
+
 
     CHANGES
     TO OUR PRIVACY POLICY:
@@ -4069,8 +4069,8 @@ MonoBehaviour:
 
     MARKETING:
 
-    UnMerryChristmas will not send
-    you information about products and services of ours that we
+    UnMerryChristmas will not send you
+    information about products and services of ours that we
 
     think you might
     like, as well as those of our partner companies.'
@@ -9593,14 +9593,14 @@ MonoBehaviour:
     We are committed to designing an inclusive
     sandbox puzzle experience that
 
-    accommodates a wide range of abilities,
-    preferences, and play styles.
+    accommodates a wide range of abilities, preferences,
+    and play styles.
 
 
     This statement outlines:
 
-    the accessibility
-    features currently available in UnMerryChristmas and our ongoing efforts to improve.
+    the accessibility features
+    currently available in UnMerryChristmas and our ongoing efforts to improve.
 
 '
   m_isRightToLeft: 0
@@ -11544,7 +11544,7 @@ MonoBehaviour:
   m_text: 'Customizable Controls - Fully remappable keyboard and mouse controls.
     Support for alternative input devices where compatible.
 
-    
+
 
     Visual Accessibility
     - Optional visual indicators for interactive objects and puzzle elements.
