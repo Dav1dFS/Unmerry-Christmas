@@ -75,6 +75,8 @@ public partial class Controller : MonoBehaviour
 
         // Bind the toggle method when the button is pressed
         _toggleCamera.started += _ => ToggleCameraOffset();
+
+        _hintAction.action?.Enable();
     }
 
     private void OnDisable()
@@ -85,6 +87,7 @@ public partial class Controller : MonoBehaviour
         _interact.Disable();   _roll.Disable();
         _spawnGift.Disable();  _dropGift.Disable();
         _toggleCamera.Disable();
+        _hintAction.action?.Disable();
     }
 
     // ── Update / FixedUpdate dispatch ────────────────────────────────────────
