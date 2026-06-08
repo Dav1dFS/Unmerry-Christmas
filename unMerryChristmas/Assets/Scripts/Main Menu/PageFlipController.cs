@@ -12,23 +12,20 @@ public class PageFlipController : MonoBehaviour
 
     [Header("Flip Settings")]
     [SerializeField] private float _halfFlipDuration = 0.25f;
-
-    // Curva que começa rápido e abranda no meio (chegar ao -90/90 com ease out)
-    // e começa devagar e acelera na segunda fase (ease in)
-    // Defines no Inspector ou usa as defaults abaixo
     [SerializeField] private AnimationCurve _foldCurve;
     [SerializeField] private AnimationCurve _unfoldCurve;
+
+    public bool IsFlipping => _isFlipping;
 
     private int _currentIndex = 0;
     private bool _isFlipping = false;
 
     private void Awake()
     {
-        // Se não foram definidas no Inspector, cria curvas suaves
         if (_foldCurve == null || _foldCurve.length == 0)
             _foldCurve = new AnimationCurve(
-                new Keyframe(0f, 0f, 0f, 2f),      // começa devagar
-                new Keyframe(1f, 1f, 2f, 0f));      // abranda no meio
+                new Keyframe(0f, 0f, 0f, 2f),
+                new Keyframe(1f, 1f, 2f, 0f));
 
         if (_unfoldCurve == null || _unfoldCurve.length == 0)
             _unfoldCurve = new AnimationCurve(
@@ -41,51 +38,51 @@ public class PageFlipController : MonoBehaviour
         _currentIndex = index;
         for (int i = 0; i < _pages.Length; i++)
         {
-            if (i == index) _pages[i].Show();
+            if (i == index) _pages[i].ShowImmediate();
             else _pages[i].Hide();
         }
         _leftPage.localEulerAngles = Vector3.zero;
         _rightPage.localEulerAngles = Vector3.zero;
     }
 
-    public void FlipToPage(int targetIndex)
+    // onComplete fires when the flip animation finishes — used by BookmarkTabGroup for queuing
+    public void FlipToPage(int targetIndex, System.Action onComplete = null)
     {
-        if (_isFlipping || targetIndex == _currentIndex) return;
+        if (_isFlipping || targetIndex == _currentIndex)
+        {
+            onComplete?.Invoke();
+            return;
+        }
         bool flipRight = targetIndex > _currentIndex;
-        StartCoroutine(FlipRoutine(targetIndex, flipRight));
+        StartCoroutine(FlipRoutine(targetIndex, flipRight, onComplete));
     }
+
     public void FocusCurrentPage()
     {
         if (_currentIndex >= 0 && _currentIndex < _pages.Length)
-            _pages[_currentIndex].Show(); // o Show() já trata do foco via _firstSelected
+            _pages[_currentIndex].Show();
     }
 
-    private IEnumerator FlipRoutine(int targetIndex, bool flipRight)
+    private IEnumerator FlipRoutine(int targetIndex, bool flipRight, System.Action onComplete)
     {
         _isFlipping = true;
 
-        // flipRight = clicou num tab à direita  folha direita vira para a esquerda
-        // flipLeft  = clicou num tab à esquerda folha esquerda vira para a direita
         RectTransform flipPage = flipRight ? _rightPage : _leftPage;
-
-        float startAngle = 0f;
         float midAngle = flipRight ? -90f : 90f;
         float endAngle = flipRight ? -180f : 180f;
 
-        // FASE 1 dobrar até ao meio
-        yield return RotatePage(flipPage, startAngle, midAngle, _halfFlipDuration, _foldCurve);
+        yield return RotatePage(flipPage, 0f, midAngle, _halfFlipDuration, _foldCurve);
 
-        // Troca de conteúdo quando a folha está "de lado" (invisível)
         _pages[_currentIndex].Hide();
         _currentIndex = targetIndex;
         _pages[_currentIndex].Show();
 
-        // FASE 2 — desdobrar da outra metade
         yield return RotatePage(flipPage, midAngle, endAngle, _halfFlipDuration, _unfoldCurve);
 
-        // Reset para a próxima animação
         flipPage.localEulerAngles = Vector3.zero;
         _isFlipping = false;
+
+        onComplete?.Invoke();
     }
 
     private IEnumerator RotatePage(RectTransform page, float from, float to,
@@ -96,8 +93,7 @@ public class PageFlipController : MonoBehaviour
         {
             elapsed += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
-            float tCurved = curve.Evaluate(t);
-            float angle = Mathf.LerpUnclamped(from, to, tCurved);
+            float angle = Mathf.LerpUnclamped(from, to, curve.Evaluate(t));
             page.localEulerAngles = new Vector3(0f, angle, 0f);
             yield return null;
         }

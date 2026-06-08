@@ -35,10 +35,11 @@ public class SubPageController : MonoBehaviour
     {
         for (int i = 0; i < _subPages.Length; i++)
         {
+            _subPages[i].SetActive(true);
             var cg = GetOrAddCanvasGroup(_subPages[i]);
             cg.alpha = i == 0 ? 1f : 0f;
             cg.blocksRaycasts = i == 0;
-            _subPages[i].SetActive(true);
+            cg.interactable = i == 0;
         }
     }
 
@@ -50,7 +51,6 @@ public class SubPageController : MonoBehaviour
 
     public void Prev()
     {
-        Debug.Log($"[SubPage] Prev chamado — _isFlipping={_isFlipping}, _currentSub={_currentSub}");
         if (_isFlipping || _currentSub <= 0) return;
         StartCoroutine(FlipRoutine(_currentSub - 1, flipRight: false));
     }
@@ -60,25 +60,43 @@ public class SubPageController : MonoBehaviour
         _isFlipping = true;
 
         RectTransform flipPage = flipRight ? _rightFlipPage : _leftFlipPage;
-
         float midAngle = flipRight ? -90f : 90f;
         float endAngle = flipRight ? -180f : 180f;
 
-        // FASE 1 — dobrar
+        // Phase 1 — fold to 90
         yield return RotatePage(flipPage, 0f, midAngle, _halfFlipDuration, _foldCurve);
 
-        // Fade cruzado
+        // Hide old subpage instantly at the midpoint
         CanvasGroup oldCG = GetOrAddCanvasGroup(_subPages[_currentSub]);
+        oldCG.alpha = 0f;
+        oldCG.blocksRaycasts = false;
+        oldCG.interactable = false;
+
         _currentSub = targetIndex;
+
+        // Prepare new subpage — invisible until unfold completes
         CanvasGroup newCG = GetOrAddCanvasGroup(_subPages[_currentSub]);
+        newCG.alpha = 0f;
+        newCG.blocksRaycasts = false;
+        newCG.interactable = false;
 
-        StartCoroutine(FadeCanvasGroup(oldCG, 1f, 0f, _fadeDuration, false));
-        StartCoroutine(FadeCanvasGroup(newCG, 0f, 1f, _fadeDuration, true));
-
-        // FASE 2 — desdobrar
+        // Phase 2 — unfold back to 0
         yield return RotatePage(flipPage, midAngle, endAngle, _halfFlipDuration, _unfoldCurve);
 
         flipPage.localEulerAngles = Vector3.zero;
+
+        // Fade in new subpage after flip completes
+        float elapsed = 0f;
+        while (elapsed < _fadeDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            newCG.alpha = Mathf.Clamp01(elapsed / _fadeDuration);
+            yield return null;
+        }
+        newCG.alpha = 1f;
+        newCG.blocksRaycasts = true;
+        newCG.interactable = true;
+
         _isFlipping = false;
     }
 
@@ -94,21 +112,6 @@ public class SubPageController : MonoBehaviour
             yield return null;
         }
         page.localEulerAngles = new Vector3(0f, to, 0f);
-    }
-
-    private IEnumerator FadeCanvasGroup(CanvasGroup cg, float from, float to,
-                                         float duration, bool blocksRaycastsOnEnd)
-    {
-        float elapsed = 0f;
-        cg.alpha = from;
-        while (elapsed < duration)
-        {
-            elapsed += Time.unscaledDeltaTime;
-            cg.alpha = Mathf.Lerp(from, to, Mathf.Clamp01(elapsed / duration));
-            yield return null;
-        }
-        cg.alpha = to;
-        cg.blocksRaycasts = blocksRaycastsOnEnd;
     }
 
     private CanvasGroup GetOrAddCanvasGroup(GameObject go)
