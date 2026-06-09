@@ -378,170 +378,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 944156596086110503, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_Mass
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 944156596086110503, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_Constraints
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _animator
-      value: 
-      objectReference: {fileID: 1982643551}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _rollForce
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _walkSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: pickupRange
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _sprintSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _acceleration
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _cameraFollow
       value: 
       objectReference: {fileID: 1576096880}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _deceleration
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: pushableRange
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _rotationSpeed
-      value: 7.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _giftBombPrefab
-      value: 
-      objectReference: {fileID: 1457871387852763970, guid: 491bd01bc2901454cba22f9183dba17a, type: 3}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_Name
-      value: Drop Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_Name
-      value: Spawn Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_Name
-      value: Toggle Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: pushableLayer.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[0].m_Id
-      value: acfa3348-a2f3-4a56-8102-009293c181f3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[1].m_Id
-      value: 22099a13-f86a-46f0-a372-2ea900dac486
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[0].m_Id
-      value: 541ef6a9-5c04-4194-b4e7-acd1a1513e99
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[1].m_Id
-      value: 7e873fac-d998-420e-ba09-f3e39f9ecdf9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Keyboard>/e
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[1].m_Path
-      value: <Gamepad>/buttonWest
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Keyboard>/v
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[1].m_Path
-      value: <Gamepad>/buttonNorth
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Drop Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Drop Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[0].m_Id
-      value: 47fb38a5-f4b7-4481-a54b-4902e1d99f2c
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[1].m_Id
-      value: 74896c1c-7f2c-4c6e-bc47-90cc2617a627
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Spawn Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Spawn Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Gamepad>/leftShoulder
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[1].m_Path
-      value: <Keyboard>/r
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Toggle Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Toggle Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.23333332
-      objectReference: {fileID: 0}
-    - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.84
@@ -582,48 +422,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_Name
-      value: Roll
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[0].m_Id
-      value: f2fed1e0-b84e-4dea-b3cc-78cef356533f
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[1].m_Id
-      value: c5d2e232-6038-47bd-a93f-ba7f05f76f4c
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Keyboard>/leftCtrl
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[1].m_Path
-      value: <Gamepad>/buttonEast
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Roll
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Roll
-      objectReference: {fileID: 0}
     - target: {fileID: 4940693007258023797, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4745693481146613036, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -3387,6 +3190,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+--- !u!114 &316213474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316213462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d91f7bdc7ce146a59c0a19ebcfdbf45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TaskReward
+  _requiredTask: 2
 --- !u!1 &323103631
 GameObject:
   m_ObjectHideFlags: 0
@@ -5256,6 +5072,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7783162774452947165, guid: 217f901c4774a474cb13635430c48f32, type: 3}
       insertIndex: -1
       addedObject: {fileID: 316213469}
+    - targetCorrespondingSourceObject: {fileID: 7783162774452947165, guid: 217f901c4774a474cb13635430c48f32, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 316213474}
   m_SourcePrefab: {fileID: 100100000, guid: 217f901c4774a474cb13635430c48f32, type: 3}
 --- !u!1 &526640095
 GameObject:
@@ -16438,11 +16257,6 @@ Material:
 --- !u!4 &1982643548 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-  m_PrefabInstance: {fileID: 27609495}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1982643551 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8593914665987783247, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
   m_PrefabInstance: {fileID: 27609495}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1999756382
