@@ -1198,6 +1198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &69042324
 GameObject:
   m_ObjectHideFlags: 0
@@ -3190,6 +3192,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!114 &316213474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4139,6 +4143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &415411799
 GameObject:
   m_ObjectHideFlags: 0
@@ -6903,6 +6909,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &740913282
 GameObject:
   m_ObjectHideFlags: 0
@@ -8031,6 +8039,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!54 &876544807
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10536,6 +10546,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &1088593481
 GameObject:
   m_ObjectHideFlags: 0
@@ -10661,6 +10673,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 1
+  requiredAbility: 6
 --- !u!64 &1093602672
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11338,6 +11352,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &1191138863
 GameObject:
   m_ObjectHideFlags: 0
@@ -15069,6 +15085,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1001 &1764427129
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15318,6 +15336,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &1787937309
 GameObject:
   m_ObjectHideFlags: 0
@@ -24403,6 +24423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!33 &4398487121045649550
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -24547,6 +24569,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &4455592871542959557
 GameObject:
   m_ObjectHideFlags: 0
@@ -26136,6 +26160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!23 &5448116545407839650
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -29566,6 +29592,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!4 &7153629552084600837
 Transform:
   m_ObjectHideFlags: 0
@@ -30484,6 +30512,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!23 &7625651455926554753
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -31346,6 +31376,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!23 &7992695321240651541
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -31832,6 +31864,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!23 &8290529817949025130
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -32168,6 +32202,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!64 &8388765608814314633
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -33331,6 +33367,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!64 &9057710005054327129
 MeshCollider:
   m_ObjectHideFlags: 0
