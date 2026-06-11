@@ -378,170 +378,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 944156596086110503, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_Mass
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 944156596086110503, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_Constraints
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _animator
-      value: 
-      objectReference: {fileID: 1982643551}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _rollForce
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _walkSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: pickupRange
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _sprintSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _acceleration
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _cameraFollow
       value: 
       objectReference: {fileID: 1576096880}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _deceleration
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: pushableRange
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _rotationSpeed
-      value: 7.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _giftBombPrefab
-      value: 
-      objectReference: {fileID: 1457871387852763970, guid: 491bd01bc2901454cba22f9183dba17a, type: 3}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_Name
-      value: Drop Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_Name
-      value: Spawn Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_Name
-      value: Toggle Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: pushableLayer.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[0].m_Id
-      value: acfa3348-a2f3-4a56-8102-009293c181f3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[1].m_Id
-      value: 22099a13-f86a-46f0-a372-2ea900dac486
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[0].m_Id
-      value: 541ef6a9-5c04-4194-b4e7-acd1a1513e99
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[1].m_Id
-      value: 7e873fac-d998-420e-ba09-f3e39f9ecdf9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Keyboard>/e
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[1].m_Path
-      value: <Gamepad>/buttonWest
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Keyboard>/v
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[1].m_Path
-      value: <Gamepad>/buttonNorth
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Drop Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _dropGift.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Drop Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[0].m_Id
-      value: 47fb38a5-f4b7-4481-a54b-4902e1d99f2c
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[1].m_Id
-      value: 74896c1c-7f2c-4c6e-bc47-90cc2617a627
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Spawn Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _spawnGift.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Spawn Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Gamepad>/leftShoulder
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[1].m_Path
-      value: <Keyboard>/r
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Toggle Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _toggleCamera.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Toggle Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.23333332
-      objectReference: {fileID: 0}
-    - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.84
@@ -582,48 +422,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_Name
-      value: Roll
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[0].m_Id
-      value: f2fed1e0-b84e-4dea-b3cc-78cef356533f
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[1].m_Id
-      value: c5d2e232-6038-47bd-a93f-ba7f05f76f4c
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Keyboard>/leftCtrl
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[1].m_Path
-      value: <Gamepad>/buttonEast
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Roll
-      objectReference: {fileID: 0}
-    - target: {fileID: 3341803688045756747, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _roll.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Roll
-      objectReference: {fileID: 0}
     - target: {fileID: 4940693007258023797, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4745693481146613036, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1395,6 +1198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &69042324
 GameObject:
   m_ObjectHideFlags: 0
@@ -3387,6 +3192,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
+--- !u!114 &316213474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316213462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d91f7bdc7ce146a59c0a19ebcfdbf45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TaskReward
+  _requiredTask: 2
 --- !u!1 &323103631
 GameObject:
   m_ObjectHideFlags: 0
@@ -4323,6 +4143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &415411799
 GameObject:
   m_ObjectHideFlags: 0
@@ -5256,6 +5078,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7783162774452947165, guid: 217f901c4774a474cb13635430c48f32, type: 3}
       insertIndex: -1
       addedObject: {fileID: 316213469}
+    - targetCorrespondingSourceObject: {fileID: 7783162774452947165, guid: 217f901c4774a474cb13635430c48f32, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 316213474}
   m_SourcePrefab: {fileID: 100100000, guid: 217f901c4774a474cb13635430c48f32, type: 3}
 --- !u!1 &526640095
 GameObject:
@@ -7084,6 +6909,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &740913282
 GameObject:
   m_ObjectHideFlags: 0
@@ -8212,6 +8039,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!54 &876544807
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10717,6 +10546,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &1088593481
 GameObject:
   m_ObjectHideFlags: 0
@@ -10842,6 +10673,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 1
+  requiredAbility: 6
 --- !u!64 &1093602672
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11519,6 +11352,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &1191138863
 GameObject:
   m_ObjectHideFlags: 0
@@ -13106,6 +12941,20 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -3592776260745777201, guid: 88dc6ae491363493f864687bcf6a87be, type: 3}
+--- !u!114 &1394704785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394704772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &1425286175
 GameObject:
   m_ObjectHideFlags: 0
@@ -14323,7 +14172,7 @@ MonoBehaviour:
   _target: {fileID: 1982643548}
   _defaultOffset: {x: -7.5, y: 5, z: -6}
   _alternateOffset: {x: 103, y: 66, z: 67.2}
-  _smoothTime: 0.2
+  _smoothTime: 0.05
   _fieldOfView: 50
 --- !u!1 &1582425970
 GameObject:
@@ -15250,6 +15099,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1001 &1764427129
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15344,6 +15195,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 88dc6ae491363493f864687bcf6a87be, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1394704776}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 88dc6ae491363493f864687bcf6a87be, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1394704785}
   m_SourcePrefab: {fileID: 100100000, guid: 88dc6ae491363493f864687bcf6a87be, type: 3}
 --- !u!1 &1764941911
 GameObject:
@@ -15499,6 +15353,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &1787937309
 GameObject:
   m_ObjectHideFlags: 0
@@ -16438,11 +16294,6 @@ Material:
 --- !u!4 &1982643548 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-  m_PrefabInstance: {fileID: 27609495}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1982643551 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 8593914665987783247, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
   m_PrefabInstance: {fileID: 27609495}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1999756382
@@ -19311,7 +19162,7 @@ Transform:
   m_GameObject: {fileID: 2957901087826680864}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 25.3, y: -7.1, z: -115.4}
+  m_LocalPosition: {x: -10.84, y: -7.1, z: -111.86}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24589,6 +24440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!33 &4398487121045649550
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -24733,6 +24586,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!1 &4455592871542959557
 GameObject:
   m_ObjectHideFlags: 0
@@ -25302,7 +25157,7 @@ Transform:
   m_GameObject: {fileID: 5219493208131944724}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -39.67, y: 0.16, z: -6.95}
+  m_LocalPosition: {x: -45.94, y: 0.16, z: -8.09}
   m_LocalScale: {x: 0.73737, y: 0.73737, z: 0.73737}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -25843,6 +25698,7 @@ GameObject:
   - component: {fileID: 6705080481821397620}
   - component: {fileID: 2067016135}
   - component: {fileID: 6705080481821397621}
+  - component: {fileID: 6705080481821397622}
   m_Layer: 0
   m_Name: Birdbath
   m_TagString: Untagged
@@ -26321,6 +26177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!23 &5448116545407839650
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -28915,8 +28773,29 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 3.349581, z: 1}
-  m_Center: {x: -0, y: 1.6844838, z: -0}
+  m_Size: {x: 1, y: 2.7646468, z: 1}
+  m_Center: {x: 0, y: 1.3920172, z: -0}
+--- !u!65 &6705080481821397622
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5219493208131944724}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.6018758, y: 0.09162361, z: 3.4980156}
+  m_Center: {x: 0.0044850786, y: 2.8481188, z: 0.009461248}
 --- !u!33 &6725203850890955945
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -29730,6 +29609,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!4 &7153629552084600837
 Transform:
   m_ObjectHideFlags: 0
@@ -30648,6 +30529,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!23 &7625651455926554753
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -31510,6 +31393,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!23 &7992695321240651541
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -31996,6 +31881,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!23 &8290529817949025130
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -32332,6 +32219,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!64 &8388765608814314633
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -33495,6 +33384,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1edd767fafa9e4341903db6e1ab496f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+  requiresAbility: 0
+  requiredAbility: 0
 --- !u!64 &9057710005054327129
 MeshCollider:
   m_ObjectHideFlags: 0
