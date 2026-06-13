@@ -88,7 +88,7 @@ public class RebindActionRow : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    /// <summary>Called by RebindRowSetupTool to wire the action reference and name.</summary>
+    /// <summary>Called by SetupSettingsAll to wire the action reference and name.</summary>
     public void SetupFromEditor(InputActionReference actionRef, string actionName)
     {
         _action = actionRef;

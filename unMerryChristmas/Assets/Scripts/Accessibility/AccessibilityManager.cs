@@ -141,6 +141,12 @@ public class AccessibilityManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         LoadFromPrefs();
         LoadBindings();
+
+        // The Gamma and Colourblind settings only affect the rendered image through
+        // AccessibilityRenderApplier. Attach it here so those settings work wherever
+        // a manager exists, with no Inspector wiring required.
+        if (GetComponent<AccessibilityRenderApplier>() == null)
+            gameObject.AddComponent<AccessibilityRenderApplier>();
     }
 
     private void OnApplicationQuit() => PlayerPrefs.Save();

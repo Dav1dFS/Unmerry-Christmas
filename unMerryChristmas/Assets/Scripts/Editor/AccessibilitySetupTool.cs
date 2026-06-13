@@ -27,6 +27,12 @@ public static class AccessibilitySetupTool
         var go      = new GameObject("[Accessibility]");
         var manager = go.AddComponent<AccessibilityManager>();
 
+        // Render applier consumes the Gamma / Colourblind settings. Added here so it
+        // is visible in the Inspector; the manager also attaches it at runtime as a
+        // safety net.
+        if (go.GetComponent<AccessibilityRenderApplier>() == null)
+            go.AddComponent<AccessibilityRenderApplier>();
+
         // Auto-wire InputActionAsset
         string[] guids = AssetDatabase.FindAssets("InputSystem_Actions t:InputActionAsset");
         if (guids.Length > 0)

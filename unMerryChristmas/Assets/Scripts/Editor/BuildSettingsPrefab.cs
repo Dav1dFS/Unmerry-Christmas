@@ -692,7 +692,7 @@ public static class BuildSettingsPrefab
 
         scrollRect.content = contentRt;
 
-        // Return Controls_Container so RebindRowSetupTool can populate it
+        // Return Controls_Container so SetupSettingsAll can populate it
         return contentGo;
     }
 
