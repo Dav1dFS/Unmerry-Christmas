@@ -37,11 +37,8 @@ public partial class Controller : MonoBehaviour
 
     private void Awake()
     {
-        // Freeze physics rotation — we drive rotation through transform directly.
         _rb.freezeRotation = true;
 
-        // Zero friction on every collider so PhysX static friction cannot pin
-        // the player against vertical walls and prevent gravity from pulling them down.
         var frictionless = new PhysicsMaterial("PlayerFrictionless")
         {
             dynamicFriction = 0f,
@@ -62,7 +59,6 @@ public partial class Controller : MonoBehaviour
         _interact.Enable();   _roll.Enable();
         _spawnGift.Enable();  _dropGift.Enable();
 
-        // Action bindings (Only tracking discrete event triggers)
         _jump.started      += _ => { if (isGrounded) jump = true; };
         _interact.started  += _ => StartInteractHold();
         _interact.canceled += _ => ReleaseInteractHold();
@@ -70,10 +66,7 @@ public partial class Controller : MonoBehaviour
         _spawnGift.started += _ => TrySpawnGift();
         _dropGift.started  += _ => DropGift();
 
-            // ... your other enabled inputs
         _toggleCamera.Enable();
-
-        // Bind the toggle method when the button is pressed
         _toggleCamera.started += _ => ToggleCameraOffset();
 
         _hintAction.action?.Enable();
@@ -90,24 +83,19 @@ public partial class Controller : MonoBehaviour
         _hintAction.action?.Disable();
     }
 
-    // ── Update / FixedUpdate dispatch ────────────────────────────────────────
-
     private void Update()
     {
-        UpdateGroundDetection(); // Jump
-        UpdateRoll();            // Roll
-        UpdateInteraction();     // Interaction (hold-to-aim, trajectory, push constraints)
-        GatherInput();           // Movement
-        UpdateSpeed();           // Movement
-        Look();                  // Movement
-        UpdateContextHint();     // ContextHint
+        UpdateGroundDetection();
+        UpdateRoll();            
+        UpdateInteraction();     
+        GatherInput();           
+        UpdateSpeed();           
+        Look();                  
+        UpdateContextHint();     
     }
 
-    private void FixedUpdate() => Move(); // Movement
+    private void FixedUpdate() => Move();
 
-    // ── Shared utility ───────────────────────────────────────────────────────
-
-    /// <summary>Clears in-progress ability state when the player grabs a pushable.</summary>
     private void ClearAbilityInputs()
     {
         jump     = false;

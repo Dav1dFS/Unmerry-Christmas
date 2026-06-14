@@ -10,7 +10,13 @@ using UnityEngine;
 /// </summary>
 public class InteractableHighlight : MonoBehaviour
 {
-    private const int  OutlineLayerIndex = 2;
+    [Header("Ability Requirement")]
+    [SerializeField] private bool requiresAbility = false;
+    [SerializeField] private PlayerAbility requiredAbility;
+
+    // Rendering layer index 2 = "Light Layer 2" in TagManager.
+    // This matches FreeOutline's Outline slot 2 (RenderingLayer.m_Bits = 4 = 1 << 2).
+    private const int OutlineLayerIndex = 2;
     private static readonly uint OutlineLayerBit = 1u << OutlineLayerIndex;
 
     private Renderer[] _renderers;
@@ -50,6 +56,14 @@ public class InteractableHighlight : MonoBehaviour
         if (on && AccessibilityManager.Instance != null
                && !AccessibilityManager.Instance.HighlightInteractables)
             return;
+
+        if (on && requiresAbility)
+        {
+            if (AbilityTokenManager.Instance == null || !AbilityTokenManager.Instance.IsUnlocked(requiredAbility))
+            {
+                on = false;
+            }
+        }
 
         if (_highlighted == on) return;
         _highlighted = on;
