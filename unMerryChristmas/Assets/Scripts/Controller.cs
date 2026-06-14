@@ -97,7 +97,8 @@ public partial class Controller : MonoBehaviour
         GatherInput();           // Movement
         UpdateSpeed();           // Movement
         Look();                  // Movement
-        UpdateContextHint();     // ContextHint
+        UpdateContextHint();    // ContextHint
+        UpdateAnimations();     // Animation
     }
 
     private void FixedUpdate() => Move(); // Movement
