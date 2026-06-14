@@ -133,6 +133,8 @@ public partial class Controller
     {
         if (PlayerFreezeManager.Instance?.isFrozen == true)
         {
+                AudioManager.instance?.StopWalkingSound();
+                AudioManager.instance?.StopPushingSound();
             _input = Vector3.zero;
             _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, 0f);
             return;
@@ -148,6 +150,8 @@ public partial class Controller
 
         if (isRolling)
         {
+            AudioManager.instance?.StopWalkingSound();
+            AudioManager.instance?.StopPushingSound();
             _rb.linearVelocity = new Vector3(
                 rollDirection.x * _rollForce,
                 yVel,
@@ -155,12 +159,18 @@ public partial class Controller
         }
         else if (_pushedObject != null)
         {
+            AudioManager.instance?.StopWalkingSound();
             if (_input != Vector3.zero)
             {
+                AudioManager.instance?.PlayPushingSound();
                 // Replaced hardcoded .ToIso() with modern camera tracking matrix while pushing objects
                 Vector3 currentPushDir = GetCameraRelativeDirection(_input).normalized;
                 Vector3 contactWorld = _pushedObject.transform.TransformPoint(_contactLocalPos);
                 _pushedObject.ApplyPushForce(currentPushDir, contactWorld);
+            }
+            else
+            {
+                AudioManager.instance?.StopPushingSound();
             }
             // Target = box centre + fixed world-space XZ offset captured at grab time.
             // Using world-space (not local) means box Y-rotation never orbits the player.
@@ -176,6 +186,15 @@ public partial class Controller
         }
         else
         {
+            AudioManager.instance?.StopPushingSound();
+            if (_input != Vector3.zero && isGrounded)
+            {
+                AudioManager.instance?.PlayWalkingSound();
+            }
+            else
+            {
+                AudioManager.instance?.StopWalkingSound();
+            }
             // Calculate velocity relative to our forward look vector, which now shifts beautifully
             // alongside the dynamic camera tracking rules inside Look()
             Vector3 moveDir    = transform.forward * (_input != Vector3.zero ? _currentSpeed : 0f);

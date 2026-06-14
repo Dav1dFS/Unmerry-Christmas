@@ -20,8 +20,6 @@ public partial class Controller
     [SerializeField] private LayerMask    trajectoryCollisionMask;
 
     [Header("Interaction — Audio")]
-    [SerializeField] private EventReference grabSound;
-    [SerializeField] private EventReference throwSound;
     [SerializeField] private EventReference chargeThrowSound;
 
     // ── State ────────────────────────────────────────────────────────────────
@@ -52,9 +50,12 @@ public partial class Controller
                 {
                     hasEnteredAimMode   = true;
                     isAiming            = true;
-                    chargeThrowInstance = RuntimeManager.CreateInstance(chargeThrowSound);
-                    RuntimeManager.AttachInstanceToGameObject(chargeThrowInstance, transform, _rb);
-                    chargeThrowInstance.start();
+                    if (AudioManager.instance != null)
+                    {
+                        chargeThrowInstance = AudioManager.instance.CreateInstance(chargeThrowSound);
+                        AudioManager.instance.AttachInstanceToGameObject(chargeThrowInstance, transform, _rb);
+                        chargeThrowInstance.start();
+                    }
                 }
             }
             else if (_pushedObject == null && holdTime >= aimHoldThreshold)
@@ -161,11 +162,16 @@ public partial class Controller
             if (closestCollectable.CompareTag("Token"))
             {
                 AbilityToken token = closestCollectable.GetComponent<AbilityToken>();
-                if (token != null) AbilityTokenManager.Instance.Unlock(token.Ability);
+                if (token != null) 
+                {
+                    AbilityTokenManager.Instance.Unlock(token.Ability);
+                    AudioManager.instance?.PlayUnlockAbilitySound(transform.position);
+                }
             }
             else
             {
                 CollectableManager.Instance.Collect();
+                AudioManager.instance?.PlayUnlockAbilitySound(transform.position);
             }
             Destroy(closestCollectable.gameObject);
         }
@@ -173,7 +179,7 @@ public partial class Controller
         {
             heldObject = closestPickup;
             heldObject.OnPickup(holdPoint);
-            AudioManager.instance?.PlayOneShot(grabSound, transform.position);
+            AudioManager.instance?.PlayGrabSound(transform.position);
         }
     }
 
@@ -244,16 +250,13 @@ public partial class Controller
             DropObject();
             Vector3 throwDir = transform.forward + Vector3.up * 0.5f;
             objectRb.AddForce(throwDir.normalized * force, ForceMode.Impulse);
-            AudioManager.instance?.PlayOneShot(throwSound, transform.position);
+            AudioManager.instance?.PlayThrowSound(transform.position);
         }
     }
 
     private void StopChargeSound()
     {
-        if (!chargeThrowInstance.isValid()) return;
-        chargeThrowInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        chargeThrowInstance.release();
-        chargeThrowInstance.clearHandle();
+        AudioManager.instance?.StopAndReleaseInstance(chargeThrowInstance);
     }
 
     // ── Push ──────────────────────────────────────────────────────────────────
