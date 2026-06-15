@@ -1,10 +1,6 @@
 using FMODUnity;
 using UnityEngine;
 
-/// <summary>
-/// Pickup, drop, push, aim, throw, and throw-trajectory systems.
-/// Push and pickup/throw share so much state they live in the same file.
-/// </summary>
 public partial class Controller
 {
     // ── Settings ─────────────────────────────────────────────────────────────
@@ -24,18 +20,16 @@ public partial class Controller
     [SerializeField] private LayerMask    trajectoryCollisionMask;
 
     [Header("Interaction — Audio")]
-    [SerializeField] private EventReference grabSound;
-    [SerializeField] private EventReference throwSound;
     [SerializeField] private EventReference chargeThrowSound;
 
     // ── State ────────────────────────────────────────────────────────────────
     private PickupObject   heldObject;
     private PushableObject _pushedObject;
     private Vector3        _contactLocalPos;
-    private Vector3        _playerWorldOffset; // world-space XZ offset from box centre, not local — immune to box rotation
+    private Vector3        _playerWorldOffset; 
 
-    private bool  isAiming          = false;
-    private float holdTime          = 0f;
+    private bool  isAiming            = false;
+    private float holdTime            = 0f;
     private bool  isHoldingInteract = false;
     private bool  hasEnteredAimMode = false;
 
@@ -45,23 +39,31 @@ public partial class Controller
 
     private void UpdateInteraction()
     {
-        // Accumulate hold time and enter aim mode when threshold is reached
-        if (isHoldingInteract && heldObject != null)
+        if (isHoldingInteract)
         {
             holdTime += Time.deltaTime;
 
-            if (!hasEnteredAimMode && holdTime >= aimHoldThreshold
-                && AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
+            if (heldObject != null)
             {
-                hasEnteredAimMode   = true;
-                isAiming            = true;
-                chargeThrowInstance = RuntimeManager.CreateInstance(chargeThrowSound);
-                RuntimeManager.AttachInstanceToGameObject(chargeThrowInstance, transform, _rb);
-                chargeThrowInstance.start();
+                if (!hasEnteredAimMode && holdTime >= aimHoldThreshold
+                    && AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
+                {
+                    hasEnteredAimMode   = true;
+                    isAiming            = true;
+                    if (AudioManager.instance != null)
+                    {
+                        chargeThrowInstance = AudioManager.instance.CreateInstance(chargeThrowSound);
+                        AudioManager.instance.AttachInstanceToGameObject(chargeThrowInstance, transform, _rb);
+                        chargeThrowInstance.start();
+                    }
+                }
+            }
+            else if (_pushedObject == null && holdTime >= aimHoldThreshold)
+            {
+                TryPushGrab();
             }
         }
 
-        // Trajectory arc
         if (isAiming)
             DrawTrajectory();
         else
@@ -85,9 +87,14 @@ public partial class Controller
         if (!isHoldingInteract) return;
         isHoldingInteract = false;
 
+        if (_pushedObject != null)
+        {
+            ReleasePushable();
+            return;
+        }
+
         if (hasEnteredAimMode)
         {
-            // Release after charging → throw
             if (heldObject != null) throwObject();
             isAiming = false;
             holdTime = 0f;
@@ -95,7 +102,6 @@ public partial class Controller
         }
         else
         {
-            // Tap → context-sensitive hand action
             checkHands();
         }
     }
@@ -104,29 +110,22 @@ public partial class Controller
 
     private void checkHands()
     {
-        if      (heldObject    != null) DropObject();
+        if      (heldObject  != null) DropObject();
         else if (_pushedObject != null) ReleasePushable();
-        else if (_giftInHand   != null) DropGift();
-        else                            TryPickup();
+        else if (_giftInHand != null) DropGift();
+        else                          TryPickup();
     }
 
     // ── Pickup ───────────────────────────────────────────────────────────────
 
     private void TryPickup()
     {
-        Collider[] pickupHits   = Physics.OverlapSphere(transform.position, pickupRange,   pickupLayer);
-        Collider[] pushableHits = Physics.OverlapSphere(transform.position, pushableRange, pushableLayer);
+        Collider[] pickupHits = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
+        float closestDist = Mathf.Infinity;
+        PickupObject closestPickup = null;
+        Collider closestCollectable = null;
 
-        Collider[] hits = new Collider[pickupHits.Length + pushableHits.Length];
-        pickupHits.CopyTo(hits, 0);
-        pushableHits.CopyTo(hits, pickupHits.Length);
-
-        float          closestDist        = Mathf.Infinity;
-        PickupObject   closestPickup      = null;
-        Collider       closestCollectable = null;
-        PushableObject closestPushable    = null;
-
-        foreach (Collider hit in hits)
+        foreach (Collider hit in pickupHits)
         {
             float d = Vector3.Distance(transform.position, hit.transform.position);
             if (d >= closestDist) continue;
@@ -136,33 +135,23 @@ public partial class Controller
                 closestDist        = d;
                 closestCollectable = hit;
                 closestPickup      = null;
-                closestPushable    = null;
             }
             else
             {
                 PickupObject pickup = hit.GetComponent<PickupObject>();
                 if (pickup != null && pickup.enabled)
                 {
-                    closestDist     = d;
-                    closestPickup   = pickup;
-                    closestPushable = null;
+                    closestDist   = d;
+                    closestPickup = pickup;
                 }
                 else
                 {
                     IInteractable interactable = hit.GetComponent<IInteractable>();
                     if (interactable != null)
                     {
-                        // Interact immediately — no further checks needed
                         closestDist = d;
                         interactable.Interact();
                         return;
-                    }
-
-                    PushableObject pushable = hit.GetComponent<PushableObject>();
-                    if (pushable != null && d <= pushableRange)
-                    {
-                        closestDist     = d;
-                        closestPushable = pushable;
                     }
                 }
             }
@@ -173,11 +162,16 @@ public partial class Controller
             if (closestCollectable.CompareTag("Token"))
             {
                 AbilityToken token = closestCollectable.GetComponent<AbilityToken>();
-                if (token != null) AbilityTokenManager.Instance.Unlock(token.Ability);
+                if (token != null) 
+                {
+                    AbilityTokenManager.Instance.Unlock(token.Ability);
+                    AudioManager.instance?.PlayUnlockAbilitySound(transform.position);
+                }
             }
             else
             {
                 CollectableManager.Instance.Collect();
+                AudioManager.instance?.PlayUnlockAbilitySound(transform.position);
             }
             Destroy(closestCollectable.gameObject);
         }
@@ -185,25 +179,44 @@ public partial class Controller
         {
             heldObject = closestPickup;
             heldObject.OnPickup(holdPoint);
-            AudioManager.instance?.PlayOneShot(grabSound, transform.position);
+            AudioManager.instance?.PlayGrabSound(transform.position);
         }
-        else if (closestPushable != null)
-        {
-            if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Pushing))
-                return;
+    }
 
-            // Find contact point on the pushable's side face via horizontal raycast.
-            // Always project to the XZ plane so grabs from above or below hit a side
-            // face rather than the top/bottom, giving consistent push behaviour.
+    // ── Push Grab (Triggered by Hold) ────────────────────────────────────────
+
+    private void TryPushGrab()
+    {
+        if (!AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Pushing))
+            return;
+
+        Collider[] pushableHits = Physics.OverlapSphere(transform.position, pushableRange, pushableLayer);
+        float closestDist = Mathf.Infinity;
+        PushableObject closestPushable = null;
+
+        foreach (Collider hit in pushableHits)
+        {
+            float d = Vector3.Distance(transform.position, hit.transform.position);
+            if (d >= closestDist) continue;
+
+            PushableObject pushable = hit.GetComponent<PushableObject>();
+            if (pushable != null)
+            {
+                closestDist = d;
+                closestPushable = pushable;
+            }
+        }
+
+        if (closestPushable != null)
+        {
             Vector3 toObj = closestPushable.transform.position - transform.position;
             Vector3 horizontalDir = new Vector3(toObj.x, 0f, toObj.z);
             if (horizontalDir.sqrMagnitude < 0.001f)
                 horizontalDir = new Vector3(transform.forward.x, 0f, transform.forward.z);
-            Vector3 dirToObj   = horizontalDir.normalized;
-            Vector3 rayOrigin  = new Vector3(transform.position.x,
-                                             closestPushable.transform.position.y,
-                                             transform.position.z);
+            Vector3 dirToObj = horizontalDir.normalized;
+            Vector3 rayOrigin = new Vector3(transform.position.x, closestPushable.transform.position.y, transform.position.z);
             Vector3 contactWorldPos;
+
             if (Physics.Raycast(rayOrigin, dirToObj, out RaycastHit contactHit, pickupRange * 2f, pushableLayer))
                 contactWorldPos = contactHit.point;
             else
@@ -212,7 +225,6 @@ public partial class Controller
             _pushedObject    = closestPushable;
             _contactLocalPos = closestPushable.transform.InverseTransformPoint(contactWorldPos);
 
-            // Store offset in world space so box rotation never drags the player sideways.
             Vector3 offset = transform.position - closestPushable.transform.position;
             _playerWorldOffset = new Vector3(offset.x, 0f, offset.z);
             _pushedObject.OnGrab();
@@ -238,16 +250,13 @@ public partial class Controller
             DropObject();
             Vector3 throwDir = transform.forward + Vector3.up * 0.5f;
             objectRb.AddForce(throwDir.normalized * force, ForceMode.Impulse);
-            AudioManager.instance?.PlayOneShot(throwSound, transform.position);
+            AudioManager.instance?.PlayThrowSound(transform.position);
         }
     }
 
     private void StopChargeSound()
     {
-        if (!chargeThrowInstance.isValid()) return;
-        chargeThrowInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        chargeThrowInstance.release();
-        chargeThrowInstance.clearHandle();
+        AudioManager.instance?.StopAndReleaseInstance(chargeThrowInstance);
     }
 
     // ── Push ──────────────────────────────────────────────────────────────────
