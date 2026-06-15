@@ -61,14 +61,6 @@ public partial class Controller
         float rate = _input != Vector3.zero ? _acceleration : _deceleration;
         _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, rate * Time.deltaTime);
 
-        // ── ANIMATION HANDLING ──
-        if (_animator != null)
-        {
-            // Set the Walk boolean parameter to true if moving, false if stopped.
-            // This directly drives your existing transitions!
-            bool isMoving = _input != Vector3.zero;
-            _animator.SetBool("Walk", isMoving);
-        }
     }
 
     // ── Dynamic Camera Conversion Helper ──────────────────────────────────────

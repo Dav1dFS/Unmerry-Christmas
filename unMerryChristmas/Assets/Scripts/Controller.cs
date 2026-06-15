@@ -88,13 +88,14 @@ public partial class Controller : MonoBehaviour
 
     private void Update()
     {
-        UpdateGroundDetection();
-        UpdateRoll();            
-        UpdateInteraction();     
-        GatherInput();           
-        UpdateSpeed();           
-        Look();                  
-        UpdateContextHint();     
+        UpdateGroundDetection(); // Jump
+        UpdateRoll();            // Roll
+        UpdateInteraction();     // Interaction (hold-to-aim, trajectory, push constraints)
+        GatherInput();           // Movement
+        UpdateSpeed();           // Movement
+        Look();                  // Movement
+        UpdateContextHint();    // ContextHint
+        UpdateAnimations();     // Animation
     }
 
     private void FixedUpdate() => Move();
