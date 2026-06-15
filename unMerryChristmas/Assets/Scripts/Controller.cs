@@ -51,6 +51,12 @@ public partial class Controller : MonoBehaviour
             col.sharedMaterial = frictionless;
     }
 
+    private void Start()
+    {
+        AudioManager.instance?.InitializeWalkingSound(transform, _rb);
+        AudioManager.instance?.InitializePushingSound(transform, _rb);
+    }
+
     private void OnEnable()
     {
         _moveLeft.Enable();   _moveRight.Enable();
