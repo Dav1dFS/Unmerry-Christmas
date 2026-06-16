@@ -172,6 +172,7 @@ public class NpcController : MonoBehaviour
 
     public void OnHit()
     {
+        GetComponent<NpcHitFlash>()?.TriggerFlash();
         //if (CurrentState == NpcStates.Disabled) return;
         //EnterAlerted();
     }
