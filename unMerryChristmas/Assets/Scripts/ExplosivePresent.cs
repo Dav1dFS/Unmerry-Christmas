@@ -37,6 +37,9 @@ public class ExplosivePresent : MonoBehaviour
     void Explode()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius, _affectedLayers);
+        HitStopManager.Instance?.TriggerHitStop(0.12f); // ligeiramente mais longo na explosão
+        GetComponent<ThrowableImpact>()?.TriggerExplosionImpact(transform.position);
+
         foreach (Collider hit in hits)
         {
             // Hit NPC goes into alerted state

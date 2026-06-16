@@ -172,7 +172,11 @@ public class NpcController : MonoBehaviour
         if (CurrentState == NpcStates.Disabled) return;
         EnterAlerted();
     }
-
+    public void ApplyHitStop(float duration = 0.1f)
+    {
+        Animator anim = GetComponentInChildren<Animator>();
+        HitStopManager.Instance?.TriggerNpcHitStop(anim, duration, 0.05f);
+    }
     // State Machine Updates
 
     void UpdateBusy()
