@@ -21,7 +21,7 @@ public class ThrowableImpact : MonoBehaviour
 
     [Header("Impact Frame (Hit Flash)")]
     [SerializeField] private bool _showImpactFrame = true;
-    [SerializeField] private float _impactFrameScale = 3f;   // world size of the flash
+    [SerializeField] private float _impactFrameScale = 3f;
     [SerializeField] private float _impactFrameDuration = 0.08f;
     [SerializeField] private Color _impactFrameColor = Color.white;
 
@@ -37,7 +37,7 @@ public class ThrowableImpact : MonoBehaviour
         if (npc != null)
         {
             npc.OnHit();
-            npc.ApplyHitStop(0.1f);  // slow NPC animator
+            npc.ApplyHitStop();  // slow NPC animator
             _thrown = false;
             HitStopManager.Instance?.TriggerHitStop(0.06f);  // brief full freeze
             SpawnImpactFrame(col.GetContact(0).point, _impactFrameScale);

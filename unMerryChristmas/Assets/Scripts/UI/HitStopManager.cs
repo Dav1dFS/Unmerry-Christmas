@@ -11,7 +11,6 @@ public class HitStopManager : MonoBehaviour
         Instance = this;
     }
 
-    // Full freeze — for explosions
     public void TriggerHitStop(float duration = 0.08f, float timeScale = 0f)
     {
         StartCoroutine(HitStopRoutine(duration, timeScale));

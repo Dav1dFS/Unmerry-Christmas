@@ -30,7 +30,10 @@ public class NpcController : MonoBehaviour
 
     public float DetectionProgress => _detectionBuildUpTime > 0f ?
     Mathf.Clamp01(_detectionTimer / _detectionBuildUpTime) : 0f;
-    
+
+    [Header("Hit Stop")]
+    [SerializeField] private float _hitStopDuration = 0.1f;  // ajustável no Inspector
+
     [Header("Movement")]
     [SerializeField] private float _walkSpeed = 2f;
     [SerializeField] private float _alertedWalkSpeed = 1f; // slower when alerted
@@ -169,14 +172,28 @@ public class NpcController : MonoBehaviour
 
     public void OnHit()
     {
-        if (CurrentState == NpcStates.Disabled) return;
-        EnterAlerted();
+        //if (CurrentState == NpcStates.Disabled) return;
+        //EnterAlerted();
     }
-    public void ApplyHitStop(float duration = 0.1f)
+    public void ApplyHitStop()
     {
         Animator anim = GetComponentInChildren<Animator>();
-        HitStopManager.Instance?.TriggerNpcHitStop(anim, duration, 0.05f);
+        if (anim == null) return;
+        StartCoroutine(PauseAnimation(anim));
     }
+    private IEnumerator PauseAnimation(Animator anim)
+    {
+        // Save current rotation so it doesn't change during hitstop
+        Quaternion savedRotation = transform.rotation;
+
+        anim.speed = 0f;  // full pause
+        yield return new WaitForSecondsRealtime(_hitStopDuration);
+        anim.speed = 1f;
+
+        // Restore rotation in case physics moved it
+        transform.rotation = savedRotation;
+    }
+
     // State Machine Updates
 
     void UpdateBusy()
