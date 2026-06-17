@@ -11,19 +11,24 @@ public class ThrowableImpact : MonoBehaviour
     [Header("Particle Settings")]
     [SerializeField] private Color _particleColorA = Color.white;
     [SerializeField] private Color _particleColorB = Color.white;
-    [SerializeField] private float _particleSpeedMin = 2f;
-    [SerializeField] private float _particleSpeedMax = 5f;
-    [SerializeField] private float _particleSizeMin = 0.05f;
-    [SerializeField] private float _particleSizeMax = 0.15f;
-    [SerializeField] private int _particleCount = 20;
-    [SerializeField] private float _particleLifetime = 0.5f;
+    [SerializeField] private float _particleSpeedMin = 0.1f;
+    [SerializeField] private float _particleSpeedMax = 2f;
+    [SerializeField] private float _particleSizeMin = 0.03f;
+    [SerializeField] private float _particleSizeMax = 0.1f;
+    [SerializeField] private int _particleCount = 25;
+    [SerializeField] private float _particleLifetime = 1f;
     [SerializeField] private float _particleGravity = 1f;
 
-    [Header("Impact Frame (Hit Flash)")]
+    [Header("Impact Frame")]
     [SerializeField] private bool _showImpactFrame = true;
-    [SerializeField] private float _impactFrameScale = 3f;
-    [SerializeField] private float _impactFrameDuration = 0.08f;
+    [SerializeField] private float _impactFrameScale = 0.7f;
+    [SerializeField] private float _impactFrameDuration = 0.11f;
     [SerializeField] private Color _impactFrameColor = Color.white;
+
+    [Header("Screen Shake — NPC Hit")]
+    [SerializeField] private float _npcShakeDuration = 0.3f;
+    [SerializeField] private float _npcShakeMagnitude = 0.2f;
+    [SerializeField] private float _npcShakeFrequency = 20f;
 
     private bool _thrown = false;
 
@@ -39,7 +44,8 @@ public class ThrowableImpact : MonoBehaviour
             npc.OnHit();
             npc.ApplyHitStop();
             _thrown = false;
-            HitStopManager.Instance?.TriggerHitStop(0.06f);  // brief full freeze
+            HitStopManager.Instance?.TriggerHitStop(0.06f);
+            CameraShake.Instance?.Shake(_npcShakeDuration, _npcShakeMagnitude, _npcShakeFrequency);
             SpawnImpactFrame(col.GetContact(0).point, _impactFrameScale);
             DestroyIfNeeded(col.GetContact(0).point);
             return;
@@ -65,7 +71,6 @@ public class ThrowableImpact : MonoBehaviour
 
     public void TriggerExplosionImpact(Vector3 point)
     {
-        // Larger impact frame for explosion
         HitStopManager.Instance?.TriggerHitStop(0.12f);
         SpawnImpactFrame(point, _impactFrameScale * 2.5f);
         SpawnParticleEffect(point);
@@ -73,12 +78,15 @@ public class ThrowableImpact : MonoBehaviour
 
     private void SpawnImpactFrame(Vector3 point, float scale)
     {
+        if (!_showImpactFrame) return;
+
         GameObject go = new GameObject("ImpactFrame");
         go.transform.position = point;
 
         Camera cam = Camera.main;
         if (cam != null)
-            go.transform.rotation = Quaternion.LookRotation(cam.transform.forward, cam.transform.up);
+            go.transform.rotation = Quaternion.LookRotation(
+                cam.transform.forward, cam.transform.up);
 
         ImpactFrameRenderer r = go.AddComponent<ImpactFrameRenderer>();
         r.Init(scale, _impactFrameDuration, _impactFrameColor);
@@ -112,10 +120,9 @@ public class ThrowableImpact : MonoBehaviour
         ParticleSystem ps = vfxGo.AddComponent<ParticleSystem>();
         ps.Stop();
 
-        // Use URP particle shader instead of Sprites/Default
-        var renderer = ps.GetComponent<ParticleSystemRenderer>();
-        renderer.material = new Material(Shader.Find("Particles/Standard Unlit"));
-        renderer.material.color = _particleColorA;
+        var psRenderer = ps.GetComponent<ParticleSystemRenderer>();
+        psRenderer.material = new Material(Shader.Find("Particles/Standard Unlit"));
+        psRenderer.material.color = _particleColorA;
 
         var main = ps.main;
         main.duration = 0.3f;
@@ -128,27 +135,12 @@ public class ThrowableImpact : MonoBehaviour
 
         var emission = ps.emission;
         emission.SetBursts(new[] { new ParticleSystem.Burst(0f, _particleCount) });
-        
+
         var shape = ps.shape;
         shape.shapeType = ParticleSystemShapeType.Sphere;
         shape.radius = 0.1f;
 
         ps.Play();
         Destroy(vfxGo, _particleLifetime + 0.5f);
-    }
-
-    private void SpawnImpactFrame(Vector3 point, Vector3 normal)
-    {
-        if (!_showImpactFrame) return;
-
-        GameObject go = new GameObject("ImpactFrame");
-        go.transform.position = point;
-
-        Camera cam = Camera.main;
-        if (cam != null)
-            go.transform.rotation = Quaternion.LookRotation(cam.transform.forward, cam.transform.up);
-
-        ImpactFrameRenderer renderer = go.AddComponent<ImpactFrameRenderer>();
-        renderer.Init(_impactFrameScale, _impactFrameDuration, _impactFrameColor);
     }
 }

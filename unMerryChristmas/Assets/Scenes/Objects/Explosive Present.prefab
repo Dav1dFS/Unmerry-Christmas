@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   _npcHitShakeDuration: 0.1
-  _npcHitShakeMagnitude: 0.05
+  _npcHitShakeMagnitude: 0.15
   _explosionShakeDuration: 0.3
   _explosionShakeMagnitude: 0.2
   _explosionShakeFrequency: 20
@@ -164,11 +164,11 @@ MonoBehaviour:
   _affectedLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  _npcHitFrameScale: 1
-  _npcHitFrameDuration: 0.1
-  _npcHitFrameColor: {r: 1, g: 0, b: 0, a: 1}
+  _npcHitFrameScale: 0.7
+  _npcHitFrameDuration: 0.11
+  _npcHitFrameColor: {r: 1, g: 0.92156863, b: 0.015686274, a: 1}
   _npcHitStopDuration: 0.06
-  _explosionFrameScale: 3
+  _explosionFrameScale: 1.5
   _explosionFrameDuration: 0.15
   _explosionFrameColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   _explosionHitStopDuration: 0.12

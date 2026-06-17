@@ -7093,6 +7093,9 @@ MonoBehaviour:
   _impactFrameScale: 0.7
   _impactFrameDuration: 0.11
   _impactFrameColor: {r: 1, g: 1, b: 1, a: 1}
+  _npcShakeDuration: 0.1
+  _npcShakeMagnitude: 0.15
+  _npcShakeFrequency: 20
 --- !u!1001 &738133260
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30571,6 +30574,7 @@ GameObject:
   - component: {fileID: 156400626}
   - component: {fileID: 156400627}
   - component: {fileID: 9045869878707479164}
+  - component: {fileID: 9045869878707479165}
   m_Layer: 3
   m_Name: Gnome_3
   m_TagString: Gnome
@@ -33998,6 +34002,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
   requiresAbility: 0
   requiredAbility: 0
+--- !u!114 &9045869878707479165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388611256018289582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3de5f9440a303b4fb23a771f27f75a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThrowableImpact
+  _noiseRadius: 5
+  _destroyOnImpact: 0
+  _particleColorA: {r: 1, g: 1, b: 1, a: 1}
+  _particleColorB: {r: 1, g: 1, b: 1, a: 1}
+  _particleSpeedMin: 0.1
+  _particleSpeedMax: 2
+  _particleSizeMin: 0.03
+  _particleSizeMax: 0.1
+  _particleCount: 25
+  _particleLifetime: 1
+  _particleGravity: 1
+  _showImpactFrame: 1
+  _impactFrameScale: 0.7
+  _impactFrameDuration: 0.11
+  _impactFrameColor: {r: 1, g: 1, b: 1, a: 1}
+  _npcShakeDuration: 0.3
+  _npcShakeMagnitude: 0.2
+  _npcShakeFrequency: 20
 --- !u!64 &9057710005054327129
 MeshCollider:
   m_ObjectHideFlags: 0
