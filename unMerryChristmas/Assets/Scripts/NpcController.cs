@@ -32,7 +32,7 @@ public class NpcController : MonoBehaviour
     Mathf.Clamp01(_detectionTimer / _detectionBuildUpTime) : 0f;
 
     [Header("Hit Stop")]
-    [SerializeField] private float _hitStopDuration = 0.1f;  // ajustável no Inspector
+    [SerializeField] private float _hitStopDuration = 0.1f;
 
     [Header("Movement")]
     [SerializeField] private float _walkSpeed = 2f;
@@ -104,7 +104,7 @@ public class NpcController : MonoBehaviour
             CheckPlayerDetection();
     }
 
-    //State Machine
+    // State Machine
     public void EnterBusy()
     {
         ChangeState(NpcStates.Busy);
@@ -256,7 +256,7 @@ public class NpcController : MonoBehaviour
         OnUpdateDistracted();
 
         if (_stateTimer <= 0f)
-            EnterAlerted(); // after distraction ends, go to alerted state
+            EnterAlerted();
     }
 
     // Detection

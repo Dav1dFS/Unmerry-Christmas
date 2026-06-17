@@ -16,7 +16,6 @@ public class HitStopManager : MonoBehaviour
         StartCoroutine(HitStopRoutine(duration, timeScale));
     }
 
-    // Slow only a specific Animator — Street Fighter style hit on NPC
     public void TriggerNpcHitStop(Animator npcAnimator, float duration = 0.1f, float animSpeed = 0.05f)
     {
         StartCoroutine(NpcHitStopRoutine(npcAnimator, duration, animSpeed));
@@ -33,7 +32,7 @@ public class HitStopManager : MonoBehaviour
     {
         if (anim == null) yield break;
         float original = anim.speed;
-        anim.speed = slowSpeed;  // near-freeze, not full stop
+        anim.speed = slowSpeed;  // near Freeze, not full stop
         yield return new WaitForSecondsRealtime(duration);
         anim.speed = original;
     }

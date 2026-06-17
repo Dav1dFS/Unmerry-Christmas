@@ -7080,18 +7080,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ThrowableImpact
   _noiseRadius: 5
   _destroyOnImpact: 1
-  _particleColorA: {r: 0.837, g: 1, b: 1, a: 1}
+  _particleColorA: {r: 0.8074493, g: 0.8962264, b: 0.8962264, a: 1}
   _particleColorB: {r: 1, g: 1, b: 1, a: 1}
-  _particleSpeedMin: 2
-  _particleSpeedMax: 5
-  _particleSizeMin: 0.05
-  _particleSizeMax: 0.15
-  _particleCount: 20
-  _particleLifetime: 0.5
+  _particleSpeedMin: 0.1
+  _particleSpeedMax: 2
+  _particleSizeMin: 0.03
+  _particleSizeMax: 0.1
+  _particleCount: 25
+  _particleLifetime: 1
   _particleGravity: 1
   _showImpactFrame: 1
-  _impactFrameScale: 0.75
-  _impactFrameDuration: 0.1
+  _impactFrameScale: 0.7
+  _impactFrameDuration: 0.11
   _impactFrameColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1001 &738133260
 PrefabInstance:
@@ -12958,7 +12958,7 @@ MonoBehaviour:
   _obstacleMask:
     serializedVersion: 2
     m_Bits: 0
-  _hitStopDuration: 2
+  _hitStopDuration: 0.5
   _walkSpeed: 2
   _alertedWalkSpeed: 1
   _arrivedThreshold: 1.5
@@ -13001,8 +13001,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   _enabled: 1
   _flashColor: {r: 1, g: 1, b: 1, a: 1}
-  _flashDuration: 0.12
-  _flashCount: 2
+  _flashDuration: 0.1
+  _flashCount: 3
 --- !u!1 &1336205967
 GameObject:
   m_ObjectHideFlags: 0

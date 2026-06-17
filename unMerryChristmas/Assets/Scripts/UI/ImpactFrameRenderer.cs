@@ -62,27 +62,25 @@ public class ImpactFrameRenderer : MonoBehaviour
 
         for (int i = 0; i < lineCount; i++)
         {
-            // Random jitter on angle to break uniform spacing
             float jitter = Random.Range(-angleStep * 0.35f, angleStep * 0.35f);
             float angle = (angleCursor + jitter) * Mathf.Deg2Rad;
             angleCursor += angleStep;
 
-            // Random width — thicker some, thinner others
             float halfWidth = Random.Range(0.008f, 0.045f) * _scale;
 
-            // Perpendicular for width
             float px = -Mathf.Sin(angle) * halfWidth;
             float py = Mathf.Cos(angle) * halfWidth;
 
             Vector3 dir = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f);
 
             // Inner edge with small random offset so lines don't all start at same radius
+
             float inner = innerRadius * Random.Range(0.9f, 1.3f);
             float outer = outerRadius * Random.Range(0.65f, 1.35f);
 
             lineVerts[i * 4 + 0] = dir * inner + new Vector3(px, py, 0f);
             lineVerts[i * 4 + 1] = dir * inner - new Vector3(px, py, 0f);
-            lineVerts[i * 4 + 2] = dir * outer + new Vector3(px * 0.1f, py * 0.1f, 0f); // taper
+            lineVerts[i * 4 + 2] = dir * outer + new Vector3(px * 0.1f, py * 0.1f, 0f);
             lineVerts[i * 4 + 3] = dir * outer - new Vector3(px * 0.1f, py * 0.1f, 0f);
 
             lineTris[i * 6 + 0] = i * 4 + 0;
@@ -118,7 +116,7 @@ public class ImpactFrameRenderer : MonoBehaviour
         _elapsed += Time.unscaledDeltaTime;
         float t = Mathf.Clamp01(_elapsed / _duration);
 
-        // Scale: burst out then settle
+        // Scale bursts out then settles
         float s = Mathf.Lerp(0.6f, 1.2f, t);
         transform.localScale = Vector3.one * s * _scale;
 

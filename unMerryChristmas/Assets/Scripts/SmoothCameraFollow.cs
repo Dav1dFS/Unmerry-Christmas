@@ -12,7 +12,7 @@ public class SmoothCameraFollow : MonoBehaviour
     private Vector3 _activeTargetOffset;
     private Vector3 _smoothedOffset;
     private Vector3 _offsetVelocity = Vector3.zero;
-    private Vector3 _shakeOffset = Vector3.zero;   // added each frame on top
+    private Vector3 _shakeOffset = Vector3.zero;
 
     private Camera _cam;
     private bool _usingDefaultOffset = true;

@@ -8,7 +8,7 @@ public class NpcHitFlash : MonoBehaviour
     [SerializeField] private bool _enabled = true;
     [SerializeField] private Color _flashColor = Color.white;
     [SerializeField] private float _flashDuration = 0.12f;
-    [SerializeField] private int _flashCount = 2;       // number of blinks
+    [SerializeField] private int _flashCount = 2; // number of blinks
 
     private Renderer[] _renderers;
     private Dictionary<Renderer, Material[]> _originalMaterials = new();

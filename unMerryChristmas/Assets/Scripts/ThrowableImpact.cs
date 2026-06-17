@@ -37,7 +37,7 @@ public class ThrowableImpact : MonoBehaviour
         if (npc != null)
         {
             npc.OnHit();
-            npc.ApplyHitStop();  // slow NPC animator
+            npc.ApplyHitStop();
             _thrown = false;
             HitStopManager.Instance?.TriggerHitStop(0.06f);  // brief full freeze
             SpawnImpactFrame(col.GetContact(0).point, _impactFrameScale);
@@ -63,7 +63,6 @@ public class ThrowableImpact : MonoBehaviour
         }
     }
 
-    // Called from ExplosivePresent.Explode()
     public void TriggerExplosionImpact(Vector3 point)
     {
         // Larger impact frame for explosion
@@ -138,7 +137,6 @@ public class ThrowableImpact : MonoBehaviour
         Destroy(vfxGo, _particleLifetime + 0.5f);
     }
 
-    // Spawns a manga-style radial line burst facing the camera
     private void SpawnImpactFrame(Vector3 point, Vector3 normal)
     {
         if (!_showImpactFrame) return;
@@ -146,7 +144,6 @@ public class ThrowableImpact : MonoBehaviour
         GameObject go = new GameObject("ImpactFrame");
         go.transform.position = point;
 
-        // Face the main camera
         Camera cam = Camera.main;
         if (cam != null)
             go.transform.rotation = Quaternion.LookRotation(cam.transform.forward, cam.transform.up);
