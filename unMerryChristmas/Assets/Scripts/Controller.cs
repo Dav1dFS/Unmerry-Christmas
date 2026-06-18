@@ -70,7 +70,6 @@ public partial class Controller : MonoBehaviour
         _interact.canceled += _ => ReleaseInteractHold();
         _roll.started      += _ => TryStartRoll();
         _spawnGift.started += _ => TrySpawnGift();
-        _dropGift.started  += _ => DropGift();
 
         _toggleCamera.Enable();
         _toggleCamera.started += _ => ToggleCameraOffset();
@@ -82,7 +81,8 @@ public partial class Controller : MonoBehaviour
         _moveUp.Disable();     _moveDown.Disable();
         _sprint.Disable();     _jump.Disable();
         _interact.Disable();   _roll.Disable();
-        _spawnGift.Disable();  _dropGift.Disable();
+        _spawnGift.Disable();
+        _dropGift.Disable();
         _toggleCamera.Disable();
     }
 

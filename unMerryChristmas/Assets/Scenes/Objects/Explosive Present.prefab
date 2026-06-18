@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -12.11445, y: -0.20000005, z: -3.07315}
-  m_LocalScale: {x: 0.29633304, y: 0.29633304, z: 0.29633304}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -153,9 +153,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61d6d103c69b5f3449fdedf1e9162b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  _npcHitShakeDuration: 0.1
+  _npcHitShakeMagnitude: 0.15
+  _explosionShakeDuration: 0.3
+  _explosionShakeMagnitude: 0.2
+  _explosionShakeFrequency: 20
   _explosionRadius: 3
   _explosionForce: 6
   _fuseTime: 2
   _affectedLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  _npcHitFrameScale: 0.7
+  _npcHitFrameDuration: 0.11
+  _npcHitFrameColor: {r: 1, g: 0.92156863, b: 0.015686274, a: 1}
+  _npcHitStopDuration: 0.06
+  _explosionFrameScale: 1.5
+  _explosionFrameDuration: 0.15
+  _explosionFrameColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _explosionHitStopDuration: 0.12
