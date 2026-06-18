@@ -3,17 +3,14 @@ using UnityEngine.InputSystem;
 
 public partial class Controller : MonoBehaviour
 {
-    // ── References ───────────────────────────────────────────────────────────
     [Header("References")]
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private Transform holdPoint;
 
-    // ── Layers ───────────────────────────────────────────────────────────────
     [Header("Layers")]
     [SerializeField] private LayerMask pickupLayer;
     [SerializeField] private LayerMask pushableLayer;
 
-    // ── Input actions ────────────────────────────────────────────────────────
     [Header("Input")]
     [SerializeField] private InputAction _moveLeft;
     [SerializeField] private InputAction _moveRight;
@@ -27,13 +24,10 @@ public partial class Controller : MonoBehaviour
     [SerializeField] private InputAction _dropGift;
     [SerializeField] private InputAction _toggleCamera;
 
-    // ── Shared input state (used by Movement) ────────────────────────────────
     private Vector3 _input;
     private float   _currentSpeed;
     private int     _lockedH = 0;
     private int     _lockedV = 0;
-
-    // ── Lifecycle ────────────────────────────────────────────────────────────
 
     private void Awake()
     {
@@ -70,6 +64,8 @@ public partial class Controller : MonoBehaviour
         _toggleCamera.started += _ => ToggleCameraOffset();
 
         _hintAction.action?.Enable();
+
+        AccessibilityManager.OnHighlightChanged += OnHighlightSettingChanged;
     }
 
     private void OnDisable()
@@ -81,6 +77,8 @@ public partial class Controller : MonoBehaviour
         _spawnGift.Disable();  _dropGift.Disable();
         _toggleCamera.Disable();
         _hintAction.action?.Disable();
+
+        AccessibilityManager.OnHighlightChanged -= OnHighlightSettingChanged;
     }
 
     private void Update()

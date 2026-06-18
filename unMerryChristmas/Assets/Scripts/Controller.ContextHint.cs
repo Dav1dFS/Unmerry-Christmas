@@ -10,7 +10,6 @@ public partial class Controller
 
     private void UpdateContextHint()
     {
-        // Suppress hints and outlines while the player's hands are busy
         if (heldObject != null || _pushedObject != null || _giftInHand != null)
         {
             UIManager.Instance?.HideContextHint();
@@ -18,7 +17,6 @@ public partial class Controller
             return;
         }
 
-        // ── Find closest interactable ──────────────────────────────────────
         Collider[] hits        = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
         string     hintText    = null;
         float      closestDist = Mathf.Infinity;
@@ -37,7 +35,6 @@ public partial class Controller
             closestHit  = hit;
         }
 
-        // ── Check pushables ────────────────────────────────────────────────
         Collider[] pushHits = Physics.OverlapSphere(transform.position, pushableRange, pushableLayer);
         foreach (Collider hit in pushHits)
         {
@@ -50,9 +47,6 @@ public partial class Controller
             }
         }
 
-        // ── Accessibility hint override (H held) ───────────────────────────
-        // When the player holds H near an object with a HintProvider, replace
-        // the normal hint text with the accessibility hint for that object.
         if (closestHit != null
             && AccessibilityManager.Instance != null
             && AccessibilityManager.Instance.HintsEnabled
@@ -64,13 +58,11 @@ public partial class Controller
                 hintText = provider.HintText;
         }
 
-        // ── Show / hide hint text ──────────────────────────────────────────
         if (hintText != null)
             UIManager.Instance?.ShowContextHint(hintText);
         else
             UIManager.Instance?.HideContextHint();
 
-        // ── Object outline ─────────────────────────────────────────────────
         InteractableHighlight newHighlight = closestHit != null
             ? closestHit.GetComponentInParent<InteractableHighlight>()
             : null;
@@ -107,4 +99,6 @@ public partial class Controller
         _currentHighlight.SetHighlighted(false);
         _currentHighlight = null;
     }
+
+    private void OnHighlightSettingChanged(bool enabled) => _currentHighlight = null;
 }

@@ -61,21 +61,23 @@ public static class BuildSettingsPrefab
         var ctrl = rootGo.AddComponent<SettingsPanelController>();
 
         // ── Left-page panel — constrains content to the left page only ────────
-        // Page_Content_Settings fills the full BookPanel (both pages).
-        // The bookmarks (Play / Settings / Credits) are siblings in the same canvas
-        // and visually overlap the leftmost ~100 px of the page.  The MainMenu's
-        // own buttons start at x≈390 from the left edge of Page_Content_Settings,
-        // confirming the usable writing area begins well right of the left edge.
-        // We mirror that: start at x=110 (clears the bookmarks) and give 440 px
-        // of width (stops comfortably before the centre spine).
+        // Page_Content_Settings fills the full BookPanel (both pages). Rather than
+        // assume a fixed pixel size (which deforms when the book geometry differs
+        // between scenes), anchor the writing column as FRACTIONS of the panel so
+        // it scales with whatever book it is placed into:
+        //   • x 0.10 → 0.47 : clears the bookmark tabs on the far left, stops before
+        //                     the centre spine, and is wide enough for a control row
+        //                     (name + keyboard button + gamepad button).
+        //   • y 0.06 → 0.88 : fills most of the page height, starting near the top so
+        //                     content isn't stranded low with a large empty gap.
         var leftPanelGo = new GameObject("LeftPagePanel", typeof(RectTransform));
         leftPanelGo.transform.SetParent(rootGo.transform, false);
         var leftPanelRt = leftPanelGo.GetComponent<RectTransform>();
-        leftPanelRt.anchorMin        = new Vector2(0f, 0f);
-        leftPanelRt.anchorMax        = new Vector2(0f, 1f);   // left-edge anchored, full height
-        leftPanelRt.pivot            = new Vector2(0f, 0.5f);
-        leftPanelRt.anchoredPosition = new Vector2(110f, 0f); // clears the bookmark tabs
-        leftPanelRt.sizeDelta        = new Vector2(440f, 0f); // stays left of the spine
+        leftPanelRt.anchorMin        = new Vector2(0.10f, 0.06f);
+        leftPanelRt.anchorMax        = new Vector2(0.47f, 0.88f);
+        leftPanelRt.pivot            = new Vector2(0.5f, 0.5f);
+        leftPanelRt.anchoredPosition = Vector2.zero;
+        leftPanelRt.sizeDelta        = Vector2.zero;          // fills the anchored region
 
         // ── Pages: each page GO is used for show/hide; items go into its Content child ──
         // MakePage returns the Content transform (top-anchored, ContentSizeFitter+VLG)
@@ -87,10 +89,10 @@ public static class BuildSettingsPrefab
         var ctrlContent = MakePage(leftPanelGo.transform, "Page_Controls",   false, out var ctrlPage,  font);
 
         // ── Page_Navigation content ───────────────────────────────────────────
-        Button audioNavBtn   = MakeNavButton(navContent, "Btn_AudioSettings",   "AUDIO SETTINGS",  font, fontSize: 60f);
-        Button displayNavBtn = MakeNavButton(navContent, "Btn_DisplaySettings", "DISPLAY & HINTS", font, fontSize: 60f);
-        Button videoNavBtn   = MakeNavButton(navContent, "Btn_VideoSettings",   "VIDEO",           font, fontSize: 60f);
-        Button controlsNavBtn= MakeNavButton(navContent, "Btn_Controls",        "CONTROLS",        font, fontSize: 60f);
+        Button audioNavBtn   = MakeNavButton(navContent, "Btn_AudioSettings",   "AUDIO SETTINGS",  font, fontSize: 44f);
+        Button displayNavBtn = MakeNavButton(navContent, "Btn_DisplaySettings", "DISPLAY & HINTS", font, fontSize: 44f);
+        Button videoNavBtn   = MakeNavButton(navContent, "Btn_VideoSettings",   "VIDEO",           font, fontSize: 44f);
+        Button controlsNavBtn= MakeNavButton(navContent, "Btn_Controls",        "CONTROLS",        font, fontSize: 44f);
 
         // ── Page_Audio content ────────────────────────────────────────────────
         MakeBackButton(audioContent, "Btn_Back_Audio", font);
@@ -119,7 +121,7 @@ public static class BuildSettingsPrefab
         MakeBackButton(ctrlContent, "Btn_Back_Controls", font);
         MakeSectionHeader(ctrlContent, "CONTROLS", font);
         var controlsContainer  = MakeControlsContainer(ctrlContent);
-        Button resetBtn        = MakeNavButton(ctrlContent, "Btn_ResetAll", "RESET ALL", font, fontSize: 50f);
+        Button resetBtn        = MakeNavButton(ctrlContent, "Btn_ResetAll", "RESET ALL", font, fontSize: 28f);
 
         // ── Wire SettingsPanelController fields ───────────────────────────────
         var so = new SerializedObject(ctrl);
@@ -192,7 +194,14 @@ public static class BuildSettingsPrefab
             return;
         }
 
-        var target = GameObject.Find("Page_Content_Settings");
+        // GameObject.Find ignores inactive objects, but the settings sub-page is
+        // normally inactive when the menu isn't open — so search inactive too.
+        GameObject target = null;
+        foreach (var t in Object.FindObjectsByType<Transform>(
+                     FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (t.name == "Page_Content_Settings") { target = t.gameObject; break; }
+        }
         if (target == null)
         {
             EditorUtility.DisplayDialog("Place Settings Prefab",
@@ -253,7 +262,7 @@ public static class BuildSettingsPrefab
         rt.anchorMin        = new Vector2(0f, 1f);   // top-left of page
         rt.anchorMax        = new Vector2(1f, 1f);   // top-right of page
         rt.pivot            = new Vector2(0.5f, 1f); // pivot at top centre
-        rt.anchoredPosition = new Vector2(0f, -120f); // 120 px from top of page — matches Play page
+        rt.anchoredPosition = new Vector2(0f, 0f);   // panel already clears the title
         rt.sizeDelta        = new Vector2(0f, 0f);   // height driven by ContentSizeFitter
 
         contentGo.AddComponent<ContentSizeFitter>().verticalFit =
@@ -262,7 +271,7 @@ public static class BuildSettingsPrefab
         var vlg = contentGo.AddComponent<VerticalLayoutGroup>();
         vlg.spacing                = 12;
         vlg.padding                = new RectOffset(0, 0, 0, 0);
-        vlg.childAlignment         = TextAnchor.UpperLeft;
+        vlg.childAlignment         = TextAnchor.UpperCenter;
         vlg.childForceExpandWidth  = true;
         vlg.childForceExpandHeight = false;
         vlg.childControlWidth      = true;
@@ -303,7 +312,7 @@ public static class BuildSettingsPrefab
         tmp.enableWordWrapping   = false;  // never wrap — shrink font instead
         tmp.fontStyle            = FontStyles.Bold | FontStyles.Underline;
         tmp.color                = InkBlack;
-        tmp.alignment            = TextAlignmentOptions.Left;
+        tmp.alignment            = TextAlignmentOptions.Center;
         if (font != null) tmp.font = font;
 
         // ButtonTextColor — identical colours to MainMenu buttons
@@ -372,7 +381,7 @@ public static class BuildSettingsPrefab
         tmp.fontSize  = 36;
         tmp.fontStyle = FontStyles.Bold | FontStyles.Underline;
         tmp.color     = InkBlack;
-        tmp.alignment = TextAlignmentOptions.Left;
+        tmp.alignment = TextAlignmentOptions.Center;   // tab name centred on the page
         if (font != null) tmp.font = font;
 
         // Subtle breathing room between the tab name and the first setting below it.

@@ -8,10 +8,12 @@ using System.IO;
 /// Menu: Tools > UnMerry > Create RebindActionRow Prefab
 ///
 /// Creates Assets/Prefabs/UI/RebindActionRow.prefab styled to match the book UI:
-///   - Action name   : book font, black ink, bold, flex width
-///   - Current binding: book font, black ink, fixed 140 px, centred
-///   - Rebind button : text-only "↺" with ButtonTextColor (same hover colours as
-///                     MainMenu nav buttons) — no white rectangle background
+///   [ Action name (flex, left) ]   [ Keyboard key button ]   [ Gamepad button ]
+///
+/// The binding key is shown ON each button (book-style bold + underline ink text),
+/// and clicking the button rebinds that slot. There is no separate "current binding"
+/// label or empty change-button — the key label and the rebind button are the same
+/// control. Empty slots are hidden by RebindActionRow at runtime.
 /// Safe to re-run: overwrites the existing prefab.
 /// </summary>
 public static class CreateRebindRowPrefab
@@ -60,6 +62,7 @@ public static class CreateRebindRowPrefab
         nameGo.transform.SetParent(rowGo.transform, false);
         var nameLe     = nameGo.AddComponent<LayoutElement>();
         nameLe.flexibleWidth = 1;
+        nameLe.minWidth      = 140;
         var nameTmp    = nameGo.AddComponent<TextMeshProUGUI>();
         nameTmp.text      = "Action";
         nameTmp.fontSize  = 26;
@@ -68,62 +71,17 @@ public static class CreateRebindRowPrefab
         nameTmp.alignment = TextAlignmentOptions.MidlineLeft;
         if (font != null) nameTmp.font = font;
 
-        // ── Current binding ────────────────────────────────────────────────
-        var bindingGo = new GameObject("CurrentBinding", typeof(RectTransform));
-        bindingGo.transform.SetParent(rowGo.transform, false);
-        var bindingLe     = bindingGo.AddComponent<LayoutElement>();
-        bindingLe.minWidth       = 140;
-        bindingLe.preferredWidth = 140;
-        bindingLe.flexibleWidth  = 0;
-        var bindingTmp    = bindingGo.AddComponent<TextMeshProUGUI>();
-        bindingTmp.text      = "—";
-        bindingTmp.fontSize  = 24;
-        bindingTmp.color     = InkBlack;
-        bindingTmp.alignment = TextAlignmentOptions.Center;
-        if (font != null) bindingTmp.font = font;
-
-        // ── Rebind button — text-only, no white box ────────────────────────
-        var btnGo = new GameObject("RebindButton", typeof(RectTransform));
-        btnGo.transform.SetParent(rowGo.transform, false);
-        var btnLe = btnGo.AddComponent<LayoutElement>();
-        btnLe.minWidth       = 44;
-        btnLe.preferredWidth = 44;
-        btnLe.flexibleWidth  = 0;
-
-        var btn = btnGo.AddComponent<Button>();
-        btn.transition = Selectable.Transition.None; // ButtonTextColor drives colour
-
-        // TMP label for ↺ symbol
-        var lblGo = new GameObject("Text", typeof(RectTransform));
-        lblGo.transform.SetParent(btnGo.transform, false);
-        var lblRt = lblGo.GetComponent<RectTransform>();
-        lblRt.anchorMin = Vector2.zero;
-        lblRt.anchorMax = Vector2.one;
-        lblRt.sizeDelta = Vector2.zero;
-
-        var lblTmp = lblGo.AddComponent<TextMeshProUGUI>();
-        lblTmp.text      = "↺";
-        lblTmp.fontSize  = 28;
-        lblTmp.fontStyle = FontStyles.Bold;
-        lblTmp.color     = InkBlack;
-        lblTmp.alignment = TextAlignmentOptions.Center;
-        if (font != null) lblTmp.font = font;
-
-        // ButtonTextColor for hover/press feedback
-        var btc   = btnGo.AddComponent<ButtonTextColor>();
-        var btcSo = new SerializedObject(btc);
-        btcSo.FindProperty("_text")         .objectReferenceValue = lblTmp;
-        btcSo.FindProperty("_normalColor")  .colorValue = InkNormal;
-        btcSo.FindProperty("_hoverColor")   .colorValue = InkOrange;
-        btcSo.FindProperty("_pressedColor") .colorValue = InkDarkRed;
-        btcSo.ApplyModifiedProperties();
+        // ── Keyboard + Gamepad key buttons ─────────────────────────────────
+        Button kbBtn = MakeKeyButton(rowGo.transform, "KeyboardButton", "W",   140f, font, out TMP_Text kbLabel);
+        Button gpBtn = MakeKeyButton(rowGo.transform, "GamepadButton",  "B-S", 160f, font, out TMP_Text gpLabel);
 
         // ── Wire RebindActionRow fields ────────────────────────────────────
         var so = new SerializedObject(row);
-        so.FindProperty("_actionNameLabel")   .objectReferenceValue = nameTmp;
-        so.FindProperty("_currentBindingLabel").objectReferenceValue = bindingTmp;
-        so.FindProperty("_rebindButton")       .objectReferenceValue = btn;
-        so.FindProperty("_rebindButtonLabel")  .objectReferenceValue = lblTmp;
+        so.FindProperty("_actionNameLabel")    .objectReferenceValue = nameTmp;
+        so.FindProperty("_keyboardButton")     .objectReferenceValue = kbBtn;
+        so.FindProperty("_keyboardLabel")      .objectReferenceValue = kbLabel;
+        so.FindProperty("_gamepadButton")      .objectReferenceValue = gpBtn;
+        so.FindProperty("_gamepadLabel")       .objectReferenceValue = gpLabel;
         so.ApplyModifiedProperties();
 
         // ── Save ───────────────────────────────────────────────────────────
@@ -139,6 +97,51 @@ public static class CreateRebindRowPrefab
         {
             Debug.LogError($"[CreateRebindRowPrefab] Failed to save prefab at '{PrefabPath}'.");
         }
+    }
+
+    // A book-styled key button: bold+underline ink text (the binding) on a
+    // transparent button, with ButtonTextColor hover/press feedback. The text
+    // auto-sizes so long names (e.g. "Left Stick Press") shrink instead of clipping.
+    static Button MakeKeyButton(Transform parent, string goName, string initial,
+                                float width, TMP_FontAsset font, out TMP_Text label)
+    {
+        var btnGo = new GameObject(goName, typeof(RectTransform));
+        btnGo.transform.SetParent(parent, false);
+        var btnLe = btnGo.AddComponent<LayoutElement>();
+        btnLe.minWidth       = width;
+        btnLe.preferredWidth = width;
+        btnLe.flexibleWidth  = 0;
+
+        var btn = btnGo.AddComponent<Button>();
+        btn.transition = Selectable.Transition.None; // ButtonTextColor drives colour
+
+        var lblGo = new GameObject("Text", typeof(RectTransform));
+        lblGo.transform.SetParent(btnGo.transform, false);
+        var lblRt = lblGo.GetComponent<RectTransform>();
+        lblRt.anchorMin = Vector2.zero;
+        lblRt.anchorMax = Vector2.one;
+        lblRt.sizeDelta = Vector2.zero;
+
+        label = lblGo.AddComponent<TextMeshProUGUI>();
+        label.text               = initial;
+        label.enableAutoSizing    = true;
+        label.fontSizeMin         = 16f;
+        label.fontSizeMax         = 26f;
+        label.enableWordWrapping  = false;
+        label.fontStyle           = FontStyles.Bold | FontStyles.Underline;
+        label.color               = InkBlack;
+        label.alignment           = TextAlignmentOptions.Center;
+        if (font != null) label.font = font;
+
+        var btc   = btnGo.AddComponent<ButtonTextColor>();
+        var btcSo = new SerializedObject(btc);
+        btcSo.FindProperty("_text")        .objectReferenceValue = label;
+        btcSo.FindProperty("_normalColor") .colorValue = InkNormal;
+        btcSo.FindProperty("_hoverColor")  .colorValue = InkOrange;
+        btcSo.FindProperty("_pressedColor").colorValue = InkDarkRed;
+        btcSo.ApplyModifiedProperties();
+
+        return btn;
     }
 
     static TMP_FontAsset LoadBookFont()

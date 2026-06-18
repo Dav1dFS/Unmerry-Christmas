@@ -5,80 +5,118 @@ using UnityEngine.UI;
 
 /// <summary>
 /// Drives one row in the Controls settings panel.
-/// Each row shows the current binding for one action and has a Rebind button.
 ///
-/// Inspector wiring:
-///   _action             → InputActionReference for the action this row represents
-///   _actionNameLabel    → TMP_Text showing the action name (e.g. "Jump")
-///   _currentBindingLabel → TMP_Text showing current key (e.g. "Space")
-///   _rebindButton       → The ↺ button players click to start rebinding
-///   _rebindButtonLabel  → TMP_Text on the rebind button (shows "↺" or "Press a key…")
+/// A row shows one logical control as:
+///   [ Action name ]   [ Keyboard key button ]   [ Gamepad button ]
+///
+/// The current binding is shown ON the button itself; clicking the button starts
+/// an interactive rebind of that specific binding. Either slot may be empty (e.g.
+/// the keyboard direction rows of a composite have no gamepad equivalent, and the
+/// gamepad-stick row has no keyboard key) — empty slots show a dash and are disabled.
+///
+/// Each slot targets an absolute binding index into <see cref="_action"/>'s
+/// bindings, assigned by SetupSettingsAll at edit time. Indices are stable because
+/// they reflect the order baked into the .inputactions asset.
 /// </summary>
 public class RebindActionRow : MonoBehaviour
 {
     [SerializeField] private InputActionReference _action;
     [SerializeField] private TMP_Text             _actionNameLabel;
-    [SerializeField] private TMP_Text             _currentBindingLabel;
-    [SerializeField] private Button               _rebindButton;
-    [SerializeField] private TMP_Text             _rebindButtonLabel;
+
+    [Header("Keyboard slot")]
+    [SerializeField] private Button   _keyboardButton;
+    [SerializeField] private TMP_Text _keyboardLabel;
+    [SerializeField] private int      _keyboardBindingIndex = -1;
+
+    [Header("Gamepad slot")]
+    [SerializeField] private Button   _gamepadButton;
+    [SerializeField] private TMP_Text _gamepadLabel;
+    [SerializeField] private int      _gamepadBindingIndex = -1;
 
     private InputActionRebindingExtensions.RebindingOperation _rebindOp;
 
-    private void OnEnable()  => RefreshBindingDisplay();
-    private void OnDisable() => CleanupOperation();
-
-    /// <summary>Updates the label to show the current effective binding path.</summary>
-    public void RefreshBindingDisplay()
+    private void OnEnable()
     {
-        if (_action?.action == null || _currentBindingLabel == null) return;
-
-        // Prefer the Keyboard&Mouse binding group; fall back to index 0
-        int idx = _action.action.GetBindingIndex(InputBinding.MaskByGroup("Keyboard&Mouse"));
-        if (idx < 0) idx = 0;
-        if (idx >= _action.action.bindings.Count) return;
-
-        _currentBindingLabel.text = InputControlPath.ToHumanReadableString(
-            _action.action.bindings[idx].effectivePath,
-            InputControlPath.HumanReadableStringOptions.OmitDevice);
+        // Wire buttons here rather than relying on prefab OnClick wiring.
+        if (_keyboardButton != null) _keyboardButton.onClick.AddListener(StartKeyboardRebind);
+        if (_gamepadButton  != null) _gamepadButton.onClick.AddListener(StartGamepadRebind);
+        RefreshBindingDisplay();
     }
 
-    /// <summary>
-    /// Called by the Rebind button's OnClick event.
-    /// Disables the action, listens for a key press, then re-enables and saves.
-    /// </summary>
-    public void StartRebind()
+    private void OnDisable()
+    {
+        if (_keyboardButton != null) _keyboardButton.onClick.RemoveListener(StartKeyboardRebind);
+        if (_gamepadButton  != null) _gamepadButton.onClick.RemoveListener(StartGamepadRebind);
+        CleanupOperation();
+    }
+
+    /// <summary>Updates both slot buttons to show their current effective binding.</summary>
+    public void RefreshBindingDisplay()
+    {
+        UpdateSlot(_keyboardButton, _keyboardLabel, _keyboardBindingIndex);
+        UpdateSlot(_gamepadButton,  _gamepadLabel,  _gamepadBindingIndex);
+    }
+
+    private void UpdateSlot(Button btn, TMP_Text label, int bindingIndex)
+    {
+        bool valid = _action?.action != null
+                     && bindingIndex >= 0
+                     && bindingIndex < _action.action.bindings.Count;
+
+        // Keep the button in place so columns stay aligned across rows, but disable
+        // it (and show a dash) when this slot has no binding.
+        if (btn != null)
+        {
+            btn.interactable = valid;
+            // Also suppress the hover/press tint so an empty "—" doesn't look clickable.
+            var btc = btn.GetComponent<ButtonTextColor>();
+            if (btc != null) btc.enabled = valid;
+        }
+        if (label == null) return;
+
+        label.text = valid
+            ? InputControlPath.ToHumanReadableString(
+                  _action.action.bindings[bindingIndex].effectivePath,
+                  InputControlPath.HumanReadableStringOptions.OmitDevice)
+            : "—";
+    }
+
+    // ── Rebind entry points (wired to the two buttons) ─────────────────────────
+    public void StartKeyboardRebind() =>
+        StartRebind(_keyboardBindingIndex, _keyboardButton, _keyboardLabel, "<Keyboard>");
+
+    public void StartGamepadRebind() =>
+        StartRebind(_gamepadBindingIndex, _gamepadButton, _gamepadLabel, "<Gamepad>");
+
+    private void StartRebind(int bindingIndex, Button btn, TMP_Text label, string deviceFilter)
     {
         if (_action?.action == null) return;
+        if (bindingIndex < 0 || bindingIndex >= _action.action.bindings.Count) return;
+        if (_rebindOp != null) return; // a rebind is already in progress
 
         _action.action.Disable();
-        if (_rebindButton != null)      _rebindButton.interactable = false;
-        if (_rebindButtonLabel != null) _rebindButtonLabel.text = "Press a key…";
-
-        int idx = _action.action.GetBindingIndex(InputBinding.MaskByGroup("Keyboard&Mouse"));
-        if (idx < 0) idx = 0;
-        if (idx >= _action.action.bindings.Count) { FinishRebind(committed: false); return; }
+        if (btn != null)   btn.interactable = false;
+        if (label != null) label.text = "...";
 
         _rebindOp = _action.action
-            .PerformInteractiveRebinding(idx)
+            .PerformInteractiveRebinding(bindingIndex)
+            .WithControlsHavingToMatchPath(deviceFilter)   // only accept the right device
             .WithCancelingThrough("<Keyboard>/escape")
-            .OnComplete(_ => FinishRebind(committed: true))
-            .OnCancel(_  => FinishRebind(committed: false))
+            .OnComplete(_ => FinishRebind(btn))
+            .OnCancel(_  => FinishRebind(btn))
             .Start();
     }
 
-    private void FinishRebind(bool committed)
+    private void FinishRebind(Button btn)
     {
         _rebindOp?.Dispose();
         _rebindOp = null;
 
         _action.action.Enable();
-        if (_rebindButton != null)      _rebindButton.interactable = true;
-        if (_rebindButtonLabel != null) _rebindButtonLabel.text = "↺";
+        if (btn != null) btn.interactable = true;
 
         RefreshBindingDisplay();
-
-        if (committed)
-            AccessibilityManager.Instance?.SaveBindings();
+        AccessibilityManager.Instance?.SaveBindings();
     }
 
     private void CleanupOperation()
@@ -88,11 +126,17 @@ public class RebindActionRow : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    /// <summary>Called by SetupSettingsAll to wire the action reference and name.</summary>
-    public void SetupFromEditor(InputActionReference actionRef, string actionName)
+    /// <summary>
+    /// Called by SetupSettingsAll to configure the row. <paramref name="kbIndex"/>
+    /// / <paramref name="gpIndex"/> are absolute binding indices, or -1 if absent.
+    /// </summary>
+    public void SetupFromEditor(InputActionReference actionRef, string displayName,
+                                int kbIndex, int gpIndex)
     {
-        _action = actionRef;
-        if (_actionNameLabel != null) _actionNameLabel.text = actionName;
+        _action               = actionRef;
+        _keyboardBindingIndex = kbIndex;
+        _gamepadBindingIndex  = gpIndex;
+        if (_actionNameLabel != null) _actionNameLabel.text = displayName;
     }
 #endif
 }
