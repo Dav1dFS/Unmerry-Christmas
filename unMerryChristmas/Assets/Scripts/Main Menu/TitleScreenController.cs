@@ -22,6 +22,10 @@ public class TitleScreenController : MonoBehaviour
     [Header("Book")]
     [SerializeField] private DrawingBookMenu2 _bookMenu;
 
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference _menuMusicEvent;
+    private FMOD.Studio.EventInstance _menuMusicInstance;
+
     private bool _inputEnabled = false;
     private bool _triggered = false;
 
@@ -29,6 +33,12 @@ public class TitleScreenController : MonoBehaviour
     {
         StartCoroutine(EnableInputAfterDelay(0.8f));
         _blinkRoutine = StartCoroutine(BlinkText());
+
+        if (!_menuMusicEvent.IsNull)
+        {
+            _menuMusicInstance = FMODUnity.RuntimeManager.CreateInstance(_menuMusicEvent);
+            _menuMusicInstance.start();
+        }
     }
 
    private void Update()
@@ -90,5 +100,14 @@ public class TitleScreenController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         _inputEnabled = true;
+    }
+
+    private void OnDestroy()
+    {
+        if (_menuMusicInstance.isValid())
+        {
+            _menuMusicInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            _menuMusicInstance.release();
+        }
     }
 }

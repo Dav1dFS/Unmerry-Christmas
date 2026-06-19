@@ -6477,6 +6477,13 @@ MonoBehaviour:
   _fadeOutDuration: 0.6
   _firstSelectedButton: {fileID: 0}
   _bookMenu: {fileID: 1841237366}
+  _menuMusicEvent:
+    Guid:
+      Data1: -1967554610
+      Data2: 1254452297
+      Data3: 421115318
+      Data4: -91766727
+    Path: event:/MENU MUSIC
 --- !u!1 &1042746501
 GameObject:
   m_ObjectHideFlags: 0

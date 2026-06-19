@@ -12314,7 +12314,7 @@ GameObject:
   - component: {fileID: 1316384817}
   m_Layer: 0
   m_Name: GroundCollider2
-  m_TagString: Untagged
+  m_TagString: Snow
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12426,7 +12426,7 @@ GameObject:
   - component: {fileID: 1324645955}
   m_Layer: 0
   m_Name: GroundCollider1
-  m_TagString: Untagged
+  m_TagString: Snow
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14089,9 +14089,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1576096879}
   - component: {fileID: 1576096878}
-  - component: {fileID: 1576096877}
   - component: {fileID: 1576096876}
   - component: {fileID: 1576096880}
+  - component: {fileID: 1576096881}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -14143,14 +14143,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!81 &1576096877
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1576096874}
-  m_Enabled: 1
 --- !u!20 &1576096878
 Camera:
   m_ObjectHideFlags: 0
@@ -14234,6 +14226,20 @@ MonoBehaviour:
   _alternateOffset: {x: 103, y: 66, z: 67.2}
   _smoothTime: 0.05
   _fieldOfView: 50
+--- !u!114 &1576096881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576096874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioListener
+  nonRigidbodyVelocity: 0
+  attenuationObject: {fileID: 0}
 --- !u!1 &1582425970
 GameObject:
   m_ObjectHideFlags: 0
@@ -16389,11 +16395,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 422637457
-      Data2: 1129699206
-      Data3: -817399918
-      Data4: 730402389
-    Path: event:/MUSIC
+      Data1: 1206771294
+      Data2: 1168325288
+      Data3: -2146792037
+      Data4: 462939448
+    Path: event:/FIRST LEVEL MUSIC
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -22991,7 +22997,7 @@ GameObject:
   - component: {fileID: 402991709202532819}
   m_Layer: 0
   m_Name: SnowBall.021
-  m_TagString: Untagged
+  m_TagString: Snow
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27441,7 +27447,7 @@ GameObject:
   - component: {fileID: 8263825623956070518}
   m_Layer: 0
   m_Name: SnowBall.022
-  m_TagString: Untagged
+  m_TagString: Snow
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

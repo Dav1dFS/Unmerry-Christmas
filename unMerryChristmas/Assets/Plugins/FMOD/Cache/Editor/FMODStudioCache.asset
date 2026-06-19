@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/CHARACTER SFX.bank
   Name: CHARACTER SFX
   StudioPath: bank:/CHARACTER SFX
-  lastModified: 639171593498777794
+  lastModified: 639174675899008473
   FileSizes: []
   Exists: 1
 --- !u!114 &-5260423715832373050
@@ -60,7 +60,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639151665506717945
+  lastModified: 639174688579494290
   FileSizes: []
   Exists: 1
 --- !u!114 &-3461222147888988838
@@ -117,6 +117,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-1400119663432139892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/MENU MUSIC
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/MENU MUSIC
+  Guid:
+    Data1: -1967554610
+    Data2: 1254452297
+    Data3: 421115318
+    Data4: -91766727
+  Banks:
+  - {fileID: 8627402294799501257}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-1345790284470484032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,7 +159,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/OBJECT SFX.bank
   Name: OBJECT SFX
   StudioPath: bank:/OBJECT SFX
-  lastModified: 639171593499536108
+  lastModified: 639174675919907071
   FileSizes: []
   Exists: 1
 --- !u!114 &-532217372829052434
@@ -160,6 +187,33 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters:
   - {fileID: 7214934770900393375}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-80279108228336137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/FIRST LEVEL MUSIC
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/FIRST LEVEL MUSIC
+  Guid:
+    Data1: 1206771294
+    Data2: 1168325288
+    Data3: -2146792037
+    Data4: 462939448
+  Banks:
+  - {fileID: 8627402294799501257}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
   MinDistance: 1
   MaxDistance: 20
   Length: 0
@@ -191,13 +245,15 @@ MonoBehaviour:
   - {fileID: -1984686282540790903}
   - {fileID: 6725110717359040159}
   - {fileID: -5260423715832373050}
+  - {fileID: -1400119663432139892}
+  - {fileID: -80279108228336137}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4923200008085835702}
   StringsBanks:
   - {fileID: 2030495756001880170}
   cacheVersion: 131858
-  cacheTime: 639171593499536108
+  cacheTime: 639174688617693521
   SerializableEventsDict:
   - key: event:/MUSIC
     index: 0
@@ -217,6 +273,10 @@ MonoBehaviour:
     index: 7
   - key: event:/DRAGGING OBJECT
     index: 8
+  - key: event:/MENU MUSIC
+    index: 9
+  - key: event:/FIRST LEVEL MUSIC
+    index: 10
 --- !u!114 &291652946513180513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,10 +319,10 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639171593499304332
+  lastModified: 639174688579524299
   FileSizes:
   - Name: 
-    Value: 1278
+    Value: 1378
   Exists: 1
 --- !u!114 &6709518156322129832
 MonoBehaviour:
@@ -384,7 +444,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/MUSIC.bank
   Name: MUSIC
   StudioPath: bank:/MUSIC
-  lastModified: 639171593499064616
+  lastModified: 639174688617693521
   FileSizes: []
   Exists: 1
 --- !u!114 &8763867568933048276
