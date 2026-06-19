@@ -159,3 +159,10 @@ MonoBehaviour:
   _affectedLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  _deploySound:
+    Guid:
+      Data1: -1503072197
+      Data2: 1321107215
+      Data3: 1381703049
+      Data4: 21831551
+    Path: event:/EXPLODING PRESENT

@@ -6,6 +6,9 @@ public class BookmarkTabGroup : MonoBehaviour
     [SerializeField] private List<BookmarkTab> _tabs;
     [SerializeField] private PageFlipController _pageFlip;
 
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference _pageTurnSound;
+
     private int _activeIndex = 0;
     private int _pendingIndex = -1;
     private int _visualIndex = 0; // tracks which tab looks selected independently
@@ -23,11 +26,16 @@ public class BookmarkTabGroup : MonoBehaviour
 
     public void SelectTab(int index) => OnTabClicked(index);
 
-    public void FocusCurrentPage() { } // intentionally empty — blink fix
+    public void FocusCurrentPage() { } // intentionally empty â€” blink fix
 
     private void OnTabClicked(int index)
     {
         if (index == _visualIndex) return;
+
+        if (!_pageTurnSound.IsNull)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(_pageTurnSound);
+        }
 
         // Update tab visuals immediately for responsiveness
         _tabs[_visualIndex].SetSelected(false);
@@ -36,7 +44,7 @@ public class BookmarkTabGroup : MonoBehaviour
 
         if (_pageFlip.IsFlipping)
         {
-            // Queue — flip will execute this when done
+            // Queue â€” flip will execute this when done
             _pendingIndex = index;
             return;
         }

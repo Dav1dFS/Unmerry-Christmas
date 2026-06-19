@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/CHARACTER SFX.bank
   Name: CHARACTER SFX
   StudioPath: bank:/CHARACTER SFX
-  lastModified: 639174675899008473
+  lastModified: 639174880708856940
   FileSizes: []
   Exists: 1
 --- !u!114 &-5260423715832373050
@@ -60,9 +60,63 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639174688579494290
+  lastModified: 639175083444361379
   FileSizes: []
   Exists: 1
+--- !u!114 &-4468713094233860439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/HOVER MENU SFX
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/HOVER MENU SFX
+  Guid:
+    Data1: -373837637
+    Data2: 1224386067
+    Data3: -1780053607
+    Data4: 1437119066
+  Banks:
+  - {fileID: -1345790284470484032}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-4422784526114529772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/EXPLODING PRESENT
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/EXPLODING PRESENT
+  Guid:
+    Data1: -1503072197
+    Data2: 1321107215
+    Data3: 1381703049
+    Data4: 21831551
+  Banks:
+  - {fileID: -1345790284470484032}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-3461222147888988838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,7 +213,7 @@ MonoBehaviour:
   Path: FMOD/Desktop/OBJECT SFX.bank
   Name: OBJECT SFX
   StudioPath: bank:/OBJECT SFX
-  lastModified: 639174675919907071
+  lastModified: 639175084440213579
   FileSizes: []
   Exists: 1
 --- !u!114 &-532217372829052434
@@ -247,13 +301,18 @@ MonoBehaviour:
   - {fileID: -5260423715832373050}
   - {fileID: -1400119663432139892}
   - {fileID: -80279108228336137}
+  - {fileID: 2348792489089612135}
+  - {fileID: 3935379381533916456}
+  - {fileID: -4468713094233860439}
+  - {fileID: -4422784526114529772}
+  - {fileID: 1642745363526151411}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4923200008085835702}
   StringsBanks:
   - {fileID: 2030495756001880170}
   cacheVersion: 131858
-  cacheTime: 639174688617693521
+  cacheTime: 639175084440213579
   SerializableEventsDict:
   - key: event:/MUSIC
     index: 0
@@ -277,6 +336,16 @@ MonoBehaviour:
     index: 9
   - key: event:/FIRST LEVEL MUSIC
     index: 10
+  - key: event:/PAGE TURN SFX
+    index: 11
+  - key: event:/BOOK OPEN SFX
+    index: 12
+  - key: event:/HOVER MENU SFX
+    index: 13
+  - key: event:/EXPLODING PRESENT
+    index: 14
+  - key: event:/NPC HIT BOING SFX
+    index: 15
 --- !u!114 &291652946513180513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -304,6 +373,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &1642745363526151411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/NPC HIT BOING SFX
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/NPC HIT BOING SFX
+  Guid:
+    Data1: 295293422
+    Data2: 1102425253
+    Data3: 1258315455
+    Data4: 629657756
+  Banks:
+  - {fileID: -1345790284470484032}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &2030495756001880170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,11 +415,65 @@ MonoBehaviour:
   Path: FMOD/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639174688579524299
+  lastModified: 639175083444381384
   FileSizes:
   - Name: 
-    Value: 1378
+    Value: 1606
   Exists: 1
+--- !u!114 &2348792489089612135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/PAGE TURN SFX
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/PAGE TURN SFX
+  Guid:
+    Data1: -910943793
+    Data2: 1191598687
+    Data3: -557741121
+    Data4: 1896365697
+  Banks:
+  - {fileID: -1345790284470484032}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &3935379381533916456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BOOK OPEN SFX
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/BOOK OPEN SFX
+  Guid:
+    Data1: -620030742
+    Data2: 1148792962
+    Data3: -216857925
+    Data4: 1259832932
+  Banks:
+  - {fileID: -1345790284470484032}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &6709518156322129832
 MonoBehaviour:
   m_ObjectHideFlags: 0

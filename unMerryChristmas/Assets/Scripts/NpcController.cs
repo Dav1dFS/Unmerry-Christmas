@@ -167,6 +167,18 @@ public class NpcController : MonoBehaviour
         OnEnterDisabled();
     }
 
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference _boingSound;
+
+    public void OnHitByThrownObject()
+    {
+        if (!_boingSound.IsNull)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(_boingSound, transform.position);
+        }
+        OnHit();
+    }
+
     public void OnHit()
     {
         if (CurrentState == NpcStates.Disabled) return;
@@ -269,7 +281,7 @@ public class NpcController : MonoBehaviour
         float angle = Vector3.Angle(transform.forward, dirToPlayer.normalized);
         if (angle > DetectionAngle) return false;
 
-        // height check ignored when alerted — NPC looks at any height
+        // height check ignored when alerted â€” NPC looks at any height
         if (CurrentState != NpcStates.Alerted)
         {
             float playerHeight = _player.position.y - transform.position.y;

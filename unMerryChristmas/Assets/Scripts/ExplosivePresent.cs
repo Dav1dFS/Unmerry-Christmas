@@ -7,6 +7,9 @@ public class ExplosivePresent : MonoBehaviour
     [SerializeField] private float _fuseTime = 2f;
     [SerializeField] private LayerMask _affectedLayers;
 
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference _deploySound;
+
     private float _timer;
     private bool _armed = false;
 
@@ -14,6 +17,11 @@ public class ExplosivePresent : MonoBehaviour
     {
         _armed = true;
         _timer = _fuseTime;
+
+        if (!_deploySound.IsNull)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(_deploySound, transform.position);
+        }
     }
 
     void Update()
@@ -32,7 +40,7 @@ public class ExplosivePresent : MonoBehaviour
 
         NpcController npc = col.gameObject.GetComponentInParent<NpcController>();
         if (npc != null)
-            npc.OnHit();
+            npc.OnHitByThrownObject();
     }
     void Explode()
     {

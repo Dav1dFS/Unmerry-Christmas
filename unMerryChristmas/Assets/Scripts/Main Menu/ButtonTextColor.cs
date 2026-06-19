@@ -18,6 +18,10 @@ public class ButtonTextColor : MonoBehaviour,
     [SerializeField] private Color _hoverColor = Color.red;
     [SerializeField] private Color _pressedColor = Color.gray;
 
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference _hoverSound;
+    private bool _isHovered = false;
+
     private void Awake()
     {
         if (_text == null)
@@ -31,11 +35,14 @@ public class ButtonTextColor : MonoBehaviour,
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (!_isHovered) PlayHoverSound();
+        _isHovered = true;
         SetColor(_hoverColor);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        _isHovered = false;
         SetColor(_normalColor);
     }
 
@@ -51,12 +58,23 @@ public class ButtonTextColor : MonoBehaviour,
 
     public void OnSelect(BaseEventData eventData)
     {
+        if (!_isHovered) PlayHoverSound();
+        _isHovered = true;
         SetColor(_hoverColor);
     }
 
     public void OnDeselect(BaseEventData eventData)
     {
+        _isHovered = false;
         SetColor(_normalColor);
+    }
+
+    private void PlayHoverSound()
+    {
+        if (!_hoverSound.IsNull)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(_hoverSound);
+        }
     }
 
     private void SetColor(Color color)

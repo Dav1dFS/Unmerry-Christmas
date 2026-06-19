@@ -24,6 +24,9 @@ public class DrawingBookMenu2 : MonoBehaviour
     [SerializeField] private DrawingPagesPage _drawingPagesPage;
     [SerializeField] private TaskListPage _taskListPage;
 
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference _bookOpenSound;
+
     // ── Page index constants ──────────────────────────────────────────────────
     // TODO(HUD): Wire these indices to the actual tab/page order once the
     //            BookmarkTabGroup and PageFlipController APIs are finalised.
@@ -91,6 +94,11 @@ public class DrawingBookMenu2 : MonoBehaviour
     {
         if (_isOpen) return;
         _isOpen = true;
+
+        if (!_bookOpenSound.IsNull)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(_bookOpenSound);
+        }
 
         // Refresh das p�ginas ao abrir
         _tutorialPage?.Refresh();

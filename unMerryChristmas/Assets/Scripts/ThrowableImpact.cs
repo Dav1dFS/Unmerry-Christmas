@@ -12,16 +12,16 @@ public class ThrowableImpact : MonoBehaviour
     {
         if (!_thrown) return;
 
-        // Direct hit on an NPC → alert it (threat, not distraction)
+        // Direct hit on an NPC â†’ alert it (threat, not distraction)
         NpcController npc = col.gameObject.GetComponentInParent<NpcController>();
         if (npc != null)
         {
-            npc.OnHit();
+            npc.OnHitByThrownObject();
             _thrown = false;
             return;
         }
 
-        // Hit a breakable object → break it
+        // Hit a breakable object â†’ break it
         IBreakable breakable = col.gameObject.GetComponentInParent<IBreakable>();
         if (breakable != null)
         {
@@ -31,7 +31,7 @@ public class ThrowableImpact : MonoBehaviour
             return;
         }
 
-        // Hit the ground or any neutral surface → distract nearby NPCs with noise
+        // Hit the ground or any neutral surface â†’ distract nearby NPCs with noise
         if (!col.gameObject.CompareTag("Player"))
         {
             _thrown = false;
@@ -46,7 +46,7 @@ public class ThrowableImpact : MonoBehaviour
     /// </summary>
     private void DistractNearbyNpcs(Vector3 point, NpcController directHitNpc)
     {
-        // Use OverlapSphere on all layers — NPCs may live on any layer
+        // Use OverlapSphere on all layers â€” NPCs may live on any layer
         Collider[] hits = Physics.OverlapSphere(point, _noiseRadius);
         foreach (Collider hit in hits)
         {
