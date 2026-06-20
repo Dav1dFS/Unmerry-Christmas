@@ -18318,8 +18318,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SmoothCameraFollow
   _target: {fileID: 1982643548}
-  _defaultOffset: {x: -7.5, y: 5, z: -6}
-  _alternateOffset: {x: 103, y: 66, z: 67.2}
+  _offsets:
+  - {x: -7.5, y: 5, z: -6}
+  - {x: -6, y: 5, z: 7.5}
+  - {x: 7.5, y: 5, z: 6}
+  - {x: 6, y: 5, z: -7.5}
   _smoothTime: 0.05
   _fieldOfView: 50
 --- !u!1 &1582425970
