@@ -121,7 +121,7 @@ public static class BuildSettingsPrefab
         MakeBackButton(ctrlContent, "Btn_Back_Controls", font);
         MakeSectionHeader(ctrlContent, "CONTROLS", font);
         var controlsContainer  = MakeControlsContainer(ctrlContent);
-        Button resetBtn        = MakeNavButton(ctrlContent, "Btn_ResetAll", "RESET ALL", font, fontSize: 28f);
+        Button resetBtn        = MakeNavButton(ctrlContent, "Btn_ResetAll", "RESET ALL", font, fontSize: 26f, preferredHeight: 44f);
 
         // ── Wire SettingsPanelController fields ───────────────────────────────
         var so = new SerializedObject(ctrl);
@@ -283,13 +283,13 @@ public static class BuildSettingsPrefab
     // ── Navigation / action button (exact MainMenu style: 60px bold+underline black) ──
 
     static Button MakeNavButton(Transform parent, string goName, string label, TMP_FontAsset font,
-                                 float fontSize = 60f)
+                                 float fontSize = 60f, float preferredHeight = 80f)
     {
         var go = new GameObject(goName, typeof(RectTransform));
         go.transform.SetParent(parent, false);
 
         var le = go.AddComponent<LayoutElement>();
-        le.preferredHeight = 80;
+        le.preferredHeight = preferredHeight;
         le.flexibleWidth   = 1;
 
         // Unity Button with no transition — ButtonTextColor drives colour changes
@@ -307,7 +307,7 @@ public static class BuildSettingsPrefab
         var tmp = lblGo.AddComponent<TextMeshProUGUI>();
         tmp.text                 = label;
         tmp.enableAutoSizing     = true;   // fills up to fontSize, shrinks to fit single line
-        tmp.fontSizeMin          = 32f;
+        tmp.fontSizeMin          = Mathf.Min(32f, fontSize); // never let the floor exceed the cap
         tmp.fontSizeMax          = fontSize;
         tmp.enableWordWrapping   = false;  // never wrap — shrink font instead
         tmp.fontStyle            = FontStyles.Bold | FontStyles.Underline;

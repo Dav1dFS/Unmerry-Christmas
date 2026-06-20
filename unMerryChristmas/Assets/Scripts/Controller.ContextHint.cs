@@ -3,9 +3,6 @@ using UnityEngine.InputSystem;
 
 public partial class Controller
 {
-    [Header("Hint Input (Accessibility)")]
-    [SerializeField] private InputActionProperty _hintAction;
-
     private InteractableHighlight _currentHighlight;
 
     private void UpdateContextHint()
@@ -50,8 +47,8 @@ public partial class Controller
         if (closestHit != null
             && AccessibilityManager.Instance != null
             && AccessibilityManager.Instance.HintsEnabled
-            && _hintAction.action != null
-            && _hintAction.action.IsPressed())
+            && _hint != null
+            && _hint.IsPressed())
         {
             var provider = closestHit.GetComponentInParent<HintProvider>();
             if (provider != null && !string.IsNullOrEmpty(provider.HintText))

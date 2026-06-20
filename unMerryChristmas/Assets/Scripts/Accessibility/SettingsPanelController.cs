@@ -174,5 +174,11 @@ public class SettingsPanelController : MonoBehaviour
     {
         AccessibilityManager.Instance?.ResetToDefaults();
         SyncFromManager();
+
+        // Rebind rows only refresh their labels on enable, so update them explicitly
+        // here — otherwise the on-screen keys stay stale until the Controls page is
+        // reopened, even though the bindings have already been reset.
+        foreach (var row in GetComponentsInChildren<RebindActionRow>(true))
+            row.RefreshBindingDisplay();
     }
 }

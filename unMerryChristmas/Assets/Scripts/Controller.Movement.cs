@@ -23,11 +23,14 @@ public partial class Controller
             return;
         }
 
-        // Dynamic State Selection: Direct evaluation bypasses fragile Event Callbacks.
-        bool leftPressed  = _moveLeft.IsPressed();
-        bool rightPressed = _moveRight.IsPressed();
-        bool upPressed    = _moveUp.IsPressed();
-        bool downPressed  = _moveDown.IsPressed();
+        // Read the shared Move action (WASD composite / left stick) and derive the
+        // digital direction flags the lock logic below expects. 0.5 threshold keeps
+        // single keys crisp and gives the analog stick a small deadzone.
+        Vector2 mv = _move != null ? _move.ReadValue<Vector2>() : Vector2.zero;
+        bool leftPressed  = mv.x < -0.5f;
+        bool rightPressed = mv.x >  0.5f;
+        bool upPressed    = mv.y >  0.5f;
+        bool downPressed  = mv.y < -0.5f;
 
         // Horizontal Evaluation
         if (leftPressed && rightPressed)
@@ -57,7 +60,7 @@ public partial class Controller
         if (isRolling) return;
 
         float targetSpeed = _input == Vector3.zero ? 0f
-            : (_sprint.IsPressed() && _pushedObject == null) ? _sprintSpeed : _walkSpeed;
+            : (_sprint != null && _sprint.IsPressed() && _pushedObject == null) ? _sprintSpeed : _walkSpeed;
         float rate = _input != Vector3.zero ? _acceleration : _deceleration;
         _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, rate * Time.deltaTime);
 
