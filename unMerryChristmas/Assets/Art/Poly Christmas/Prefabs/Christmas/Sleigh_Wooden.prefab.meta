@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 555dcb078b4a0664392484c18bfefbc9
+guid: b07b226a4007b804e8041ba51687016d
 PrefabImporter:
   externalObjects: {}
   userData: 
@@ -10,5 +10,5 @@ AssetOrigin:
   productId: 346304
   packageName: Poly Christmas
   packageVersion: 1.0
-  assetPath: Assets/Art/Poly Christmas/Prefabs/Christmas/Wreath_Wall.prefab
+  assetPath: Assets/Art/Poly Christmas/Prefabs/Christmas/Sleigh_Wooden.prefab
   uploadId: 823396
