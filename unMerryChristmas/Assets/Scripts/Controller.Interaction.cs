@@ -20,8 +20,6 @@ public partial class Controller
     [SerializeField] private LayerMask    trajectoryCollisionMask;
 
     [Header("Interaction — Audio")]
-    [SerializeField] private EventReference grabSound;
-    [SerializeField] private EventReference throwSound;
     [SerializeField] private EventReference chargeThrowSound;
 
     // ── State ────────────────────────────────────────────────────────────────
@@ -45,20 +43,29 @@ public partial class Controller
         {
             holdTime += Time.deltaTime;
 
-            if (heldObject != null)
+            if (_pushedObject != null)
             {
+                // Already pushing — nothing to do
+            }
+            else if (heldObject != null || _giftInHand != null)
+            {
+                // Held object or gift — enter aim mode on hold
                 if (!hasEnteredAimMode && holdTime >= aimHoldThreshold
                     && AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
                 {
                     hasEnteredAimMode   = true;
                     isAiming            = true;
-                    chargeThrowInstance = RuntimeManager.CreateInstance(chargeThrowSound);
-                    RuntimeManager.AttachInstanceToGameObject(chargeThrowInstance, transform, _rb);
-                    chargeThrowInstance.start();
+                    if (AudioManager.instance != null)
+                    {
+                        chargeThrowInstance = AudioManager.instance.CreateInstance(chargeThrowSound);
+                        AudioManager.instance.AttachInstanceToGameObject(chargeThrowInstance, transform, _rb);
+                        chargeThrowInstance.start();
+                    }
                 }
             }
-            else if (_pushedObject == null && holdTime >= aimHoldThreshold)
+            else if (holdTime >= aimHoldThreshold)
             {
+                // Nothing in hand — try to grab pushable
                 TryPushGrab();
             }
         }
@@ -95,6 +102,7 @@ public partial class Controller
         if (hasEnteredAimMode)
         {
             if (heldObject != null) throwObject();
+            else if (_giftInHand != null) ThrowGift(); 
             isAiming = false;
             holdTime = 0f;
             StopChargeSound();
@@ -109,12 +117,11 @@ public partial class Controller
 
     private void checkHands()
     {
-        if      (heldObject  != null) DropObject();
+        if (heldObject != null) DropObject();
         else if (_pushedObject != null) ReleasePushable();
         else if (_giftInHand != null) DropGift();
-        else                          TryPickup();
+        else TryPickup();
     }
-
     // ── Pickup ───────────────────────────────────────────────────────────────
 
     private void TryPickup()
@@ -161,11 +168,16 @@ public partial class Controller
             if (closestCollectable.CompareTag("Token"))
             {
                 AbilityToken token = closestCollectable.GetComponent<AbilityToken>();
-                if (token != null) AbilityTokenManager.Instance.Unlock(token.Ability);
+                if (token != null) 
+                {
+                    AbilityTokenManager.Instance.Unlock(token.Ability);
+                    AudioManager.instance?.PlayUnlockAbilitySound(transform.position);
+                }
             }
             else
             {
                 CollectableManager.Instance.Collect();
+                AudioManager.instance?.PlayUnlockAbilitySound(transform.position);
             }
             Destroy(closestCollectable.gameObject);
         }
@@ -173,7 +185,7 @@ public partial class Controller
         {
             heldObject = closestPickup;
             heldObject.OnPickup(holdPoint);
-            AudioManager.instance?.PlayOneShot(grabSound, transform.position);
+            AudioManager.instance?.PlayGrabSound(transform.position);
         }
     }
 
@@ -244,16 +256,13 @@ public partial class Controller
             DropObject();
             Vector3 throwDir = transform.forward + Vector3.up * 0.5f;
             objectRb.AddForce(throwDir.normalized * force, ForceMode.Impulse);
-            AudioManager.instance?.PlayOneShot(throwSound, transform.position);
+            AudioManager.instance?.PlayThrowSound(transform.position);
         }
     }
 
     private void StopChargeSound()
     {
-        if (!chargeThrowInstance.isValid()) return;
-        chargeThrowInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-        chargeThrowInstance.release();
-        chargeThrowInstance.clearHandle();
+        AudioManager.instance?.StopAndReleaseInstance(chargeThrowInstance);
     }
 
     // ── Push ──────────────────────────────────────────────────────────────────

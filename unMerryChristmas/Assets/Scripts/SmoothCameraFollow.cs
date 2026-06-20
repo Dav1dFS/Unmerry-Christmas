@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class SmoothCameraFollow : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class SmoothCameraFollow : MonoBehaviour
     private Vector3 _activeTargetOffset; // The offset we want to reach
     private Vector3 _smoothedOffset;     // The intermediate offset currently being calculated
     private Vector3 _offsetVelocity = Vector3.zero;
+    private Vector3 _shakeOffset = Vector3.zero;
 
     private Camera _cam;
     private int _offsetIndex; // Index into _offsets of the current view
@@ -50,13 +52,12 @@ public class SmoothCameraFollow : MonoBehaviour
     {
         if (_target == null) return;
 
-        // 1. Smoothly interpolate the OFFSET itself, not the world position
-        _smoothedOffset = Vector3.SmoothDamp(_smoothedOffset, _activeTargetOffset, ref _offsetVelocity, _smoothTime);
-        
-        // 2. Apply the smoothed offset directly to the target's current position
-        transform.position = _target.position + _smoothedOffset;
-        
-        // 3. Keep the target locked perfectly dead-center of the screen
+        _smoothedOffset = Vector3.SmoothDamp(
+            _smoothedOffset, _activeTargetOffset,
+            ref _offsetVelocity, _smoothTime);
+
+        // Shake offset is added on top of the follow position
+        transform.position = _target.position + _smoothedOffset + _shakeOffset;
         transform.LookAt(_target);
     }
 
@@ -76,4 +77,7 @@ public class SmoothCameraFollow : MonoBehaviour
 
         LogActiveOffset();
     }
+
+    // Called by CameraShake
+    public void SetShakeOffset(Vector3 offset) => _shakeOffset = offset;
 }

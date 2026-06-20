@@ -2,14 +2,11 @@ using UnityEngine;
 
 public partial class Controller
 {
-    // ── Settings ─────────────────────────────────────────────────────────────
+
     [Header("Explosive Presents")]
     [SerializeField] private GameObject _giftBombPrefab;
 
-    // ── State ────────────────────────────────────────────────────────────────
     private ExplosivePresent _giftInHand;
-
-    // ── Spawn ─────────────────────────────────────────────────────────────────
 
     private void TrySpawnGift()
     {
@@ -26,8 +23,6 @@ public partial class Controller
         Collider col = obj.GetComponent<Collider>();
         if (col != null) col.enabled = false;
     }
-
-    // ── Throw ─────────────────────────────────────────────────────────────────
 
     private void ThrowGift()
     {
@@ -49,15 +44,13 @@ public partial class Controller
             float   force    = Mathf.Clamp(holdTime * throwForce, 5f, 15f);
             Vector3 throwDir = transform.forward + Vector3.up * 0.5f;
             rb.AddForce(throwDir.normalized * force, ForceMode.Impulse);
-            AudioManager.instance?.PlayOneShot(throwSound, transform.position);
+            AudioManager.instance?.PlayThrowSound(transform.position);
         }
 
         isAiming = false;
         holdTime = 0f;
         StopChargeSound();
     }
-
-    // ── Drop ──────────────────────────────────────────────────────────────────
 
     private void DropGift()
     {
