@@ -25,7 +25,7 @@ public class ThrowableImpact : MonoBehaviour
     [SerializeField] private float _impactFrameDuration = 0.11f;
     [SerializeField] private Color _impactFrameColor = Color.white;
 
-    [Header("Screen Shake � NPC Hit")]
+    [Header("Screen Shake — NPC Hit")]
     [SerializeField] private float _npcShakeDuration = 0.3f;
     [SerializeField] private float _npcShakeMagnitude = 0.2f;
     [SerializeField] private float _npcShakeFrequency = 20f;
@@ -38,11 +38,15 @@ public class ThrowableImpact : MonoBehaviour
     {
         if (!_thrown) return;
 
+        // Direct hit on an NPC Ã¢â€ â€™ alert it (threat, not distraction)
+
         NpcController npc = col.gameObject.GetComponentInParent<NpcController>();
         if (npc != null)
         {
             npc.OnHit();
+            npc.OnHitByThrownObject();
             npc.ApplyHitStop();
+
             _thrown = false;
             HitStopManager.Instance?.TriggerHitStop(0.06f);
             CameraShake.Instance?.Shake(_npcShakeDuration, _npcShakeMagnitude, _npcShakeFrequency);

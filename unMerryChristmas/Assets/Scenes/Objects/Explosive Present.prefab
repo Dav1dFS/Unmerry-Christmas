@@ -164,6 +164,13 @@ MonoBehaviour:
   _affectedLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  _deploySound:
+    Guid:
+      Data1: -1503072197
+      Data2: 1321107215
+      Data3: 1381703049
+      Data4: 21831551
+    Path: event:/EXPLODING PRESENT
   _npcHitFrameScale: 0.7
   _npcHitFrameDuration: 0.11
   _npcHitFrameColor: {r: 1, g: 0.92156863, b: 0.015686274, a: 1}

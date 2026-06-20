@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class ExplosivePresent : MonoBehaviour
 {
-    [Header("Screen Shake — NPC Direct Hit")]
+    [Header("Screen Shake â€” NPC Direct Hit")]
     [SerializeField] private float _npcHitShakeDuration = 0.1f;
     [SerializeField] private float _npcHitShakeMagnitude = 0.05f;
 
-    [Header("Screen Shake — Explosion")]
+    [Header("Screen Shake â€” Explosion")]
     [SerializeField] private float _explosionShakeDuration = 0.3f;
     [SerializeField] private float _explosionShakeMagnitude = 0.2f;
     [SerializeField] private float _explosionShakeFrequency = 20f;
@@ -17,13 +17,15 @@ public class ExplosivePresent : MonoBehaviour
     [SerializeField] private float _fuseTime = 2f;
     [SerializeField] private LayerMask _affectedLayers;
 
-    [Header("Impact Frame — NPC Direct Hit")]
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference _deploySound;
+    [Header("Impact Frame â€” NPC Direct Hit")]
     [SerializeField] private float _npcHitFrameScale = 2f;
     [SerializeField] private float _npcHitFrameDuration = 0.1f;
     [SerializeField] private Color _npcHitFrameColor = Color.red;
     [SerializeField] private float _npcHitStopDuration = 0.06f;
 
-    [Header("Impact Frame — Explosion")]
+    [Header("Impact Frame â€” Explosion")]
     [SerializeField] private float _explosionFrameScale = 5f;
     [SerializeField] private float _explosionFrameDuration = 0.15f;
     [SerializeField] private Color _explosionFrameColor = Color.yellow;
@@ -36,6 +38,11 @@ public class ExplosivePresent : MonoBehaviour
     {
         _armed = true;
         _timer = _fuseTime;
+
+        if (!_deploySound.IsNull)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(_deploySound, transform.position);
+        }
     }
 
     private void Update()
@@ -52,6 +59,7 @@ public class ExplosivePresent : MonoBehaviour
 
         NpcController npc = col.gameObject.GetComponentInParent<NpcController>();
         if (npc != null)
+            npc.OnHitByThrownObject();
         {
             npc.OnHit();
             npc.ApplyHitStop();

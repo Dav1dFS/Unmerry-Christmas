@@ -42,6 +42,9 @@ public class BookmarkTab : MonoBehaviour,
     [SerializeField] private float _hoverScale = 0.85f;
     [SerializeField] private float _selectedScale = 0.8f;
 
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference _hoverSound;
+
     public int Index { get; private set; }
 
     private Action<int> _onClicked;
@@ -77,22 +80,40 @@ public class BookmarkTab : MonoBehaviour,
         UpdateVisual();
     }
 
-    public void OnSelect(BaseEventData eventData) { _isHighlighted = true; UpdateVisual(); }
+    public void OnSelect(BaseEventData eventData) 
+    { 
+        if (!_isHighlighted && !_isSelected) PlayHoverSound();
+        _isHighlighted = true; 
+        UpdateVisual(); 
+    }
     public void OnDeselect(BaseEventData eventData) { _isHighlighted = false; UpdateVisual(); }
 
     // Pointer
 
-    public void OnPointerEnter(PointerEventData eventData) { _isHighlighted = true; UpdateVisual(); }
+    public void OnPointerEnter(PointerEventData eventData) 
+    { 
+        if (!_isHighlighted && !_isSelected) PlayHoverSound();
+        _isHighlighted = true; 
+        UpdateVisual(); 
+    }
     public void OnPointerExit(PointerEventData eventData) { _isHighlighted = false; UpdateVisual(); }
+
+    private void PlayHoverSound()
+    {
+        if (!_hoverSound.IsNull)
+        {
+            FMODUnity.RuntimeManager.PlayOneShot(_hoverSound);
+        }
+    }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        // no changes on press — wait for release
+        // no changes on press â€” wait for release
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        // only update visual after releasing — SetSelected handles the rest via BookmarkTabGroup
+        // only update visual after releasing â€” SetSelected handles the rest via BookmarkTabGroup
         UpdateVisual();
     }
 
