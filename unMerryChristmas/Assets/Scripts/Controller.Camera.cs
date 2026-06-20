@@ -9,7 +9,7 @@ public partial class Controller : MonoBehaviour
     {
         if (_cameraFollow != null)
         {
-            _cameraFollow.ToggleOffset();
+            _cameraFollow.CycleView();
         }
     }
 }

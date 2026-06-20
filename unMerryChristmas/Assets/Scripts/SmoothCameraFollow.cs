@@ -4,18 +4,29 @@ using System.Collections;
 public class SmoothCameraFollow : MonoBehaviour
 {
     [SerializeField] private Transform _target;
-    [SerializeField] private Vector3 _defaultOffset = new Vector3(-7.5f, 5f, -6f);
-    [SerializeField] private Vector3 _alternateOffset = new Vector3(0f, 8f, -10f);
+
+    // The camera cycles through these offsets in order each time R is pressed.
+    // Tune each entry independently in the Inspector.
+    // The original back-left view, rotated 90° three times so all four are evenly
+    // spaced around the target while keeping the original's angle, height and distance.
+    [SerializeField] private Vector3[] _offsets =
+    {
+        new Vector3(-7.5f, 5f, -6f), // back-left (original view)
+        new Vector3(-6f, 5f, 7.5f),  // front-left
+        new Vector3(7.5f, 5f, 6f),   // front-right
+        new Vector3(6f, 5f, -7.5f),  // back-right
+    };
+
     [SerializeField] private float _smoothTime = 0.2f;
     [SerializeField] private float _fieldOfView = 50f;
 
-    private Vector3 _activeTargetOffset;
-    private Vector3 _smoothedOffset;
+    private Vector3 _activeTargetOffset; // The offset we want to reach
+    private Vector3 _smoothedOffset;     // The intermediate offset currently being calculated
     private Vector3 _offsetVelocity = Vector3.zero;
     private Vector3 _shakeOffset = Vector3.zero;
 
     private Camera _cam;
-    private bool _usingDefaultOffset = true;
+    private int _offsetIndex; // Index into _offsets of the current view
 
     private void Awake()
     {
@@ -23,8 +34,18 @@ public class SmoothCameraFollow : MonoBehaviour
         if (_cam != null)
             _cam.fieldOfView = _fieldOfView;
 
-        _activeTargetOffset = _defaultOffset;
-        _smoothedOffset = _defaultOffset;
+        // Initialize to the first configured offset
+        Vector3 startOffset = (_offsets != null && _offsets.Length > 0) ? _offsets[0] : Vector3.zero;
+        _activeTargetOffset = startOffset;
+        _smoothedOffset = startOffset;
+
+        LogActiveOffset();
+    }
+
+    private void LogActiveOffset()
+    {
+        if (_offsets == null || _offsets.Length == 0) return;
+        Debug.Log($"[Camera] View {_offsetIndex + 1}/{_offsets.Length} -> offset {_offsets[_offsetIndex]}", this);
     }
 
     private void LateUpdate()
@@ -40,11 +61,21 @@ public class SmoothCameraFollow : MonoBehaviour
         transform.LookAt(_target);
     }
 
-    public void ToggleOffset()
+    /// <summary>
+    /// Advances to the next configured camera offset, wrapping back to the first
+    /// after the last one.
+    /// </summary>
+    public void CycleView()
     {
-        _usingDefaultOffset = !_usingDefaultOffset;
-        _activeTargetOffset = _usingDefaultOffset ? _defaultOffset : _alternateOffset;
+        if (_offsets == null || _offsets.Length == 0) return;
+
+        _offsetIndex = (_offsetIndex + 1) % _offsets.Length;
+        _activeTargetOffset = _offsets[_offsetIndex];
+
+        // Reset tracking velocity to ensure a clean start to the transition
         _offsetVelocity = Vector3.zero;
+
+        LogActiveOffset();
     }
 
     // Called by CameraShake
