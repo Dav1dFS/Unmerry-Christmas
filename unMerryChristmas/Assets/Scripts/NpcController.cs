@@ -30,7 +30,10 @@ public class NpcController : MonoBehaviour
 
     public float DetectionProgress => _detectionBuildUpTime > 0f ?
     Mathf.Clamp01(_detectionTimer / _detectionBuildUpTime) : 0f;
-    
+
+    [Header("Hit Stop")]
+    [SerializeField] private float _hitStopDuration = 0.1f;
+
     [Header("Movement")]
     [SerializeField] private float _walkSpeed = 2f;
     [SerializeField] private float _alertedWalkSpeed = 1f; // slower when alerted
@@ -101,7 +104,7 @@ public class NpcController : MonoBehaviour
             CheckPlayerDetection();
     }
 
-    //State Machine
+    // State Machine
     public void EnterBusy()
     {
         ChangeState(NpcStates.Busy);
@@ -181,8 +184,27 @@ public class NpcController : MonoBehaviour
 
     public void OnHit()
     {
-        if (CurrentState == NpcStates.Disabled) return;
-        EnterAlerted();
+        GetComponent<NpcHitFlash>()?.TriggerFlash();
+        //if (CurrentState == NpcStates.Disabled) return;
+        //EnterAlerted();
+    }
+    public void ApplyHitStop()
+    {
+        Animator anim = GetComponentInChildren<Animator>();
+        if (anim == null) return;
+        StartCoroutine(PauseAnimation(anim));
+    }
+    private IEnumerator PauseAnimation(Animator anim)
+    {
+        // Save current rotation so it doesn't change during hitstop
+        Quaternion savedRotation = transform.rotation;
+
+        anim.speed = 0f;  // full pause
+        yield return new WaitForSecondsRealtime(_hitStopDuration);
+        anim.speed = 1f;
+
+        // Restore rotation in case physics moved it
+        transform.rotation = savedRotation;
     }
 
     // State Machine Updates
@@ -246,7 +268,7 @@ public class NpcController : MonoBehaviour
         OnUpdateDistracted();
 
         if (_stateTimer <= 0f)
-            EnterAlerted(); // after distraction ends, go to alerted state
+            EnterAlerted();
     }
 
     // Detection

@@ -1,19 +1,32 @@
 using UnityEngine;
+using System.Collections;
 
 public class SmoothCameraFollow : MonoBehaviour
 {
     [SerializeField] private Transform _target;
-    [SerializeField] private Vector3 _defaultOffset = new Vector3(-7.5f, 5f, -6f); 
-    [SerializeField] private Vector3 _alternateOffset = new Vector3(0f, 8f, -10f); 
+
+    // The camera cycles through these offsets in order each time R is pressed.
+    // Tune each entry independently in the Inspector.
+    // The original back-left view, rotated 90° three times so all four are evenly
+    // spaced around the target while keeping the original's angle, height and distance.
+    [SerializeField] private Vector3[] _offsets =
+    {
+        new Vector3(-7.5f, 5f, -6f), // back-left (original view)
+        new Vector3(-6f, 5f, 7.5f),  // front-left
+        new Vector3(7.5f, 5f, 6f),   // front-right
+        new Vector3(6f, 5f, -7.5f),  // back-right
+    };
+
     [SerializeField] private float _smoothTime = 0.2f;
     [SerializeField] private float _fieldOfView = 50f;
 
     private Vector3 _activeTargetOffset; // The offset we want to reach
     private Vector3 _smoothedOffset;     // The intermediate offset currently being calculated
-    private Vector3 _offsetVelocity = Vector3.zero; 
-    
+    private Vector3 _offsetVelocity = Vector3.zero;
+    private Vector3 _shakeOffset = Vector3.zero;
+
     private Camera _cam;
-    private bool _usingDefaultOffset = true;
+    private int _offsetIndex; // Index into _offsets of the current view
 
     private void Awake()
     {
@@ -21,34 +34,50 @@ public class SmoothCameraFollow : MonoBehaviour
         if (_cam != null)
             _cam.fieldOfView = _fieldOfView;
 
-        // Initialize both offsets to the default view
-        _activeTargetOffset = _defaultOffset;
-        _smoothedOffset = _defaultOffset;
+        // Initialize to the first configured offset
+        Vector3 startOffset = (_offsets != null && _offsets.Length > 0) ? _offsets[0] : Vector3.zero;
+        _activeTargetOffset = startOffset;
+        _smoothedOffset = startOffset;
+
+        LogActiveOffset();
+    }
+
+    private void LogActiveOffset()
+    {
+        if (_offsets == null || _offsets.Length == 0) return;
+        Debug.Log($"[Camera] View {_offsetIndex + 1}/{_offsets.Length} -> offset {_offsets[_offsetIndex]}", this);
     }
 
     private void LateUpdate()
     {
         if (_target == null) return;
 
-        // 1. Smoothly interpolate the OFFSET itself, not the world position
-        _smoothedOffset = Vector3.SmoothDamp(_smoothedOffset, _activeTargetOffset, ref _offsetVelocity, _smoothTime);
-        
-        // 2. Apply the smoothed offset directly to the target's current position
-        transform.position = _target.position + _smoothedOffset;
-        
-        // 3. Keep the target locked perfectly dead-center of the screen
+        _smoothedOffset = Vector3.SmoothDamp(
+            _smoothedOffset, _activeTargetOffset,
+            ref _offsetVelocity, _smoothTime);
+
+        // Shake offset is added on top of the follow position
+        transform.position = _target.position + _smoothedOffset + _shakeOffset;
         transform.LookAt(_target);
     }
 
     /// <summary>
-    /// Toggles between the two designated camera offset points smoothly.
+    /// Advances to the next configured camera offset, wrapping back to the first
+    /// after the last one.
     /// </summary>
-    public void ToggleOffset()
+    public void CycleView()
     {
-        _usingDefaultOffset = !_usingDefaultOffset;
-        _activeTargetOffset = _usingDefaultOffset ? _defaultOffset : _alternateOffset;
+        if (_offsets == null || _offsets.Length == 0) return;
+
+        _offsetIndex = (_offsetIndex + 1) % _offsets.Length;
+        _activeTargetOffset = _offsets[_offsetIndex];
 
         // Reset tracking velocity to ensure a clean start to the transition
-        _offsetVelocity = Vector3.zero; 
+        _offsetVelocity = Vector3.zero;
+
+        LogActiveOffset();
     }
+
+    // Called by CameraShake
+    public void SetShakeOffset(Vector3 offset) => _shakeOffset = offset;
 }

@@ -43,8 +43,13 @@ public partial class Controller
         {
             holdTime += Time.deltaTime;
 
-            if (heldObject != null)
+            if (_pushedObject != null)
             {
+                // Already pushing — nothing to do
+            }
+            else if (heldObject != null || _giftInHand != null)
+            {
+                // Held object or gift — enter aim mode on hold
                 if (!hasEnteredAimMode && holdTime >= aimHoldThreshold
                     && AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
                 {
@@ -58,8 +63,9 @@ public partial class Controller
                     }
                 }
             }
-            else if (_pushedObject == null && holdTime >= aimHoldThreshold)
+            else if (holdTime >= aimHoldThreshold)
             {
+                // Nothing in hand — try to grab pushable
                 TryPushGrab();
             }
         }
@@ -96,6 +102,7 @@ public partial class Controller
         if (hasEnteredAimMode)
         {
             if (heldObject != null) throwObject();
+            else if (_giftInHand != null) ThrowGift(); 
             isAiming = false;
             holdTime = 0f;
             StopChargeSound();
@@ -110,12 +117,11 @@ public partial class Controller
 
     private void checkHands()
     {
-        if      (heldObject  != null) DropObject();
+        if (heldObject != null) DropObject();
         else if (_pushedObject != null) ReleasePushable();
         else if (_giftInHand != null) DropGift();
-        else                          TryPickup();
+        else TryPickup();
     }
-
     // ── Pickup ───────────────────────────────────────────────────────────────
 
     private void TryPickup()

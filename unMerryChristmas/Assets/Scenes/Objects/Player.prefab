@@ -940,6 +940,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Controller
   _cameraFollow: {fileID: 0}
+  _hintAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Hint
+      m_Type: 0
+      m_ExpectedControlType: Button
+      m_Id: 32d9bf01-1c01-46ce-a65e-87d9d29441e8
+      m_Processors:
+      m_Interactions:
+      m_SingletonActionBindings:
+      - m_Name:
+        m_Id: b4e2f731-9c3a-4d85-ae67-5f1b08c23e94
+        m_Path: <Keyboard>/h
+        m_Interactions:
+        m_Processors:
+        m_Groups: ;Keyboard&Mouse
+        m_Action: Hint
+        m_Flags: 0
+      m_Flags: 0
+    m_Reference: {fileID: 0}
   _giftBombPrefab: {fileID: 1457871387852763970, guid: 491bd01bc2901454cba22f9183dba17a, type: 3}
   pickupRange: 0.5
   pushableRange: 0.8

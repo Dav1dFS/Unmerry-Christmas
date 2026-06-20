@@ -13,6 +13,7 @@ TagManager:
   - Wood
   - Metal
   - Stone
+  - NPC
   layers:
   - Default
   - TransparentFX
