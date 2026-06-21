@@ -7073,6 +7073,9 @@ MonoBehaviour:
       Data3: 421115318
       Data4: -91766727
     Path: event:/MENU MUSIC
+  _dayBackground: {fileID: 21300000, guid: 7593de5d480438142b3faa66e08da3b9, type: 3}
+  _nightBackground: {fileID: 21300000, guid: ad8f714c4026362448d6eca5445a2776, type: 3}
+  _backgroundController: {fileID: 1201173407}
 --- !u!114 &1036924005
 MonoBehaviour:
   m_ObjectHideFlags: 0

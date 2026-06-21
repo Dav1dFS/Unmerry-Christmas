@@ -26,6 +26,10 @@ public class TitleScreenController : MonoBehaviour
     [SerializeField] private FMODUnity.EventReference _menuMusicEvent;
     private FMOD.Studio.EventInstance _menuMusicInstance;
 
+    [Header("Background")]
+    [SerializeField] private Sprite _dayBackground;
+    [SerializeField] private Sprite _nightBackground;
+    [SerializeField] private GameObject _backgroundController;
     private bool _inputEnabled = false;
     private bool _triggered = false;
 
@@ -34,12 +38,30 @@ public class TitleScreenController : MonoBehaviour
         StartCoroutine(EnableInputAfterDelay(0.8f));
         _blinkRoutine = StartCoroutine(BlinkText());
 
+        //check savefiles folder and if there is a save file, replace background image
+        if (System.IO.Directory.Exists("Assets/SaveFiles"))
+        {
+            string[] saveFiles = System.IO.Directory.GetFiles("Assets/SaveFiles");
+            if (saveFiles.Length > 0)
+            {
+                _backgroundController.GetComponent<UnityEngine.UI.Image>().sprite = _nightBackground;
+       
+            }
+            else
+            {
+                _backgroundController.GetComponent<UnityEngine.UI.Image>().sprite = _dayBackground;
+            }
+        }
+
         if (!_menuMusicEvent.IsNull)
         {
             _menuMusicInstance = FMODUnity.RuntimeManager.CreateInstance(_menuMusicEvent);
             _menuMusicInstance.start();
         }
     }
+
+   
+
 
    private void Update()
     {
