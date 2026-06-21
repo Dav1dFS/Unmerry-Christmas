@@ -13534,6 +13534,14 @@ PrefabInstance:
       propertyPath: _action
       value: 
       objectReference: {fileID: 1729062114}
+    - target: {fileID: 1767581822663541504, guid: 3dc23e1189d56294dbc3ac5ba551f8a7, type: 3}
+      propertyPath: _unlockedByDefault.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1767581822663541504, guid: 3dc23e1189d56294dbc3ac5ba551f8a7, type: 3}
+      propertyPath: '_unlockedByDefault.Array.data[8]'
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 2169291473342617667, guid: 3dc23e1189d56294dbc3ac5ba551f8a7, type: 3}
       propertyPath: _action
       value: 

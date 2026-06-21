@@ -12,5 +12,11 @@ public partial class Controller
                         && !PlayerFreezeManager.Instance.isFrozen;
 
         _animator.SetBool("Walk", isMoving && !isRolling);
+        _animator.SetBool("IsGrounded", isGrounded);
+        _animator.SetBool("Roll", isRolling);
+
+        // Trigger fires once per jump press, not held like a bool
+        if (jump && isGrounded)
+            _animator.SetTrigger("Jump");
     }
 }
