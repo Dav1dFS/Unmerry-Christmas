@@ -1,8 +1,7 @@
 fileFormatVersion: 2
-guid: ec7ae897721ac3547aa48bf2961d00c6
-NativeFormatImporter:
+guid: f0cc743abdc96a64bbf17e55265cb060
+PrefabImporter:
   externalObjects: {}
-  mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
@@ -11,5 +10,5 @@ AssetOrigin:
   productId: 346304
   packageName: Poly Christmas
   packageVersion: 1.0
-  assetPath: Assets/Art/Poly Christmas/Materials/M_Universal_A.mat
+  assetPath: Assets/Art/Poly Christmas/Prefabs/Christmas/Bowl_Soup_Christmas.prefab
   uploadId: 823396
