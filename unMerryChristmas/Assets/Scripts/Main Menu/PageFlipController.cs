@@ -45,7 +45,7 @@ public class PageFlipController : MonoBehaviour
         _rightPage.localEulerAngles = Vector3.zero;
     }
 
-    // onComplete fires when the flip animation finishes — used by BookmarkTabGroup for queuing
+    // onComplete fires when the flip animation finishes ï¿½ used by BookmarkTabGroup for queuing
     public void FlipToPage(int targetIndex, System.Action onComplete = null)
     {
         if (_isFlipping || targetIndex == _currentIndex)

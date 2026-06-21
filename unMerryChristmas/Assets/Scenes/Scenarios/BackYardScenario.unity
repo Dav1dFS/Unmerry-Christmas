@@ -322,6 +322,10 @@ PrefabInstance:
       value: 2070766535
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _openCommandsPage.m_Name
+      value: Open Commands Page
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: chargeThrowSound.Guid.Data1
       value: 1677248901
       objectReference: {fileID: 0}
@@ -338,7 +342,15 @@ PrefabInstance:
       value: -1316923458
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _openCollectiblesPage.m_Name
+      value: Open Collectibles Page
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _throwGift.m_SingletonActionBindings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _openCommandsPage.m_SingletonActionBindings.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
@@ -354,16 +366,44 @@ PrefabInstance:
       value: <Keyboard>/e
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _openCollectiblesPage.m_SingletonActionBindings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _throwGift.m_SingletonActionBindings.Array.data[0].m_Action
       value: Throw Gift
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _openCommandsPage.m_SingletonActionBindings.Array.data[0].m_Id
+      value: a51ffbb9-c121-4a9d-809f-be32f1a062ab
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _openCommandsPage.m_SingletonActionBindings.Array.data[0].m_Path
+      value: <Keyboard>/u
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _hintAction.m_Action.m_SingletonActionBindings.Array.data[0].m_Id
       value: 387db894-98a5-493c-ae5b-806c5a966893
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _openCollectiblesPage.m_SingletonActionBindings.Array.data[0].m_Id
+      value: 7e9325c2-d006-4dc3-a2b1-a7bac82a009a
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _openCommandsPage.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Open Commands Page
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _openCollectiblesPage.m_SingletonActionBindings.Array.data[0].m_Path
+      value: <Keyboard>/i
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _hintAction.m_Action.m_SingletonActionBindings.Array.data[0].m_Action
       value: Hint
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _openCollectiblesPage.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Open Collectibles Page
       objectReference: {fileID: 0}
     - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_LocalPosition.x
