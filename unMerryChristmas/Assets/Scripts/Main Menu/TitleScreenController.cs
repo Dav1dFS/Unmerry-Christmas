@@ -50,12 +50,19 @@ public class TitleScreenController : MonoBehaviour
             UnityEngine.InputSystem.Keyboard.current != null &&
             UnityEngine.InputSystem.Keyboard.current.anyKey.wasPressedThisFrame;
 
-        bool gamepadPressed =
-            UnityEngine.InputSystem.Gamepad.current != null &&
-            (
-                UnityEngine.InputSystem.Gamepad.current.buttonSouth.wasPressedThisFrame ||
-                UnityEngine.InputSystem.Gamepad.current.startButton.wasPressedThisFrame
-            );
+        bool gamepadPressed = false;
+        if (UnityEngine.InputSystem.Gamepad.current != null)
+        {
+            // Loop through all controls on the gamepad to see if a button was pressed
+            foreach (var control in UnityEngine.InputSystem.Gamepad.current.allControls)
+            {
+                if (control is UnityEngine.InputSystem.Controls.ButtonControl button && button.wasPressedThisFrame)
+                {
+                    gamepadPressed = true;
+                    break; // Stop looking once we find one press
+                }
+            }
+        }
 
         if (keyboardPressed || gamepadPressed)
         {

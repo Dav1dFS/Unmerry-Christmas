@@ -527,16 +527,16 @@ PrefabInstance:
       value: fb52fe89-4ac4-4816-87ee-01b9d350d995
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: _hintAction.m_Action.m_SingletonActionBindings.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _throwGift.m_SingletonActionBindings.Array.data[0].m_Path
       value: <Keyboard>/e
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _throwGift.m_SingletonActionBindings.Array.data[0].m_Action
       value: Throw Gift
-      objectReference: {fileID: 0}
-    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: _hintAction.m_Action.m_SingletonActionBindings.Array.size
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _hintAction.m_Action.m_SingletonActionBindings.Array.data[0].m_Id
@@ -552,15 +552,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.39
+      value: 0.184
       objectReference: {fileID: 0}
     - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_LocalPosition.z
       value: -19.055
-      objectReference: {fileID: 0}
-    - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.184
       objectReference: {fileID: 0}
     - target: {fileID: 2424163403160389342, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -638,11 +634,15 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: [{fileID: 4745693481146613036, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3},
-      {fileID: 8593914665987783247, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}]
+    m_RemovedComponents:
+    - {fileID: 4745693481146613036, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+    - {fileID: 8593914665987783247, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: [{targetCorrespondingSourceObject: {fileID: 6081462630574039983, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}, insertIndex: -1, addedObject: {fileID: 451648200}}]
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6081462630574039983, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 451648200}
   m_SourcePrefab: {fileID: 100100000, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
 --- !u!114 &27609496 stripped
 MonoBehaviour:
@@ -992,6 +992,13 @@ MonoBehaviour:
   _normalScale: 1
   _hoverScale: 0.9
   _selectedScale: 0.8
+  _hoverSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &52664445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3814,6 +3821,13 @@ MonoBehaviour:
   - {fileID: 1039547376}
   - {fileID: 1855168056}
   _pageFlip: {fileID: 282376346}
+  _pageTurnSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &282376346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3951,6 +3965,13 @@ MonoBehaviour:
   _tutorialPage: {fileID: 0}
   _drawingPagesPage: {fileID: 0}
   _taskListPage: {fileID: 0}
+  _bookOpenSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &282376348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5543,6 +5564,13 @@ MonoBehaviour:
   _normalColor: {r: 0.07924521, g: 0.07924521, b: 0.07924521, a: 1}
   _hoverColor: {r: 1, g: 0.3149549, b: 0, a: 1}
   _pressedColor: {r: 0.23773581, g: 0.039024547, b: 0.039024547, a: 1}
+  _hoverSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &396368953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5952,33 +5980,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 443620957}
   m_CullTransparentMesh: 1
---- !u!1 &451648194 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6081462630574039983, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
-  m_PrefabInstance: {fileID: 27609495}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &451648200
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 451648194}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 7e9f4b51be9e3054092fab739e8cff8d, type: 3}
-  m_Controller: {fileID: 9100000, guid: c03e5abc8d6f004469e2352f189de638, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &449143858
 GameObject:
   m_ObjectHideFlags: 0
@@ -6151,6 +6152,33 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 449143858}
   m_Mesh: {fileID: 3033355355520179464, guid: 58607a7237b27c0489708d9b0fab6547, type: 3}
+--- !u!1 &451648194 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6081462630574039983, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+  m_PrefabInstance: {fileID: 27609495}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &451648200
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451648194}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 7e9f4b51be9e3054092fab739e8cff8d, type: 3}
+  m_Controller: {fileID: 9100000, guid: c03e5abc8d6f004469e2352f189de638, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &454040873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8802,6 +8830,20 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _fadeDuration: 0.15
+--- !u!114 &722187959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Throw
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_ActionId: b8f2c461-3d9a-4e07-bc15-2a94e71f8c30
 --- !u!1 &727470708 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d88720a8d06e2a94d917d494e876f856, type: 3}
@@ -8883,6 +8925,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PickupObject
   holdScale: {x: 1, y: 1, z: 1}
   holdRotationOffset: {x: 0, y: 0, z: 0}
+  holdPositionOffset: {x: 0, y: 0, z: 0}
 --- !u!114 &727470716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8913,20 +8956,6 @@ MonoBehaviour:
   _npcShakeDuration: 0.1
   _npcShakeMagnitude: 0.15
   _npcShakeFrequency: 20
---- !u!114 &722187959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Player/Throw
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  m_ActionId: b8f2c461-3d9a-4e07-bc15-2a94e71f8c30
 --- !u!1001 &738133260
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11957,6 +11986,13 @@ MonoBehaviour:
   _normalScale: 1
   _hoverScale: 0.9
   _selectedScale: 0.8
+  _hoverSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &935355078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12659,6 +12695,13 @@ MonoBehaviour:
   _normalColor: {r: 0.07924521, g: 0.07924521, b: 0.07924521, a: 1}
   _hoverColor: {r: 1, g: 0.3149549, b: 0, a: 1}
   _pressedColor: {r: 0.23773581, g: 0.039024547, b: 0.039024547, a: 1}
+  _hoverSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &963220009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13800,6 +13843,13 @@ MonoBehaviour:
   _normalScale: 1
   _hoverScale: 0.9
   _selectedScale: 0.8
+  _hoverSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &1039547377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17691,6 +17741,13 @@ MonoBehaviour:
   _normalColor: {r: 0.07924521, g: 0.07924521, b: 0.07924521, a: 1}
   _hoverColor: {r: 1, g: 0.3149549, b: 0, a: 1}
   _pressedColor: {r: 0.23773581, g: 0.039024547, b: 0.039024547, a: 1}
+  _hoverSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &1451600102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20468,6 +20525,13 @@ MonoBehaviour:
   _normalScale: 1
   _hoverScale: 0.9
   _selectedScale: 0.8
+  _hoverSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &1855168057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21349,6 +21413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d307285259be6d2499ac90e139a93ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
+  _audioEventIcon: {fileID: 0}
   walkSound:
     Guid:
       Data1: 1481767794
@@ -23160,6 +23225,13 @@ MonoBehaviour:
   _normalColor: {r: 0.07924521, g: 0.07924521, b: 0.07924521, a: 1}
   _hoverColor: {r: 1, g: 0.3149549, b: 0, a: 1}
   _pressedColor: {r: 0.23773581, g: 0.039024547, b: 0.039024547, a: 1}
+  _hoverSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!114 &2138428154
 MonoBehaviour:
   m_ObjectHideFlags: 0
