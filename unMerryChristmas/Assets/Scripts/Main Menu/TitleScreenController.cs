@@ -26,6 +26,10 @@ public class TitleScreenController : MonoBehaviour
     [SerializeField] private FMODUnity.EventReference _menuMusicEvent;
     private FMOD.Studio.EventInstance _menuMusicInstance;
 
+    [Header("Background")]
+    [SerializeField] private Sprite _dayBackground;
+    [SerializeField] private Sprite _nightBackground;
+    [SerializeField] private GameObject _backgroundController;
     private bool _inputEnabled = false;
     private bool _triggered = false;
 
@@ -34,12 +38,30 @@ public class TitleScreenController : MonoBehaviour
         StartCoroutine(EnableInputAfterDelay(0.8f));
         _blinkRoutine = StartCoroutine(BlinkText());
 
+        //check savefiles folder and if there is a save file, replace background image
+        if (System.IO.Directory.Exists("Assets/SaveFiles"))
+        {
+            string[] saveFiles = System.IO.Directory.GetFiles("Assets/SaveFiles");
+            if (saveFiles.Length > 0)
+            {
+                _backgroundController.GetComponent<UnityEngine.UI.Image>().sprite = _nightBackground;
+       
+            }
+            else
+            {
+                _backgroundController.GetComponent<UnityEngine.UI.Image>().sprite = _dayBackground;
+            }
+        }
+
         if (!_menuMusicEvent.IsNull)
         {
             _menuMusicInstance = FMODUnity.RuntimeManager.CreateInstance(_menuMusicEvent);
             _menuMusicInstance.start();
         }
     }
+
+   
+
 
    private void Update()
     {
@@ -50,12 +72,19 @@ public class TitleScreenController : MonoBehaviour
             UnityEngine.InputSystem.Keyboard.current != null &&
             UnityEngine.InputSystem.Keyboard.current.anyKey.wasPressedThisFrame;
 
-        bool gamepadPressed =
-            UnityEngine.InputSystem.Gamepad.current != null &&
-            (
-                UnityEngine.InputSystem.Gamepad.current.buttonSouth.wasPressedThisFrame ||
-                UnityEngine.InputSystem.Gamepad.current.startButton.wasPressedThisFrame
-            );
+        bool gamepadPressed = false;
+        if (UnityEngine.InputSystem.Gamepad.current != null)
+        {
+            // Loop through all controls on the gamepad to see if a button was pressed
+            foreach (var control in UnityEngine.InputSystem.Gamepad.current.allControls)
+            {
+                if (control is UnityEngine.InputSystem.Controls.ButtonControl button && button.wasPressedThisFrame)
+                {
+                    gamepadPressed = true;
+                    break; // Stop looking once we find one press
+                }
+            }
+        }
 
         if (keyboardPressed || gamepadPressed)
         {
