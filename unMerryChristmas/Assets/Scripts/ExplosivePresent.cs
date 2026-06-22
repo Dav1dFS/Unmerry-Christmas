@@ -59,19 +59,25 @@ public class ExplosivePresent : MonoBehaviour
         if (!_armed) return;
 
         NpcController npc = col.gameObject.GetComponentInParent<NpcController>();
+
         if (npc != null)
-            npc.OnHitByThrownObject();
         {
+            npc.OnHitByThrownObject();
             npc.OnHit();
             npc.ApplyHitStop();
 
-            // Screen shake for NPC direct hit
-            CameraShake.Instance?.Shake(_npcHitShakeDuration, _npcHitShakeMagnitude);
+            CameraShake.Instance?.Shake(
+                _npcHitShakeDuration,
+                _npcHitShakeMagnitude);
 
-            // Impact frame at contact point
-            HitStopManager.Instance?.TriggerHitStop(_npcHitStopDuration);
-            SpawnImpactFrame(col.GetContact(0).point, _npcHitFrameScale,
-                             _npcHitFrameDuration, _npcHitFrameColor);
+            HitStopManager.Instance?.TriggerHitStop(
+                _npcHitStopDuration);
+
+            SpawnImpactFrame(
+                col.GetContact(0).point,
+                _npcHitFrameScale,
+                _npcHitFrameDuration,
+                _npcHitFrameColor);
         }
     }
 

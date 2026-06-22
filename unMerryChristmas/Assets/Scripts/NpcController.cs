@@ -10,41 +10,45 @@ public class NpcController : MonoBehaviour
 {
     [Header("Key Items")]
     public List<Transform> keyItems = new();
-    [SerializeField] private float _busyDuration = 10f; // seconds on each item
+    [SerializeField] private float _busyDuration = 10f;
     [SerializeField] private float _busyDurationVariance = 5f;
 
     [Header("Detection")]
     public float DetectionAngle = 30f;
     public float DetectionRange = 6f;
-    public float DetectionMinHeight = 0.2f; // minimum height difference to detect player (to prevent seeing through windows)
-    [SerializeField] private float _detectionBuildUpTime = 2f; // seconds needed to detect player
+    public float DetectionMinHeight = 0.2f;
+    [SerializeField] private float _detectionBuildUpTime = 2f;
     [SerializeField] private float _gracePeriod = 4f;
-    [SerializeField] private float _alertedDetectionBuildUpTime = 1f; // when alerted, detect faster
+    [SerializeField] private float _alertedDetectionBuildUpTime = 1f;
     [SerializeField] private float _alertDuration = 6f;
 
     [SerializeField] private float _watchDuration = 3f;
-    [SerializeField] private float _lookAroundSpeed = 45f; // degrees per second while looking around
-    [SerializeField] private int _lookAroundTurns = 3; // number of times to look around when alerted
+    [SerializeField] private float _lookAroundSpeed = 45f;
+    [SerializeField] private int _lookAroundTurns = 3;
     [SerializeField] private LayerMask _playerLayer;
-    [SerializeField] private LayerMask _obstacleMask; // walls/obstacles that block vision
+    [SerializeField] private LayerMask _obstacleMask;
 
     public float DetectionProgress => _detectionBuildUpTime > 0f ?
-    Mathf.Clamp01(_detectionTimer / _detectionBuildUpTime) : 0f;
+        Mathf.Clamp01(_detectionTimer / _detectionBuildUpTime) : 0f;
 
     [Header("Hit Stop")]
     [SerializeField] private float _hitStopDuration = 0.1f;
 
     [Header("Movement")]
     [SerializeField] private float _walkSpeed = 2f;
-    [SerializeField] private float _alertedWalkSpeed = 1f; // slower when alerted
+    [SerializeField] private float _alertedWalkSpeed = 1f;
     [SerializeField] private float _arrivedThreshold = 1.5f;
 
     [Header("Distraction")]
     [SerializeField] private float _distractedDuration = 5f;
 
+    [Header("Audio")]
+    [SerializeField] private FMODUnity.EventReference _boingSound;
+
     [Header("References")]
-    [SerializeField] private Transform _head; // head position for raycasting (can be null, then uses body)
-    [SerializeField] private Transform _player; // player reference (can be set in inspector or auto-found)
+    [SerializeField] private Transform _head;
+    [SerializeField] private Transform _player;
+    [SerializeField] private Animator _animator; // auto-found in children if left empty
 
     public NpcStates CurrentState { get; private set; } = NpcStates.Busy;
 
@@ -54,13 +58,19 @@ public class NpcController : MonoBehaviour
     private float _detectionTimer = 0f;
     private float _gracePeriodTimer = 0f;
     private float CurrentDetectionBuildUpTime =>
-    CurrentState == NpcStates.Alerted ? _alertedDetectionBuildUpTime : _detectionBuildUpTime;
+        CurrentState == NpcStates.Alerted ? _alertedDetectionBuildUpTime : _detectionBuildUpTime;
 
     private float _watchCooldown = 3f;
     private float _watchCooldownTimer = 0f;
     private float _watchTimer = 0f;
     private int _lookTurnsLeft = 0;
     private Coroutine _lookAroundCoroutine;
+
+    // ── Animator parameter names ──────────────────────────────────────────────
+    // Bool toggled between Busy (false → Idle) and Walking (true → Walk).
+    // Create a bool parameter called "IsWalking" in the Animator and wire the
+    // Idle→Walk and Walk→Idle transitions to it.
+    private static readonly int AnimIsWalking = Animator.StringToHash("IsWalking");
 
     protected virtual void Awake()
     {
@@ -73,6 +83,9 @@ public class NpcController : MonoBehaviour
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null) _player = playerObj.transform;
         }
+
+        if (_animator == null)
+            _animator = GetComponentInChildren<Animator>();
     }
 
     protected virtual void Start()
@@ -86,7 +99,6 @@ public class NpcController : MonoBehaviour
         if (_player != null)
         {
             float playerHeight = _player.position.y - transform.position.y;
-           // Debug.Log($"playerHeight: {playerHeight:F2} | DetectionMinHeight: {DetectionMinHeight}");
         }
         _stateTimer -= Time.deltaTime;
         if (_gracePeriodTimer > 0f) _gracePeriodTimer -= Time.deltaTime;
@@ -104,12 +116,16 @@ public class NpcController : MonoBehaviour
             CheckPlayerDetection();
     }
 
-    // State Machine
+    // ── State Machine ─────────────────────────────────────────────────────────
+
     public void EnterBusy()
     {
         ChangeState(NpcStates.Busy);
         _agent.isStopped = true;
         _stateTimer = _busyDuration + Random.Range(-_busyDurationVariance, _busyDurationVariance);
+
+        _animator?.SetBool(AnimIsWalking, false); // → Idle
+
         OnEnterBusy(keyItems[_currentKeyItemIndex]);
     }
 
@@ -119,6 +135,9 @@ public class NpcController : MonoBehaviour
         _agent.isStopped = false;
         _agent.speed = _walkSpeed;
         _agent.SetDestination(keyItems[_currentKeyItemIndex].position);
+
+        _animator?.SetBool(AnimIsWalking, true); // → Walk
+
         OnEnterWalking(keyItems[_currentKeyItemIndex]);
     }
 
@@ -170,44 +189,38 @@ public class NpcController : MonoBehaviour
         OnEnterDisabled();
     }
 
-    [Header("Audio")]
-    [SerializeField] private FMODUnity.EventReference _boingSound;
+    // ── Hit ───────────────────────────────────────────────────────────────────
 
     public void OnHitByThrownObject()
     {
         if (!_boingSound.IsNull)
-        {
             FMODUnity.RuntimeManager.PlayOneShot(_boingSound, transform.position);
-        }
+
         OnHit();
     }
 
     public void OnHit()
     {
         GetComponent<NpcHitFlash>()?.TriggerFlash();
-        //if (CurrentState == NpcStates.Disabled) return;
-        //EnterAlerted();
     }
+
     public void ApplyHitStop()
     {
         Animator anim = GetComponentInChildren<Animator>();
         if (anim == null) return;
         StartCoroutine(PauseAnimation(anim));
     }
+
     private IEnumerator PauseAnimation(Animator anim)
     {
-        // Save current rotation so it doesn't change during hitstop
         Quaternion savedRotation = transform.rotation;
-
-        anim.speed = 0f;  // full pause
+        anim.speed = 0f;
         yield return new WaitForSecondsRealtime(_hitStopDuration);
         anim.speed = 1f;
-
-        // Restore rotation in case physics moved it
         transform.rotation = savedRotation;
     }
 
-    // State Machine Updates
+    // ── State Machine Updates ─────────────────────────────────────────────────
 
     void UpdateBusy()
     {
@@ -235,7 +248,7 @@ public class NpcController : MonoBehaviour
         if (_stateTimer <= 0f)
         {
             if (_lookAroundCoroutine != null) StopCoroutine(_lookAroundCoroutine);
-            EnterWalking(); // back to normal routine
+            EnterWalking();
         }
     }
 
@@ -271,7 +284,7 @@ public class NpcController : MonoBehaviour
             EnterAlerted();
     }
 
-    // Detection
+    // ── Detection ─────────────────────────────────────────────────────────────
 
     void CheckPlayerDetection()
     {
@@ -303,7 +316,6 @@ public class NpcController : MonoBehaviour
         float angle = Vector3.Angle(transform.forward, dirToPlayer.normalized);
         if (angle > DetectionAngle) return false;
 
-        // height check ignored when alerted — NPC looks at any height
         if (CurrentState != NpcStates.Alerted)
         {
             float playerHeight = _player.position.y - transform.position.y;
@@ -316,7 +328,7 @@ public class NpcController : MonoBehaviour
         return true;
     }
 
-    // Look Around Coroutine
+    // ── Look Around ───────────────────────────────────────────────────────────
 
     IEnumerator LookAroundRoutine()
     {
@@ -343,7 +355,7 @@ public class NpcController : MonoBehaviour
         }
     }
 
-    // Key Item Disruption (called externally)
+    // ── External Calls ────────────────────────────────────────────────────────
 
     public void OnKeyItemDisrupted()
     {
@@ -351,7 +363,7 @@ public class NpcController : MonoBehaviour
         EnterAlerted();
     }
 
-    // Helpers
+    // ── Helpers ───────────────────────────────────────────────────────────────
 
     void ChangeState(NpcStates newState)
     {
@@ -360,7 +372,7 @@ public class NpcController : MonoBehaviour
         OnStateChanged(previous, newState);
     }
 
-    // Override on enter/update methods in subclasses for specific behaviors or animations
+    // ── Virtual hooks for subclasses ──────────────────────────────────────────
 
     protected virtual void OnEnterBusy(Transform keyItem) { }
     protected virtual void OnEnterWalking(Transform keyItem) { }
@@ -375,21 +387,19 @@ public class NpcController : MonoBehaviour
     protected virtual void OnUpdateWatching() { }
     protected virtual void OnUpdateDistracted() { }
 
-    // Called whenever state changes, can be used for debugging or triggering global events
     protected virtual void OnStateChanged(NpcStates previous, NpcStates next) { }
 
-    // Gizmos
+    // ── Gizmos ────────────────────────────────────────────────────────────────
 
     void OnDrawGizmosSelected()
     {
-        // Vision Cone
         Gizmos.color = Color.yellow;
         Vector3 leftDir = Quaternion.Euler(0, -DetectionAngle, 0) * transform.forward;
         Vector3 rightDir = Quaternion.Euler(0, DetectionAngle, 0) * transform.forward;
         Gizmos.DrawRay(transform.position, leftDir * DetectionRange);
         Gizmos.DrawRay(transform.position, rightDir * DetectionRange);
         Gizmos.DrawWireSphere(transform.position, DetectionRange);
-        // Key items
+
         if (keyItems == null) return;
         Gizmos.color = Color.cyan;
         foreach (var item in keyItems)
