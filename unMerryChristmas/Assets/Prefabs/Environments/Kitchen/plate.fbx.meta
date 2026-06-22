@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 969d6654c0a6c463ba2775701306c339
+guid: 5395bee13d778446dab84b089d559fe5
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,73 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Cold
-    second: {fileID: 2100000, guid: cc77c7fa4edb045c29af5b1c61c1d9dd, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Counters
-    second: {fileID: 2100000, guid: d5c393a8eb79e4ad98f5b9824f668423, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Floor
-    second: {fileID: 2100000, guid: 5a5e773c67073409f891898cbe73a183, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Fridge
-    second: {fileID: 2100000, guid: cb2eb48dbb92c427ba387499478f911a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Furnace
-    second: {fileID: 2100000, guid: 325c7e2721bfc477c99b1815524127b7, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: FurnaceWindow
-    second: {fileID: 2100000, guid: c328f8f05ac64497385c1238b08eab11, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Handles
-    second: {fileID: 2100000, guid: 8f0535606ea4048da943a4a8bab067b8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: HeatSurface
-    second: {fileID: 2100000, guid: 9f6b6c380ec904a88a07fbad7310e909, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Hot
-    second: {fileID: 2100000, guid: 1f1573acb935041ceb9b9307714a7eae, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material
-    second: {fileID: 2100000, guid: ee53391429dab4431a60358916e2f5cb, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Sink
-    second: {fileID: 2100000, guid: 5a7de7de21f0b43f2846a82a2c591817, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: SinkBot
-    second: {fileID: 2100000, guid: cdf7165eed13a467e8c60827e69b06d5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Waterpipe
-    second: {fileID: 2100000, guid: 39cdde48e33ad4497a3f1f2663497d59, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Wood.001
-    second: {fileID: 2100000, guid: cb2eb48dbb92c427ba387499478f911a, type: 2}
+      name: plate
+    second: {fileID: 2100000, guid: cb4a9ca89134042fa8d7b54d8758beea, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -105,7 +40,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 1
+    addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importPhysicalCameras: 1

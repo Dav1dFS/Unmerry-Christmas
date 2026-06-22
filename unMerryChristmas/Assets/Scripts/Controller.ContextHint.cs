@@ -74,7 +74,7 @@ public partial class Controller
 
     private string GetHintForCollider(Collider col)
     {
-        IInteractable interactable = col.GetComponent<IInteractable>();
+        IInteractable interactable = col.GetComponentInParent<IInteractable>();
         if (interactable != null) return interactable.GetHintText();
 
         if (col.CompareTag("Token"))       return "E — Collect";
