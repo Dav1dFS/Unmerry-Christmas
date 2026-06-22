@@ -15,7 +15,8 @@ public partial class Controller
         _animator.SetBool("IsGrounded", isGrounded);
         _animator.SetBool("Roll", isRolling);
 
-        // Trigger fires once per jump press, not held like a bool
+        _animator.SetBool("Aim", isAiming);
+
         if (jump && isGrounded)
             _animator.SetTrigger("Jump");
     }

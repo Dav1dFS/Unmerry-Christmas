@@ -1,5 +1,6 @@
 using FMODUnity;
 using UnityEngine;
+using System.Collections;
 
 public partial class Controller
 {
@@ -9,6 +10,7 @@ public partial class Controller
     [SerializeField] private float pushableRange = 0.1f;
 
     [Header("Interaction — Throw")]
+    [SerializeField] private float throwAnimationDelay = 0.15f;
     [SerializeField] private float throwForce         = 10f;
     [SerializeField] private float aimHoldThreshold   = 0.2f;
     [SerializeField] private float maxThrowChargeTime = 2f;
@@ -32,6 +34,7 @@ public partial class Controller
     private float holdTime            = 0f;
     private bool  isHoldingInteract = false;
     private bool  hasEnteredAimMode = false;
+    private float cachedCharge = 0f;
 
     private FMOD.Studio.EventInstance chargeThrowInstance;
 
@@ -101,8 +104,16 @@ public partial class Controller
 
         if (hasEnteredAimMode)
         {
-            if (heldObject != null) throwObject();
-            else if (_giftInHand != null) ThrowGift(); 
+            cachedCharge = Mathf.Clamp01((holdTime - aimHoldThreshold) / maxThrowChargeTime);
+
+            _animator.SetTrigger("Throw");
+
+            if (heldObject != null)
+                StartCoroutine(ThrowObjectDelayed());
+
+            else if (_giftInHand != null)
+                StartCoroutine(ThrowGiftDelayed());
+
             isAiming = false;
             holdTime = 0f;
             StopChargeSound();
@@ -112,7 +123,6 @@ public partial class Controller
             checkHands();
         }
     }
-
     // ── Hands (context-sensitive tap) ────────────────────────────────────────
 
     private void checkHands()
@@ -244,8 +254,8 @@ public partial class Controller
         if (heldObject == null) return;
 
         isAiming = false;
-        float charge = Mathf.Clamp01((holdTime - aimHoldThreshold) / maxThrowChargeTime);
-        float force  = Mathf.Lerp(5f, 15f, charge);
+
+        float force = Mathf.Lerp(5f, 15f, cachedCharge);
 
         Rigidbody objectRb = heldObject.GetComponent<Rigidbody>();
         if (objectRb != null)
@@ -254,11 +264,25 @@ public partial class Controller
             if (impact != null) impact.SetThrown();
 
             DropObject();
+
             Vector3 throwDir = transform.forward + Vector3.up * 0.5f;
             objectRb.AddForce(throwDir.normalized * force, ForceMode.Impulse);
+
             AudioManager.instance?.PlayThrowSound(transform.position);
         }
     }
+    private IEnumerator ThrowObjectDelayed()
+    {
+        yield return new WaitForSeconds(throwAnimationDelay);
+        throwObject();
+    }
+
+    private IEnumerator ThrowGiftDelayed()
+    {
+        yield return new WaitForSeconds(throwAnimationDelay);
+        ThrowGift();
+    }
+
 
     private void StopChargeSound()
     {
