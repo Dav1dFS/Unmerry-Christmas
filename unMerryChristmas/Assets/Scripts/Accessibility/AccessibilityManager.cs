@@ -95,6 +95,7 @@ public class AccessibilityManager : MonoBehaviour
         set
         {
             _highlightInteractables = value;
+            Debug.Log($"[AccessibilityManager] Highlight changed to: {_highlightInteractables}");
             OnHighlightChanged?.Invoke(_highlightInteractables);
             PlayerPrefs.SetInt(KeyHighlight, _highlightInteractables ? 1 : 0);
         }

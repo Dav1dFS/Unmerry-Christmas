@@ -18759,6 +18759,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -30
       objectReference: {fileID: 0}
+    - target: {fileID: 2399675305342554559, guid: 3dc23e1189d56294dbc3ac5ba551f8a7, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399675305342554559, guid: 3dc23e1189d56294dbc3ac5ba551f8a7, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2442598168097949109, guid: 3dc23e1189d56294dbc3ac5ba551f8a7, type: 3}
       propertyPath: _action
       value: 
