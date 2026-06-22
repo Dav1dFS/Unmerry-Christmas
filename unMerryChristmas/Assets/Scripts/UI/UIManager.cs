@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,6 +19,10 @@ public class UIManager : MonoBehaviour
 
     [Header("Input")]
     [SerializeField] private InputAction _pauseAction;
+
+    [Header("Drawing Book Pickup")]
+    [Tooltip("Delay (seconds) after the elf finds the book before it opens to the Tutorial page, giving the intro animation a moment to play.")]
+    [SerializeField] private float _bookPickupOpenDelay = 1.0f;
 
     // FreeOutline Outline 2 watches rendering layer bit 2.
     // Unity's default renderingLayerMask for all renderers is 0xFFFFFFFF (all bits set),
@@ -109,6 +114,25 @@ public class UIManager : MonoBehaviour
     // ─────────────────────────────────────────────────────────────────────────
 
     public void ShowTutorialPrompt(string text) => _tutorialToast?.Show(text);
+
+    // ── Drawing book pickup (key item, found once) ────────────────────────────
+    // Called by DrawingBookPickup.Interact(). Shows the "New note added" toast
+    // and then opens the book to the Tutorial page after a short delay so the
+    // elf's introductory animation can play first (Level Design Document §3.3).
+    public void OnDrawingBookFound()
+    {
+        _abilityUnlockToast?.ShowNote("Drawing Book");
+        StartCoroutine(OpenBookAfterDelay(_bookPickupOpenDelay));
+    }
+
+    /// <summary>Opens the book to its configured pickup-landing page (the Tasks page).</summary>
+    public void OpenBookToFoundPage() => _drawingBookMenu?.OpenToBookFoundPage();
+
+    private IEnumerator OpenBookAfterDelay(float delay)
+    {
+        if (delay > 0f) yield return new WaitForSeconds(delay);
+        OpenBookToFoundPage();
+    }
 
     // ── Contextual hint (driven by Controller.ContextHint every frame) ────────
     // No changes needed here — Controller calls Show/Hide directly.

@@ -152,7 +152,9 @@ public partial class Controller
                 }
                 else
                 {
-                    IInteractable interactable = hit.GetComponent<IInteractable>();
+                    // GetComponentInParent so interactables whose colliders live on
+                    // child meshes (e.g. the drawing book) still resolve.
+                    IInteractable interactable = hit.GetComponentInParent<IInteractable>();
                     if (interactable != null)
                     {
                         closestDist = d;
