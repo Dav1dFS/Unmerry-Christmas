@@ -53,8 +53,8 @@ public class SettingsPanelController : MonoBehaviour
 
     private void OnEnable()
     {
+        // Just show navigation; let ShowSubPage handle the syncing naturally
         ShowNavigation();
-        SyncFromManager();
     }
 
     // ── Sub-page navigation ───────────────────────────────────────────────────
@@ -66,25 +66,38 @@ public class SettingsPanelController : MonoBehaviour
 
     private void ShowSubPage(GameObject page)
     {
+        // 1. Set the sync guard BEFORE changing GameObject active states
+        _syncing = true;
+
         if (_navigationPage) _navigationPage.SetActive(false);
         if (_audioPage)      _audioPage.SetActive(false);
         if (_displayPage)    _displayPage.SetActive(false);
         if (_videoPage)      _videoPage.SetActive(false);
         if (_controlsPage)   _controlsPage.SetActive(false);
+        
         if (page)            page.SetActive(true);
+
+        // 2. Pass control to sync values while the guard is still active
+        SyncFromManager();
     }
 
     private void SyncFromManager()
     {
-        if (AccessibilityManager.Instance == null) return;
+        if (AccessibilityManager.Instance == null) 
+        {
+            _syncing = false; // Ensure we don't lock up if the manager is missing
+            return;
+        }
+
         if (_musicSlider == null || _sfxSlider == null || _dialogueSlider == null
             || _highlightToggle == null || _hintsToggle == null)
         {
             Debug.LogWarning("[SettingsPanelController] One or more UI fields are not wired in the Inspector.", this);
+            _syncing = false;
             return;
         }
 
-        _syncing = true;
+        // Note: _syncing = true is now handled safely by ShowSubPage
 
         _musicSlider.value    = AccessibilityManager.Instance.MusicVolume;
         _sfxSlider.value      = AccessibilityManager.Instance.SfxVolume;
@@ -96,6 +109,7 @@ public class SettingsPanelController : MonoBehaviour
             _gammaSlider.value = AccessibilityManager.Instance.Gamma;
         RefreshColorblindLabel();
 
+        // 3. Lower the guard only AFTER both hierarchy changes and value updates are complete
         _syncing = false;
     }
 

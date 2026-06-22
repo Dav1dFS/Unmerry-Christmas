@@ -39,9 +39,9 @@ public class TitleScreenController : MonoBehaviour
         _blinkRoutine = StartCoroutine(BlinkText());
 
         //check savefiles folder and if there is a save file, replace background image
-        if (System.IO.Directory.Exists("Assets/SaveFiles"))
+        if (System.IO.Directory.Exists("/SaveFiles"))
         {
-            string[] saveFiles = System.IO.Directory.GetFiles("Assets/SaveFiles");
+            string[] saveFiles = System.IO.Directory.GetFiles("/SaveFiles");
             if (saveFiles.Length > 0)
             {
                 _backgroundController.GetComponent<UnityEngine.UI.Image>().sprite = _nightBackground;
