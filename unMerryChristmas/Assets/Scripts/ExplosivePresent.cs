@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ExplosivePresent : MonoBehaviour
@@ -103,7 +104,24 @@ public class ExplosivePresent : MonoBehaviour
             }
         }
 
+        NotifyExplosionReactives();
+
         Destroy(gameObject);
+    }
+
+    // Notify every IExplosionReactive (lit decorations, oven pot) within the blast.
+    // Uses an unfiltered overlap so reactives don't depend on _affectedLayers, and
+    // dedupes so each object is told once even if it has several colliders.
+    private void NotifyExplosionReactives()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius);
+        var notified = new HashSet<IExplosionReactive>();
+        foreach (Collider hit in hits)
+        {
+            IExplosionReactive reactive = hit.GetComponentInParent<IExplosionReactive>();
+            if (reactive != null && notified.Add(reactive))
+                reactive.OnExplosion(transform.position, _explosionRadius);
+        }
     }
 
     private void SpawnImpactFrame(Vector3 point, float scale, float duration, Color color)
