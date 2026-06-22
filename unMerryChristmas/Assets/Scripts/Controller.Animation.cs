@@ -5,6 +5,7 @@ public partial class Controller
     // Drives Animator parameters based on movement and action state
 
     private bool rollTriggered;
+    private bool jumpTriggered;
 
     private void UpdateAnimations()
     {
@@ -17,8 +18,11 @@ public partial class Controller
         _animator.SetBool("IsGrounded", isGrounded);
         _animator.SetBool("Aim", isAiming);
 
-        if (jump && isGrounded)
+        if (jump && isGrounded && !jumpTriggered)
+        {
             _animator.SetTrigger("Jump");
+            jumpTriggered = true;
+        }
 
         if (isRolling && !rollTriggered)
         {

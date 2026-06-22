@@ -117,7 +117,8 @@ public partial class Controller : MonoBehaviour
     }
 
     // ── Input callback handlers (named so OnDisable can unsubscribe them) ───────
-    private void OnJumpStarted(InputAction.CallbackContext _)         { if (isGrounded) jump = true; }
+    private void OnJumpStarted(InputAction.CallbackContext _)
+    { if (isGrounded && jumpCooldownTimer <= 0f) jump = true; }
     private void OnInteractStarted(InputAction.CallbackContext _)     => StartInteractHold();
     private void OnInteractCanceled(InputAction.CallbackContext _)    => ReleaseInteractHold();
     private void OnRollStarted(InputAction.CallbackContext _)         => TryStartRoll();
@@ -127,6 +128,9 @@ public partial class Controller : MonoBehaviour
 
     private void Update()
     {
+        if (jumpCooldownTimer > 0f)
+            jumpCooldownTimer -= Time.deltaTime;
+
         UpdateGroundDetection(); // Jump
         UpdateRoll();            // Roll
         UpdateInteraction();     // Interaction (hold-to-aim, trajectory, push constraints)

@@ -197,12 +197,14 @@ public partial class Controller
         }
 
         // Discard any jump press queued while the player was airborne.
-        if (!isGrounded) jump = false;
+        if (!isGrounded)
+            jump = false;
 
-        if (jump && isGrounded && _pushedObject == null)
+        if (jump && isGrounded && _pushedObject == null && jumpCooldownTimer <= 0f)
         {
+            jumpCooldownTimer = jumpCooldown;
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            jump       = false;   
+            jump = false;
             isGrounded = false;
             AudioManager.instance?.PlayOneShot(jumpSound, transform.position);
         }
