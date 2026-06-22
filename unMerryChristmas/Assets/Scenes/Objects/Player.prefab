@@ -940,7 +940,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Controller
   _cameraFollow: {fileID: 0}
   _giftBombPrefab: {fileID: 1457871387852763970, guid: 491bd01bc2901454cba22f9183dba17a, type: 3}
-  pickupRange: 0.5
+  pickupRange: 1.5
   pushableRange: 0.8
   throwAnimationDelay: 0.15
   throwForce: 10

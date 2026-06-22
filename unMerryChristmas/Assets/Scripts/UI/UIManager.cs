@@ -42,6 +42,7 @@ public class UIManager : MonoBehaviour
     {
         AbilityTokenManager.OnAbilityUnlocked += OnAbilityUnlocked;
         BackYardTaskTracker.OnTaskCompleted += OnTaskCompleted;
+        TaskService.OnTaskCompleted += OnServiceTaskCompleted;
         SceneManager.sceneLoaded += OnSceneLoaded;
         _pauseAction.Enable();
         _pauseAction.started += OnPausePressed;
@@ -51,6 +52,7 @@ public class UIManager : MonoBehaviour
     {
         AbilityTokenManager.OnAbilityUnlocked -= OnAbilityUnlocked;
         BackYardTaskTracker.OnTaskCompleted -= OnTaskCompleted;
+        TaskService.OnTaskCompleted -= OnServiceTaskCompleted;
         SceneManager.sceneLoaded -= OnSceneLoaded;
         _pauseAction.started -= OnPausePressed;
         _pauseAction.Disable();
@@ -152,4 +154,9 @@ public class UIManager : MonoBehaviour
 
     private void OnTaskCompleted(BackYardTaskTracker.TaskId id)
         => _taskCompleteFlash?.Show(id.ToString()); // shows "Task complete\n{name}" flash
+
+    // Scene-agnostic task system (Kitchen and future scenes). Same flash, using the
+    // task's designer-authored display name.
+    private void OnServiceTaskCompleted(TaskDefinition def)
+        => _taskCompleteFlash?.Show(def != null ? def.DisplayName : "Task");
 }

@@ -9,6 +9,14 @@ public partial class Controller
     [SerializeField] private float pickupRange   = 1.5f;
     [SerializeField] private float pushableRange = 0.1f;
 
+    [Tooltip("Vertical offset (world units) added to the player position when centering the " +
+             "pickup/interaction detection sphere. The player model is small, so without this " +
+             "the sphere sits near the floor and can't reach items resting on counters or " +
+             "tables (e.g. the kitchen nutcrackers/mugs sit above the player's head). Select " +
+             "the Player to see the detection sphere gizmo; raise this until it covers your " +
+             "interactables.")]
+    [SerializeField] private float interactionHeightOffset = 0.7f;
+
     [Header("Interaction — Throw")]
     [SerializeField] private float throwAnimationDelay = 0.15f;
     [SerializeField] private float throwForce         = 10f;
@@ -37,6 +45,12 @@ public partial class Controller
     private float cachedCharge = 0f;
 
     private FMOD.Studio.EventInstance chargeThrowInstance;
+
+    // Center of the pickup/interaction detection sphere. Offset up from the (small)
+    // player so it reaches items resting on counters and tables, not just on the floor.
+    // The pickup logic and the contextual hint MUST use this same center so the "E — …"
+    // prompt and the action that follows always agree.
+    private Vector3 InteractionCenter => transform.position + Vector3.up * interactionHeightOffset;
 
     // ── Per-frame update ──────────────────────────────────────────────────────
 
@@ -135,14 +149,14 @@ public partial class Controller
 
     private void TryPickup()
     {
-        Collider[] pickupHits = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
+        Collider[] pickupHits = Physics.OverlapSphere(InteractionCenter, pickupRange, pickupLayer);
         float closestDist = Mathf.Infinity;
         PickupObject closestPickup = null;
         Collider closestCollectable = null;
 
         foreach (Collider hit in pickupHits)
         {
-            float d = Vector3.Distance(transform.position, hit.transform.position);
+            float d = Vector3.Distance(InteractionCenter, hit.transform.position);
             if (d >= closestDist) continue;
 
             if (hit.CompareTag("Collectable") || hit.CompareTag("Token"))
@@ -346,5 +360,14 @@ public partial class Controller
             prevPoint = point;
             count++;
         }
+    }
+
+    // ── Editor visualisation ────────────────────────────────────────────────────
+    // Draw the pickup/interaction detection sphere when the Player is selected so its
+    // reach (and the interactionHeightOffset) can be tuned against the scene geometry.
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(0.2f, 0.8f, 1f, 0.6f);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * interactionHeightOffset, pickupRange);
     }
 }
