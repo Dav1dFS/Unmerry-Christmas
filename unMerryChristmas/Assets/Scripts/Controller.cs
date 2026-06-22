@@ -21,7 +21,7 @@ public partial class Controller : MonoBehaviour
     // Gift actions have no equivalent in InputSystem_Actions, so they stay inline
     // (self-contained, not rebindable through the settings menu).
     [SerializeField] private InputAction _spawnGift;
-    [SerializeField] private InputAction _dropGift;
+    
 
     // New inline actions for UI page direct shortcuts
     [SerializeField] private InputAction _openCommandsPage;
@@ -64,7 +64,7 @@ public partial class Controller : MonoBehaviour
         _move?.Enable();      _sprint?.Enable();       _jump?.Enable();
         _interact?.Enable();  _roll?.Enable();         _toggleCamera?.Enable();
         _hint?.Enable();
-        _spawnGift.Enable();  _dropGift.Enable();
+        _spawnGift.Enable();  
         
         // Enable new shortcut actions
         _openCommandsPage.Enable();
@@ -79,7 +79,7 @@ public partial class Controller : MonoBehaviour
         if (_roll != null)         _roll.started += OnRollStarted;
         if (_toggleCamera != null) _toggleCamera.started += OnToggleCameraStarted;
         _spawnGift.started += OnSpawnGiftStarted;
-        _dropGift.started  += OnDropGiftStarted;
+       
         
         // Bind new page-opening callbacks
         _openCommandsPage.started += OnOpenCommandsPageStarted;
@@ -96,7 +96,7 @@ public partial class Controller : MonoBehaviour
         if (_roll != null)         _roll.started -= OnRollStarted;
         if (_toggleCamera != null) _toggleCamera.started -= OnToggleCameraStarted;
         _spawnGift.started -= OnSpawnGiftStarted;
-        _dropGift.started  -= OnDropGiftStarted;
+       
         
         // Unbind new page-opening callbacks
         _openCommandsPage.started -= OnOpenCommandsPageStarted;
@@ -105,7 +105,7 @@ public partial class Controller : MonoBehaviour
         _move?.Disable();      _sprint?.Disable();      _jump?.Disable();
         _interact?.Disable();  _roll?.Disable();        _toggleCamera?.Disable();
         _hint?.Disable();
-        _spawnGift.Disable();  _dropGift.Disable();
+        _spawnGift.Disable(); 
         
         // Disable new shortcut actions
         _openCommandsPage.Disable();
@@ -115,7 +115,7 @@ public partial class Controller : MonoBehaviour
     }
 
     // Resolve the rebindable actions from the shared (project-wide) asset so the
-    // settings menu's rebinds + saved overrides drive gameplay. _spawnGift/_dropGift
+    // settings menu's rebinds + saved overrides drive gameplay. _spawnGift/
     // are deliberately excluded — they have no equivalent in the asset.
     private void ResolveActions()
     {
@@ -137,13 +137,14 @@ public partial class Controller : MonoBehaviour
     }
 
     // ── Input callback handlers (named so OnDisable can unsubscribe them) ───────
-    private void OnJumpStarted(InputAction.CallbackContext _)         { if (isGrounded) jump = true; }
+    private void OnJumpStarted(InputAction.CallbackContext _)
+    { if (isGrounded && jumpCooldownTimer <= 0f) jump = true; }
     private void OnInteractStarted(InputAction.CallbackContext _)     => StartInteractHold();
     private void OnInteractCanceled(InputAction.CallbackContext _)    => ReleaseInteractHold();
     private void OnRollStarted(InputAction.CallbackContext _)         => TryStartRoll();
     private void OnToggleCameraStarted(InputAction.CallbackContext _) => ToggleCameraOffset();
     private void OnSpawnGiftStarted(InputAction.CallbackContext _)    => TrySpawnGift();
-    private void OnDropGiftStarted(InputAction.CallbackContext _)     => DropGift();
+
     
     // New callback logic routing straight to the UIManager public page handlers
     private void OnOpenCommandsPageStarted(InputAction.CallbackContext _)     => UIManager.Instance?.OpenBookToAbilitiesPage();
@@ -151,6 +152,9 @@ public partial class Controller : MonoBehaviour
 
     private void Update()
     {
+        if (jumpCooldownTimer > 0f)
+            jumpCooldownTimer -= Time.deltaTime;
+
         UpdateGroundDetection(); // Jump
         UpdateRoll();            // Roll
         UpdateInteraction();     // Interaction (hold-to-aim, trajectory, push constraints)

@@ -7,6 +7,9 @@ public partial class Controller
     [Header("Jump & Landing")]
     [SerializeField] private EventReference jumpSound;
     [SerializeField] private EventReference landSound;
+    [SerializeField] private float jumpCooldown = 0.3f;
+
+    private float jumpCooldownTimer = 0f;
 
     private readonly float jumpForce  = 6f;
     private bool           jump       = false;
@@ -51,6 +54,7 @@ public partial class Controller
 
         if (isGrounded && !wasGrounded)          // just landed
         {
+            jumpTriggered = false;
             float surfaceValue = 0f;
             if (rayHit.collider != null)
             {
