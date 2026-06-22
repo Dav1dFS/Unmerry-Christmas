@@ -46,12 +46,14 @@ public class DrawingBookMenu2 : MonoBehaviour
     //            Call OpenToPage(BookPage.X) from HUD buttons or in-world events.
     public enum BookPage
     {
-        Tutorial     = 0,   // TutorialPage  — abilities list
-        Tasks        = 1,   // TaskListPage  — task checklist
-        DrawingPages = 2,   // DrawingPagesPage — collected pages count
+        Play         = 0,
+        Settings     = 1,
+        Tutorial     = 2,   // Commands Page
+        DrawingPages = 3,   // Collectables Page
+        Tasks        = 4,   
     }
 
-    public bool IsOpen => _isOpen;  //  o UIManager usa isto
+    public bool IsOpen => _isOpen;
 
     private Vector2 _hiddenPos;
     private Vector2 _visiblePos;
@@ -63,7 +65,6 @@ public class DrawingBookMenu2 : MonoBehaviour
         _visiblePos = _bookRoot.anchoredPosition;
         _hiddenPos = _visiblePos + Vector2.down * (_bookRoot.rect.height + 200f);
 
-        // Posiciona escondido ANTES de activar
         _bookRoot.anchoredPosition = _hiddenPos;
         _bookRoot.gameObject.SetActive(false);
 
@@ -82,20 +83,24 @@ public class DrawingBookMenu2 : MonoBehaviour
 
     /// <summary>
     /// Opens the book and navigates directly to a specific page.
-    /// Called from HUD buttons, in-world triggers, or task/ability events.
     /// </summary>
-    /// <example>
-    /// // From HUD "Tasks" button:
-    /// UIManager.Instance?.OpenBookToPage(BookPage.Tasks);
-    ///
-    /// // When an ability is unlocked, jump the player to the abilities list:
-    /// UIManager.Instance?.OpenBookToPage(BookPage.Tutorial);
-    /// </example>
     public void OpenToPage(BookPage page)
     {
-        Open(); // ensures book is open and pages are refreshed
-        if (!_isOpen) return; // gated and not yet found
-        _tabGroup?.SelectTab((int)page);
+        Open(); 
+        if (!_isOpen) return;
+        int targetIndex = (int)page;
+
+        if (_pageFlip != null)
+        {
+            _pageFlip.ShowPageImmediate(targetIndex);
+        }
+
+        if (_tabGroup != null)
+        {
+            _tabGroup.SelectTab(targetIndex);
+        }
+
+
     }
 
     /// <summary>
@@ -131,12 +136,10 @@ public class DrawingBookMenu2 : MonoBehaviour
             FMODUnity.RuntimeManager.PlayOneShot(_bookOpenSound);
         }
 
-        // Refresh das p�ginas ao abrir
         _tutorialPage?.Refresh();
         _drawingPagesPage?.Refresh();
         _taskListPage?.Refresh();
 
-        // Congela o jogador
         PlayerFreezeManager.Instance?.SetMenuFrozen(true);
 
         _bookRoot.anchoredPosition = _hiddenPos;
@@ -152,7 +155,6 @@ public class DrawingBookMenu2 : MonoBehaviour
         if (!_isOpen) return;
         _isOpen = false;
 
-        // Descongela o jogador
         PlayerFreezeManager.Instance?.SetMenuFrozen(false);
 
         if (_slideRoutine != null) StopCoroutine(_slideRoutine);
@@ -166,9 +168,9 @@ public class DrawingBookMenu2 : MonoBehaviour
     }
 
     private IEnumerator SlideRoutine(Vector2 from, Vector2 to,
-                                      AnimationCurve curve,
-                                      float overlayTargetAlpha,
-                                      System.Action onComplete = null)
+                                     AnimationCurve curve,
+                                     float overlayTargetAlpha,
+                                     System.Action onComplete = null)
     {
         float startOverlayAlpha = _darkOverlay != null ? _darkOverlay.alpha : 0f;
 
@@ -195,6 +197,5 @@ public class DrawingBookMenu2 : MonoBehaviour
             _darkOverlay.alpha = overlayTargetAlpha;
 
         onComplete?.Invoke();
-
     }
 }

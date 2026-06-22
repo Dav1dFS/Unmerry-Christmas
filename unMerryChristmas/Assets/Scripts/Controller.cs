@@ -23,6 +23,10 @@ public partial class Controller : MonoBehaviour
     [SerializeField] private InputAction _spawnGift;
     [SerializeField] private InputAction _dropGift;
 
+    // New inline actions for UI page direct shortcuts
+    [SerializeField] private InputAction _openCommandsPage;
+    [SerializeField] private InputAction _openCollectiblesPage;
+
     // Resolved from the shared asset in Awake (see ResolveActions).
     private InputAction _move, _sprint, _jump, _interact, _roll, _toggleCamera, _hint;
 
@@ -61,6 +65,10 @@ public partial class Controller : MonoBehaviour
         _interact?.Enable();  _roll?.Enable();         _toggleCamera?.Enable();
         _hint?.Enable();
         _spawnGift.Enable();  _dropGift.Enable();
+        
+        // Enable new shortcut actions
+        _openCommandsPage.Enable();
+        _openCollectiblesPage.Enable();
 
         // Named handlers (not lambdas) so they can be unsubscribed below — these
         // actions are shared and persist across scene loads, so leaked subscriptions
@@ -72,6 +80,10 @@ public partial class Controller : MonoBehaviour
         if (_toggleCamera != null) _toggleCamera.started += OnToggleCameraStarted;
         _spawnGift.started += OnSpawnGiftStarted;
         _dropGift.started  += OnDropGiftStarted;
+        
+        // Bind new page-opening callbacks
+        _openCommandsPage.started += OnOpenCommandsPageStarted;
+        _openCollectiblesPage.started += OnOpenCollectiblesPageStarted;
 
         AccessibilityManager.OnHighlightChanged += OnHighlightSettingChanged;
     }
@@ -85,11 +97,19 @@ public partial class Controller : MonoBehaviour
         if (_toggleCamera != null) _toggleCamera.started -= OnToggleCameraStarted;
         _spawnGift.started -= OnSpawnGiftStarted;
         _dropGift.started  -= OnDropGiftStarted;
+        
+        // Unbind new page-opening callbacks
+        _openCommandsPage.started -= OnOpenCommandsPageStarted;
+        _openCollectiblesPage.started -= OnOpenCollectiblesPageStarted;
 
         _move?.Disable();      _sprint?.Disable();      _jump?.Disable();
         _interact?.Disable();  _roll?.Disable();        _toggleCamera?.Disable();
         _hint?.Disable();
         _spawnGift.Disable();  _dropGift.Disable();
+        
+        // Disable new shortcut actions
+        _openCommandsPage.Disable();
+        _openCollectiblesPage.Disable();
 
         AccessibilityManager.OnHighlightChanged -= OnHighlightSettingChanged;
     }
@@ -124,6 +144,10 @@ public partial class Controller : MonoBehaviour
     private void OnToggleCameraStarted(InputAction.CallbackContext _) => ToggleCameraOffset();
     private void OnSpawnGiftStarted(InputAction.CallbackContext _)    => TrySpawnGift();
     private void OnDropGiftStarted(InputAction.CallbackContext _)     => DropGift();
+    
+    // New callback logic routing straight to the UIManager public page handlers
+    private void OnOpenCommandsPageStarted(InputAction.CallbackContext _)     => UIManager.Instance?.OpenBookToAbilitiesPage();
+    private void OnOpenCollectiblesPageStarted(InputAction.CallbackContext _) => UIManager.Instance?.OpenBookToDrawingPagesPage();
 
     private void Update()
     {
