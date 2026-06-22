@@ -36,8 +36,17 @@ public class AbilityUnlockToast : MonoBehaviour
     public void Show(PlayerAbility ability)
     {
         if (!AbilityNames.TryGetValue(ability, out string name)) return;
+        ShowNote(name);
+    }
+
+    /// <summary>
+    /// Shows the "New note added" toast with an arbitrary subtitle. Used for
+    /// non-ability notes such as finding the drawing book itself.
+    /// </summary>
+    public void ShowNote(string subtitle)
+    {
         if (_current != null) StopCoroutine(_current);
-        _label.text = $"New note added\n<size=70%><i>{name}</i></size>";
+        _label.text = $"New note added\n<size=70%><i>{subtitle}</i></size>";
         // Must activate BEFORE StartCoroutine — coroutines cannot start on inactive GameObjects.
         gameObject.SetActive(true);
         _current = StartCoroutine(ShowRoutine());

@@ -24,8 +24,21 @@ public class DrawingBookMenu2 : MonoBehaviour
     [SerializeField] private DrawingPagesPage _drawingPagesPage;
     [SerializeField] private TaskListPage _taskListPage;
 
+    [Tooltip("The page the book opens to the first time the elf picks it up. " +
+             "Assign your Tasks page (Page_Content_Tasks). Resolved by reference, " +
+             "so its tab position can change freely. If unassigned, the book just " +
+             "opens to its default tab.")]
+    [SerializeField] private PageContent _bookFoundPage;
+
     [Header("Audio")]
     [SerializeField] private FMODUnity.EventReference _bookOpenSound;
+
+    [Header("Progression Gate")]
+    [Tooltip("When true, the book can only be opened after the elf has found it " +
+             "in the Back Yard (BookState.HasFoundBook). Leave OFF until a save " +
+             "system persists BookState, otherwise loading a later scene directly " +
+             "would lock the menu. The pickup auto-open is unaffected either way.")]
+    [SerializeField] private bool _requireBookFound = false;
 
     // ── Page index constants ──────────────────────────────────────────────────
     // TODO(HUD): Wire these indices to the actual tab/page order once the
@@ -81,18 +94,36 @@ public class DrawingBookMenu2 : MonoBehaviour
     public void OpenToPage(BookPage page)
     {
         Open(); // ensures book is open and pages are refreshed
+        if (!_isOpen) return; // gated and not yet found
+        _tabGroup?.SelectTab((int)page);
+    }
 
-        // TODO(HUD): Once BookmarkTabGroup exposes a SelectTab(int) or equivalent,
-        //            call it here to jump to the correct tab:
-        //
-        //   _tabGroup?.SelectTab((int)page);
-        //
-        // Until then, the book opens to whichever tab was last active.
+    /// <summary>
+    /// Opens the book to <see cref="_bookFoundPage"/> (the drawing-book pickup
+    /// landing page), found by reference so its tab order doesn't matter. Falls
+    /// back to the default tab if the page is unassigned or not in this book.
+    /// </summary>
+    public void OpenToBookFoundPage()
+    {
+        Open();
+        if (!_isOpen) return;
+        StartCoroutine(SelectBookFoundPageDeferred());
+    }
+
+    // Wait one frame so the tab group / page-flip Start() (which resets to tab 0
+    // on the book's first activation) runs BEFORE we jump to the found page —
+    // otherwise it would snap back off the Tasks page.
+    private IEnumerator SelectBookFoundPageDeferred()
+    {
+        yield return null;
+        int index = _pageFlip != null ? _pageFlip.IndexOf(_bookFoundPage) : -1;
+        if (index >= 0) _tabGroup?.SelectTab(index);
     }
 
     public void Open()
     {
         if (_isOpen) return;
+        if (_requireBookFound && !BookState.HasFoundBook) return;
         _isOpen = true;
 
         if (!_bookOpenSound.IsNull)

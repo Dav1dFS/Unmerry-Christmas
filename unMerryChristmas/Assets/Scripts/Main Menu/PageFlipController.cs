@@ -33,6 +33,19 @@ public class PageFlipController : MonoBehaviour
                 new Keyframe(1f, 1f, 2f, 0f));
     }
 
+    /// <summary>
+    /// Index of <paramref name="page"/> within the pages array, or -1 if it
+    /// isn't one of this book's pages. Lets callers open a page by reference
+    /// instead of a hard-coded index (position-independent).
+    /// </summary>
+    public int IndexOf(PageContent page)
+    {
+        if (page == null || _pages == null) return -1;
+        for (int i = 0; i < _pages.Length; i++)
+            if (_pages[i] == page) return i;
+        return -1;
+    }
+
     public void ShowPageImmediate(int index)
     {
         _currentIndex = index;
@@ -45,7 +58,7 @@ public class PageFlipController : MonoBehaviour
         _rightPage.localEulerAngles = Vector3.zero;
     }
 
-    // onComplete fires when the flip animation finishes — used by BookmarkTabGroup for queuing
+    // onComplete fires when the flip animation finishes ï¿½ used by BookmarkTabGroup for queuing
     public void FlipToPage(int targetIndex, System.Action onComplete = null)
     {
         if (_isFlipping || targetIndex == _currentIndex)
