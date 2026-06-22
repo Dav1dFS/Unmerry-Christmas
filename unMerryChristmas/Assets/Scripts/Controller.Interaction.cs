@@ -53,8 +53,8 @@ public partial class Controller
             else if (heldObject != null || _giftInHand != null)
             {
                 // Held object or gift — enter aim mode on hold
-                if (!hasEnteredAimMode && holdTime >= aimHoldThreshold
-                    && AbilityTokenManager.Instance.IsUnlocked(PlayerAbility.Throwing))
+                // FIX: Ensured both objects and gifts pass cleanly into aiming 
+                if (!hasEnteredAimMode && holdTime >= aimHoldThreshold)
                 {
                     hasEnteredAimMode   = true;
                     isAiming            = true;
@@ -81,7 +81,6 @@ public partial class Controller
         if (_pushedObject != null)
             ClearAbilityInputs();
     }
-
     // ── Interact hold / release ───────────────────────────────────────────────
 
     private void StartInteractHold()
@@ -257,7 +256,8 @@ public partial class Controller
 
         isAiming = false;
 
-        float force = Mathf.Lerp(5f, 15f, cachedCharge);
+        // FIX 1: Max force scaled down using throwForce variable (e.g., 3f to throwForce)
+        float force = Mathf.Lerp(3f, throwForce, cachedCharge); 
 
         Rigidbody objectRb = heldObject.GetComponent<Rigidbody>();
         if (objectRb != null)
@@ -265,14 +265,20 @@ public partial class Controller
             ThrowableImpact impact = heldObject.GetComponent<ThrowableImpact>();
             if (impact != null) impact.SetThrown();
 
+            // FIX 2: Offset the snowball/object position slightly forward on release 
+            // so it doesn't instantly collide with the player's body or hand layer.
+            heldObject.transform.position = holdPoint.position + transform.forward * 0.2f;
+
             DropObject();
 
-            Vector3 throwDir = transform.forward + Vector3.up * 0.5f;
+            Vector3 throwDir = transform.forward + Vector3.up * 0.4f; // slightly lower arc for speed control
             objectRb.AddForce(throwDir.normalized * force, ForceMode.Impulse);
 
             AudioManager.instance?.PlayThrowSound(transform.position);
         }
     }
+
+    
     private IEnumerator ThrowObjectDelayed()
     {
         yield return new WaitForSeconds(throwAnimationDelay);
@@ -315,9 +321,10 @@ public partial class Controller
         trajectoryLine.enabled = true;
 
         float charge         = Mathf.Clamp01((holdTime - aimHoldThreshold) / maxThrowChargeTime);
-        float force          = Mathf.Lerp(5f, 15f, charge);
-        Vector3 startPos     = holdPoint.position;
-        Vector3 startVel     = (transform.forward + Vector3.up * 0.5f).normalized * force;
+        // FIX 1: Keep math matching throwObject()
+        float force          = Mathf.Lerp(3f, throwForce, charge); 
+        Vector3 startPos     = holdPoint.position + transform.forward * 0.2f;
+        Vector3 startVel     = (transform.forward + Vector3.up * 0.4f).normalized * force;
         Vector3 prevPoint    = startPos;
 
         trajectoryLine.positionCount = trajectoryPoints;

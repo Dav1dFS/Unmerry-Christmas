@@ -294,6 +294,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: throwForce
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: pickupRange
       value: 0.2
       objectReference: {fileID: 0}
@@ -332,6 +336,10 @@ PrefabInstance:
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _throwGift.m_Name
       value: Throw Gift
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: maxThrowChargeTime
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: grabSound.Guid.Data1
@@ -18321,6 +18329,7 @@ PrefabInstance:
     - target: {fileID: 1767581822663541504, guid: 3dc23e1189d56294dbc3ac5ba551f8a7, type: 3}
       propertyPath: '_unlockedByDefault.Array.data[8]'
       value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1930166076555021829, guid: 3dc23e1189d56294dbc3ac5ba551f8a7, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -303

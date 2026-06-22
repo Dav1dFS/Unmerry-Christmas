@@ -2,7 +2,6 @@ using UnityEngine;
 
 public partial class Controller
 {
-
     [Header("Explosive Presents")]
     [SerializeField] private GameObject _giftBombPrefab;
 
@@ -22,6 +21,14 @@ public partial class Controller
         // Disable collider while held so it doesn't collide with the player
         Collider col = obj.GetComponent<Collider>();
         if (col != null) col.enabled = false;
+
+        // FIX: Force the interaction state to immediately register this gift if the player 
+        // spawned it while holding down an input or if they immediately transition into a hold state.
+        if (isHoldingInteract)
+        {
+            hasEnteredAimMode = false;
+            holdTime = 0f;
+        }
     }
 
     private void ThrowGift()
@@ -31,6 +38,8 @@ public partial class Controller
         ExplosivePresent gift = _giftInHand;
         _giftInHand = null;
 
+        // FIX: Offset forward to clear the player's collision bounds perfectly
+        gift.transform.position = holdPoint.position + transform.forward * 0.2f;
         gift.transform.SetParent(null);
         gift.Arm();
 
@@ -41,8 +50,11 @@ public partial class Controller
         if (rb != null)
         {
             rb.isKinematic = false;
-            float   force    = Mathf.Clamp(holdTime * throwForce, 5f, 15f);
-            Vector3 throwDir = transform.forward + Vector3.up * 0.5f;
+
+            // FIX: Changes force scaling to use cachedCharge and your adjustable throwForce field
+            float force = Mathf.Lerp(3f, throwForce, cachedCharge);
+            
+            Vector3 throwDir = transform.forward + Vector3.up * 0.4f; 
             rb.AddForce(throwDir.normalized * force, ForceMode.Impulse);
             AudioManager.instance?.PlayThrowSound(transform.position);
         }
