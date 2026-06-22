@@ -24,8 +24,21 @@ public class DrawingBookMenu2 : MonoBehaviour
     [SerializeField] private DrawingPagesPage _drawingPagesPage;
     [SerializeField] private TaskListPage _taskListPage;
 
+    [Tooltip("The page the book opens to the first time the elf picks it up. " +
+             "Assign your Tasks page (Page_Content_Tasks). Resolved by reference, " +
+             "so its tab position can change freely. If unassigned, the book just " +
+             "opens to its default tab.")]
+    [SerializeField] private PageContent _bookFoundPage;
+
     [Header("Audio")]
     [SerializeField] private FMODUnity.EventReference _bookOpenSound;
+
+    [Header("Progression Gate")]
+    [Tooltip("When true, the book can only be opened after the elf has found it " +
+             "in the Back Yard (BookState.HasFoundBook). Leave OFF until a save " +
+             "system persists BookState, otherwise loading a later scene directly " +
+             "would lock the menu. The pickup auto-open is unaffected either way.")]
+    [SerializeField] private bool _requireBookFound = false;
 
     // ── Page index constants ──────────────────────────────────────────────────
     // TODO(HUD): Wire these indices to the actual tab/page order once the
@@ -33,12 +46,14 @@ public class DrawingBookMenu2 : MonoBehaviour
     //            Call OpenToPage(BookPage.X) from HUD buttons or in-world events.
     public enum BookPage
     {
-        Tutorial     = 0,   // TutorialPage  — abilities list
-        Tasks        = 1,   // TaskListPage  — task checklist
-        DrawingPages = 2,   // DrawingPagesPage — collected pages count
+        Play         = 0,
+        Settings     = 1,
+        Tutorial     = 2,   // Commands Page
+        DrawingPages = 3,   // Collectables Page
+        Tasks        = 4,   
     }
 
-    public bool IsOpen => _isOpen;  //  o UIManager usa isto
+    public bool IsOpen => _isOpen;
 
     private Vector2 _hiddenPos;
     private Vector2 _visiblePos;
@@ -50,7 +65,6 @@ public class DrawingBookMenu2 : MonoBehaviour
         _visiblePos = _bookRoot.anchoredPosition;
         _hiddenPos = _visiblePos + Vector2.down * (_bookRoot.rect.height + 200f);
 
-        // Posiciona escondido ANTES de activar
         _bookRoot.anchoredPosition = _hiddenPos;
         _bookRoot.gameObject.SetActive(false);
 
@@ -69,30 +83,52 @@ public class DrawingBookMenu2 : MonoBehaviour
 
     /// <summary>
     /// Opens the book and navigates directly to a specific page.
-    /// Called from HUD buttons, in-world triggers, or task/ability events.
     /// </summary>
-    /// <example>
-    /// // From HUD "Tasks" button:
-    /// UIManager.Instance?.OpenBookToPage(BookPage.Tasks);
-    ///
-    /// // When an ability is unlocked, jump the player to the abilities list:
-    /// UIManager.Instance?.OpenBookToPage(BookPage.Tutorial);
-    /// </example>
     public void OpenToPage(BookPage page)
     {
-        Open(); // ensures book is open and pages are refreshed
+        Open(); 
+        if (!_isOpen) return;
+        int targetIndex = (int)page;
 
-        // TODO(HUD): Once BookmarkTabGroup exposes a SelectTab(int) or equivalent,
-        //            call it here to jump to the correct tab:
-        //
-        //   _tabGroup?.SelectTab((int)page);
-        //
-        // Until then, the book opens to whichever tab was last active.
+        if (_pageFlip != null)
+        {
+            _pageFlip.ShowPageImmediate(targetIndex);
+        }
+
+        if (_tabGroup != null)
+        {
+            _tabGroup.SelectTab(targetIndex);
+        }
+
+
+    }
+
+    /// <summary>
+    /// Opens the book to <see cref="_bookFoundPage"/> (the drawing-book pickup
+    /// landing page), found by reference so its tab order doesn't matter. Falls
+    /// back to the default tab if the page is unassigned or not in this book.
+    /// </summary>
+    public void OpenToBookFoundPage()
+    {
+        Open();
+        if (!_isOpen) return;
+        StartCoroutine(SelectBookFoundPageDeferred());
+    }
+
+    // Wait one frame so the tab group / page-flip Start() (which resets to tab 0
+    // on the book's first activation) runs BEFORE we jump to the found page —
+    // otherwise it would snap back off the Tasks page.
+    private IEnumerator SelectBookFoundPageDeferred()
+    {
+        yield return null;
+        int index = _pageFlip != null ? _pageFlip.IndexOf(_bookFoundPage) : -1;
+        if (index >= 0) _tabGroup?.SelectTab(index);
     }
 
     public void Open()
     {
         if (_isOpen) return;
+        if (_requireBookFound && !BookState.HasFoundBook) return;
         _isOpen = true;
 
         if (!_bookOpenSound.IsNull)
@@ -100,12 +136,10 @@ public class DrawingBookMenu2 : MonoBehaviour
             FMODUnity.RuntimeManager.PlayOneShot(_bookOpenSound);
         }
 
-        // Refresh das p�ginas ao abrir
         _tutorialPage?.Refresh();
         _drawingPagesPage?.Refresh();
         _taskListPage?.Refresh();
 
-        // Congela o jogador
         PlayerFreezeManager.Instance?.SetMenuFrozen(true);
 
         _bookRoot.anchoredPosition = _hiddenPos;
@@ -121,7 +155,6 @@ public class DrawingBookMenu2 : MonoBehaviour
         if (!_isOpen) return;
         _isOpen = false;
 
-        // Descongela o jogador
         PlayerFreezeManager.Instance?.SetMenuFrozen(false);
 
         if (_slideRoutine != null) StopCoroutine(_slideRoutine);
@@ -135,9 +168,9 @@ public class DrawingBookMenu2 : MonoBehaviour
     }
 
     private IEnumerator SlideRoutine(Vector2 from, Vector2 to,
-                                      AnimationCurve curve,
-                                      float overlayTargetAlpha,
-                                      System.Action onComplete = null)
+                                     AnimationCurve curve,
+                                     float overlayTargetAlpha,
+                                     System.Action onComplete = null)
     {
         float startOverlayAlpha = _darkOverlay != null ? _darkOverlay.alpha : 0f;
 
@@ -164,6 +197,5 @@ public class DrawingBookMenu2 : MonoBehaviour
             _darkOverlay.alpha = overlayTargetAlpha;
 
         onComplete?.Invoke();
-
     }
 }
