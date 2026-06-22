@@ -31,7 +31,23 @@ public class SceneEntryPoint : MonoBehaviour
         if (target == null) target = _defaultPoint;
 
         if (target != null)
-            player.position = target.transform.position;
+        {
+            Transform t = target.transform;
+            player.SetPositionAndRotation(t.position, t.rotation);
+
+            // The player is Rigidbody-driven; teleporting the transform alone can
+            // leave stale velocity (a slide on arrival) and the physics body lagging
+            // a frame behind. Move the body too and clear any carried-over motion.
+            if (player.TryGetComponent<Rigidbody>(out var rb))
+            {
+                rb.position        = t.position;
+                rb.rotation        = t.rotation;
+                rb.linearVelocity  = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+
+            Physics.SyncTransforms();
+        }
 
         RequestedEntryId = "";   // consume
         _defaultPoint    = null; // reset for next scene
