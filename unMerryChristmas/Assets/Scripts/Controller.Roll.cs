@@ -27,10 +27,14 @@ public partial class Controller
         if (!isRolling) return;
 
         rollTimer -= Time.deltaTime;
+
         if (rollTimer <= 0f)
         {
-            isRolling         = false;
+            isRolling = false;
             rollCooldownTimer = _rollCooldown;
+
+            // opcional mas recomendado:
+            _rb.linearVelocity = Vector3.zero;
         }
     }
 
@@ -49,10 +53,13 @@ public partial class Controller
     {
         if (isRolling || rollCooldownTimer > 0f) return;
 
-        rollDirection       = transform.forward;
-        isRolling           = true;
-        rollTimer           = _rollDuration;
-        _rb.linearVelocity  = Vector3.zero;
+        rollDirection = transform.forward;
+        isRolling = true;
+        rollTimer = _rollDuration;
+
+        _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
+
+        _animator.SetTrigger("Roll");
     }
 }
