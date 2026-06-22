@@ -410,6 +410,10 @@ PrefabInstance:
       value: 2070766535
       objectReference: {fileID: 0}
     - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
+      propertyPath: interactionHeightOffset
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1653601394863001516, guid: 80daab65a937b4742bd68995b65dfd0d, type: 3}
       propertyPath: _openCommandsPage.m_Name
       value: Open Commands Page
       objectReference: {fileID: 0}

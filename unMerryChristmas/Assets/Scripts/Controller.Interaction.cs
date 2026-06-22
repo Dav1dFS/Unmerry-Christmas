@@ -6,37 +6,58 @@ public partial class Controller
 {
     // ── Settings ─────────────────────────────────────────────────────────────
     [Header("Interaction — Pickup & Push")]
-    [SerializeField] private float pickupRange   = 1.5f;
+    [SerializeField] private float pickupRange = 1.5f;
     [SerializeField] private float pushableRange = 0.1f;
+
+    [Tooltip("Vertical offset (world units) added to the player position when centering the " +
+             "pickup/interaction detection sphere.\n\n" +
+             "DEFAULT is 0 (sphere at the player's feet) — correct for backyard and any scene " +
+             "where interactables sit on the ground.\n\n" +
+             "Set to ~0.7 on the kitchen Player instance so the sphere reaches items resting " +
+             "on counters or tables above the player's head. Select the Player to see the " +
+             "detection sphere gizmo and tune this value against the scene geometry.")]
+    [SerializeField] private float interactionHeightOffset = 0f;  // FIX: was 0.7f — that default
+                                                                  // raised the sphere off the floor
+                                                                  // and broke pickup for backyard
+                                                                  // items. Override to 0.7f on the
+                                                                  // kitchen Player in the inspector.
 
     [Header("Interaction — Throw")]
     [SerializeField] private float throwAnimationDelay = 0.15f;
-    [SerializeField] private float throwForce         = 10f;
-    [SerializeField] private float aimHoldThreshold   = 0.2f;
+    [SerializeField] private float throwForce = 10f;
+    [SerializeField] private float aimHoldThreshold = 0.2f;
     [SerializeField] private float maxThrowChargeTime = 2f;
 
     [Header("Interaction — Trajectory")]
     [SerializeField] private LineRenderer trajectoryLine;
-    [SerializeField] private int          trajectoryPoints   = 30;
-    [SerializeField] private float        trajectoryTimeStep = 0.1f;
-    [SerializeField] private LayerMask    trajectoryCollisionMask;
+    [SerializeField] private int trajectoryPoints = 30;
+    [SerializeField] private float trajectoryTimeStep = 0.1f;
+    [SerializeField] private LayerMask trajectoryCollisionMask;
 
     [Header("Interaction — Audio")]
     [SerializeField] private EventReference chargeThrowSound;
 
     // ── State ────────────────────────────────────────────────────────────────
-    private PickupObject   heldObject;
+    private PickupObject heldObject;
     private PushableObject _pushedObject;
-    private Vector3        _contactLocalPos;
-    private Vector3        _playerWorldOffset; 
+    private Vector3 _contactLocalPos;
+    private Vector3 _playerWorldOffset;
 
-    private bool  isAiming            = false;
-    private float holdTime            = 0f;
-    private bool  isHoldingInteract = false;
-    private bool  hasEnteredAimMode = false;
+    private bool isAiming = false;
+    private float holdTime = 0f;
+    private bool isHoldingInteract = false;
+    private bool hasEnteredAimMode = false;
     private float cachedCharge = 0f;
 
     private FMOD.Studio.EventInstance chargeThrowInstance;
+
+    // Center of the pickup/interaction detection sphere. Offset up from the player
+    // by interactionHeightOffset (default 0 — sphere at feet, safe for all scenarios).
+    // Set interactionHeightOffset > 0 in the inspector on any Player whose scene has
+    // interactables above ground level (e.g. kitchen counters).
+    // The pickup logic and the contextual hint MUST use this same center so the "E — …"
+    // prompt and the action that follows always agree.
+    private Vector3 InteractionCenter => transform.position + Vector3.up * interactionHeightOffset;
 
     // ── Per-frame update ──────────────────────────────────────────────────────
 
@@ -53,11 +74,11 @@ public partial class Controller
             else if (heldObject != null || _giftInHand != null)
             {
                 // Held object or gift — enter aim mode on hold
-                // FIX: Ensured both objects and gifts pass cleanly into aiming 
+                // FIX: Ensured both objects and gifts pass cleanly into aiming
                 if (!hasEnteredAimMode && holdTime >= aimHoldThreshold)
                 {
-                    hasEnteredAimMode   = true;
-                    isAiming            = true;
+                    hasEnteredAimMode = true;
+                    isAiming = true;
                     if (AudioManager.instance != null)
                     {
                         chargeThrowInstance = AudioManager.instance.CreateInstance(chargeThrowSound);
@@ -81,13 +102,14 @@ public partial class Controller
         if (_pushedObject != null)
             ClearAbilityInputs();
     }
+
     // ── Interact hold / release ───────────────────────────────────────────────
 
     private void StartInteractHold()
     {
         isHoldingInteract = true;
         hasEnteredAimMode = false;
-        holdTime          = 0f;
+        holdTime = 0f;
     }
 
     private void ReleaseInteractHold()
@@ -109,7 +131,6 @@ public partial class Controller
 
             if (heldObject != null)
                 StartCoroutine(ThrowObjectDelayed());
-
             else if (_giftInHand != null)
                 StartCoroutine(ThrowGiftDelayed());
 
@@ -122,6 +143,7 @@ public partial class Controller
             checkHands();
         }
     }
+
     // ── Hands (context-sensitive tap) ────────────────────────────────────────
 
     private void checkHands()
@@ -131,32 +153,33 @@ public partial class Controller
         else if (_giftInHand != null) DropGift();
         else TryPickup();
     }
+
     // ── Pickup ───────────────────────────────────────────────────────────────
 
     private void TryPickup()
     {
-        Collider[] pickupHits = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
+        Collider[] pickupHits = Physics.OverlapSphere(InteractionCenter, pickupRange, pickupLayer);
         float closestDist = Mathf.Infinity;
         PickupObject closestPickup = null;
         Collider closestCollectable = null;
 
         foreach (Collider hit in pickupHits)
         {
-            float d = Vector3.Distance(transform.position, hit.transform.position);
+            float d = Vector3.Distance(InteractionCenter, hit.transform.position);
             if (d >= closestDist) continue;
 
             if (hit.CompareTag("Collectable") || hit.CompareTag("Token"))
             {
-                closestDist        = d;
+                closestDist = d;
                 closestCollectable = hit;
-                closestPickup      = null;
+                closestPickup = null;
             }
             else
             {
                 PickupObject pickup = hit.GetComponent<PickupObject>();
                 if (pickup != null && pickup.enabled)
                 {
-                    closestDist   = d;
+                    closestDist = d;
                     closestPickup = pickup;
                 }
                 else
@@ -179,7 +202,7 @@ public partial class Controller
             if (closestCollectable.CompareTag("Token"))
             {
                 AbilityToken token = closestCollectable.GetComponent<AbilityToken>();
-                if (token != null) 
+                if (token != null)
                 {
                     AbilityTokenManager.Instance.Unlock(token.Ability);
                     AudioManager.instance?.PlayUnlockAbilitySound(transform.position);
@@ -239,7 +262,7 @@ public partial class Controller
             else
                 contactWorldPos = closestPushable.GetComponent<Collider>().ClosestPoint(rayOrigin);
 
-            _pushedObject    = closestPushable;
+            _pushedObject = closestPushable;
             _contactLocalPos = closestPushable.transform.InverseTransformPoint(contactWorldPos);
 
             Vector3 offset = transform.position - closestPushable.transform.position;
@@ -256,8 +279,8 @@ public partial class Controller
 
         isAiming = false;
 
-        // FIX 1: Max force scaled down using throwForce variable (e.g., 3f to throwForce)
-        float force = Mathf.Lerp(3f, throwForce, cachedCharge); 
+        // FIX 1: Max force scaled down using throwForce variable
+        float force = Mathf.Lerp(3f, throwForce, cachedCharge);
 
         Rigidbody objectRb = heldObject.GetComponent<Rigidbody>();
         if (objectRb != null)
@@ -265,20 +288,19 @@ public partial class Controller
             ThrowableImpact impact = heldObject.GetComponent<ThrowableImpact>();
             if (impact != null) impact.SetThrown();
 
-            // FIX 2: Offset the snowball/object position slightly forward on release 
-            // so it doesn't instantly collide with the player's body or hand layer.
+            // FIX 2: Offset the object slightly forward on release so it doesn't
+            // instantly collide with the player's body or hand layer.
             heldObject.transform.position = holdPoint.position + transform.forward * 0.2f;
 
             DropObject();
 
-            Vector3 throwDir = transform.forward + Vector3.up * 0.4f; // slightly lower arc for speed control
+            Vector3 throwDir = transform.forward + Vector3.up * 0.4f;
             objectRb.AddForce(throwDir.normalized * force, ForceMode.Impulse);
 
             AudioManager.instance?.PlayThrowSound(transform.position);
         }
     }
 
-    
     private IEnumerator ThrowObjectDelayed()
     {
         yield return new WaitForSeconds(throwAnimationDelay);
@@ -290,7 +312,6 @@ public partial class Controller
         yield return new WaitForSeconds(throwAnimationDelay);
         ThrowGift();
     }
-
 
     private void StopChargeSound()
     {
@@ -320,19 +341,19 @@ public partial class Controller
         if (trajectoryLine == null) return;
         trajectoryLine.enabled = true;
 
-        float charge         = Mathf.Clamp01((holdTime - aimHoldThreshold) / maxThrowChargeTime);
+        float charge = Mathf.Clamp01((holdTime - aimHoldThreshold) / maxThrowChargeTime);
         // FIX 1: Keep math matching throwObject()
-        float force          = Mathf.Lerp(3f, throwForce, charge); 
-        Vector3 startPos     = holdPoint.position + transform.forward * 0.2f;
-        Vector3 startVel     = (transform.forward + Vector3.up * 0.4f).normalized * force;
-        Vector3 prevPoint    = startPos;
+        float force = Mathf.Lerp(3f, throwForce, charge);
+        Vector3 startPos = holdPoint.position + transform.forward * 0.2f;
+        Vector3 startVel = (transform.forward + Vector3.up * 0.4f).normalized * force;
+        Vector3 prevPoint = startPos;
 
         trajectoryLine.positionCount = trajectoryPoints;
         int count = 0;
 
         for (int i = 0; i < trajectoryPoints; i++)
         {
-            float   t     = i * trajectoryTimeStep;
+            float t = i * trajectoryTimeStep;
             Vector3 point = startPos + startVel * t + 0.5f * Physics.gravity * t * t;
 
             if (Physics.Linecast(prevPoint, point, out RaycastHit hit, trajectoryCollisionMask))
@@ -346,5 +367,14 @@ public partial class Controller
             prevPoint = point;
             count++;
         }
+    }
+
+    // ── Editor visualisation ─────────────────────────────────────────────────
+    // Draw the pickup/interaction detection sphere when the Player is selected so its
+    // reach (and the interactionHeightOffset) can be tuned against the scene geometry.
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(0.2f, 0.8f, 1f, 0.6f);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * interactionHeightOffset, pickupRange);
     }
 }

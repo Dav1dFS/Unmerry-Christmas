@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e6b83d40f9614fcda351706e8b8b0d3, type: 3}
+  m_Name: TaskSet_Kitchen
+  m_EditorClassIdentifier: Assembly-CSharp::TaskSet
+  _tasks:
+  - {fileID: 11400000, guid: 20fe9b09420364389929cb9b2553a2ab, type: 2}
+  - {fileID: 11400000, guid: e14335ff322474faf9d787cc7f9093a4, type: 2}
+  - {fileID: 11400000, guid: 71ddbb11ac3974412b9f48ce51b1ecf6, type: 2}
+  - {fileID: 11400000, guid: 4eda6d95c98df42ce9a406d0ab6e9787, type: 2}

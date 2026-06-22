@@ -36,7 +36,7 @@ Material:
   - _MASKMAP
   - _METALLICGLOSSMAP
   - _NORMALMAP_TANGENT_SPACE
-  m_LightmapFlags: 1
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: 2450
@@ -342,7 +342,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
-    - _EmissionColor: {r: 1.4980392, g: 0.7607843, b: 0.39999998, a: 1}
+    - _EmissionColor: {r: 0.0007314645, g: 0.00037147672, b: 0.00019531249, a: 1}
     - _EmissiveColor: {r: 191.74902, g: 191.74902, b: 191.74902, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}

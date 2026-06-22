@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ExplosivePresent : MonoBehaviour
@@ -58,19 +59,25 @@ public class ExplosivePresent : MonoBehaviour
         if (!_armed) return;
 
         NpcController npc = col.gameObject.GetComponentInParent<NpcController>();
+
         if (npc != null)
-            npc.OnHitByThrownObject();
         {
+            npc.OnHitByThrownObject();
             npc.OnHit();
             npc.ApplyHitStop();
 
-            // Screen shake for NPC direct hit
-            CameraShake.Instance?.Shake(_npcHitShakeDuration, _npcHitShakeMagnitude);
+            CameraShake.Instance?.Shake(
+                _npcHitShakeDuration,
+                _npcHitShakeMagnitude);
 
-            // Impact frame at contact point
-            HitStopManager.Instance?.TriggerHitStop(_npcHitStopDuration);
-            SpawnImpactFrame(col.GetContact(0).point, _npcHitFrameScale,
-                             _npcHitFrameDuration, _npcHitFrameColor);
+            HitStopManager.Instance?.TriggerHitStop(
+                _npcHitStopDuration);
+
+            SpawnImpactFrame(
+                col.GetContact(0).point,
+                _npcHitFrameScale,
+                _npcHitFrameDuration,
+                _npcHitFrameColor);
         }
     }
 
@@ -103,7 +110,24 @@ public class ExplosivePresent : MonoBehaviour
             }
         }
 
+        NotifyExplosionReactives();
+
         Destroy(gameObject);
+    }
+
+    // Notify every IExplosionReactive (lit decorations, oven pot) within the blast.
+    // Uses an unfiltered overlap so reactives don't depend on _affectedLayers, and
+    // dedupes so each object is told once even if it has several colliders.
+    private void NotifyExplosionReactives()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius);
+        var notified = new HashSet<IExplosionReactive>();
+        foreach (Collider hit in hits)
+        {
+            IExplosionReactive reactive = hit.GetComponentInParent<IExplosionReactive>();
+            if (reactive != null && notified.Add(reactive))
+                reactive.OnExplosion(transform.position, _explosionRadius);
+        }
     }
 
     private void SpawnImpactFrame(Vector3 point, float scale, float duration, Color color)
