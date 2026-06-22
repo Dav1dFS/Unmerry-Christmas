@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerFreezeManager : MonoBehaviour
 {
@@ -20,7 +21,23 @@ public class PlayerFreezeManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
+    }
+
+    void OnDestroy()
+    {
+        if (Instance == this)
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    // Watchers are scene-local NPCs. When a scene unloads during a transition,
+    // a watching NPC is destroyed without ever calling UnFreeze(), which would
+    // otherwise leave _watcherCount stuck above zero on this persistent singleton
+    // and freeze the player permanently in the next scene. Reset on every load.
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        _watcherCount = 0;
     }
 
     // Called by NPC detection system
