@@ -843,7 +843,6 @@ Transform:
   m_LocalScale: {x: 0.2, y: 0.23333332, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 7874114153055189859}
   - {fileID: 822885300730190278}
   - {fileID: 6858527748585814293}
   m_Father: {fileID: 0}
@@ -940,29 +939,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Controller
   _cameraFollow: {fileID: 0}
-  _hintAction:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Hint
-      m_Type: 0
-      m_ExpectedControlType: Button
-      m_Id: 32d9bf01-1c01-46ce-a65e-87d9d29441e8
-      m_Processors:
-      m_Interactions:
-      m_SingletonActionBindings:
-      - m_Name:
-        m_Id: b4e2f731-9c3a-4d85-ae67-5f1b08c23e94
-        m_Path: <Keyboard>/h
-        m_Interactions:
-        m_Processors:
-        m_Groups: ;Keyboard&Mouse
-        m_Action: Hint
-        m_Flags: 0
-      m_Flags: 0
-    m_Reference: {fileID: 0}
   _giftBombPrefab: {fileID: 1457871387852763970, guid: 491bd01bc2901454cba22f9183dba17a, type: 3}
   pickupRange: 0.5
   pushableRange: 0.8
+  throwAnimationDelay: 0.15
   throwForce: 10
   aimHoldThreshold: 0.2
   maxThrowChargeTime: 2
@@ -972,20 +952,6 @@ MonoBehaviour:
   trajectoryCollisionMask:
     serializedVersion: 2
     m_Bits: 256
-  grabSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
-  throwSound:
-    Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
   chargeThrowSound:
     Guid:
       Data1: 0
@@ -1007,6 +973,7 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
+  jumpCooldown: 0.3
   _walkSpeed: 3
   _sprintSpeed: 5
   _acceleration: 5
@@ -1024,206 +991,7 @@ MonoBehaviour:
   pushableLayer:
     serializedVersion: 2
     m_Bits: 64
-  _moveLeft:
-    m_Name: Move Left
-    m_Type: 1
-    m_ExpectedControlType: Button
-    m_Id: 7dfc2293-e388-4ddb-8bfc-a0b4ac6e66d8
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: c4949c12-b69b-4c26-b921-12c756ed50b7
-      m_Path: <Keyboard>/a
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move Left
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 40ad9be4-2aa7-4547-ab82-5ec3869daee9
-      m_Path: <Gamepad>/leftStick/left
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move Left
-      m_Flags: 0
-    m_Flags: 0
-  _moveRight:
-    m_Name: Move Right
-    m_Type: 1
-    m_ExpectedControlType: Button
-    m_Id: 4a19bee6-2cff-45bc-b288-c04dc967c114
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 43cc5ab9-4a25-49cd-a83a-f6a048da4303
-      m_Path: <Keyboard>/d
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move Right
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 15799b0e-5473-4e25-b00f-2a4939adde0d
-      m_Path: <Gamepad>/leftStick/right
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move Right
-      m_Flags: 0
-    m_Flags: 0
-  _moveUp:
-    m_Name: Move Up
-    m_Type: 1
-    m_ExpectedControlType: Button
-    m_Id: ebc81fa5-0eb5-43fa-a588-42654d8802f5
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: a9c0a1d5-a038-49a1-8a56-49b76808060e
-      m_Path: <Keyboard>/w
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move Up
-      m_Flags: 0
-    - m_Name: 
-      m_Id: e5301b10-092c-4209-93a3-b7797648b1e3
-      m_Path: <Gamepad>/leftStick/up
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move Up
-      m_Flags: 0
-    m_Flags: 0
-  _moveDown:
-    m_Name: Move Down
-    m_Type: 1
-    m_ExpectedControlType: Button
-    m_Id: 25ba0e40-7f9a-49c1-a646-276b4fa7ebdd
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 13fb4a48-bd71-456e-b0da-9e23126889a9
-      m_Path: <Keyboard>/s
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move Down
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 5abf77b2-607d-438a-9095-d872ce2c60f1
-      m_Path: <Gamepad>/leftStick/down
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move Down
-      m_Flags: 0
-    m_Flags: 0
-  _sprint:
-    m_Name: Sprint
-    m_Type: 1
-    m_ExpectedControlType: Button
-    m_Id: a610df75-ac1d-42d1-9000-d59e603995f1
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 632cec4e-9516-4b0f-bb32-567bce48c401
-      m_Path: <Keyboard>/shift
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Sprint
-      m_Flags: 0
-    - m_Name: 
-      m_Id: ae3a59e1-dcfb-4702-8934-6c9b761e784a
-      m_Path: <Gamepad>/leftTrigger
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Sprint
-      m_Flags: 0
-    m_Flags: 0
-  _jump:
-    m_Name: Jump
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 8a1f1e99-eb38-4328-82b7-b1c0dfe9b3e8
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 340debe2-e6be-4299-a426-9528b3ad7bf9
-      m_Path: <Keyboard>/space
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Jump
-      m_Flags: 0
-    - m_Name: 
-      m_Id: f211922c-78d8-400c-b00d-83c8ef6d86e0
-      m_Path: <Gamepad>/buttonSouth
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Jump
-      m_Flags: 0
-    m_Flags: 0
-  _interact:
-    m_Name: Interact
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: ef3c2272-1fab-4eb5-9271-f625425c1c13
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 786ebb3d-e0fd-4a59-b3cd-68f5f18d7293
-      m_Path: <Keyboard>/e
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Interact
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 6d759be6-8ebf-4b43-9000-f1a488ee3267
-      m_Path: <Gamepad>/buttonWest
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Interact
-      m_Flags: 0
-    m_Flags: 0
-  _roll:
-    m_Name: Roll
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 74d44133-2960-490a-a8d1-daa4e9676739
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 7b77c0f2-5b16-478a-8d36-9c8138757280
-      m_Path: <Keyboard>/leftCtrl
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Roll
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 0e7802ae-deb4-4c3f-911b-7a3620961f4a
-      m_Path: <Gamepad>/buttonEast
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Roll
-      m_Flags: 0
-    m_Flags: 0
+  _inputActions: {fileID: 0}
   _spawnGift:
     m_Name: Spawn Gift
     m_Type: 0
@@ -1274,30 +1042,23 @@ MonoBehaviour:
       m_Action: Drop Gift
       m_Flags: 0
     m_Flags: 0
-  _toggleCamera:
-    m_Name: Toggle Camera
+  _openCommandsPage:
+    m_Name: 
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: f21a1be4-e08c-4f02-8f29-d628cc56ed7e
+    m_Id: 130154d4-626c-458b-a2e1-3f6848895163
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 47fb38a5-f4b7-4481-a54b-4902e1d99f2c
-      m_Path: <Gamepad>/leftShoulder
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Toggle Camera
-      m_Flags: 0
-    - m_Name: 
-      m_Id: 74896c1c-7f2c-4c6e-bc47-90cc2617a627
-      m_Path: <Keyboard>/r
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Toggle Camera
-      m_Flags: 0
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  _openCollectiblesPage:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 4e3fc77f-5027-48fa-961a-f8334be34b2a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
     m_Flags: 0
 --- !u!54 &944156596086110503
 Rigidbody:
@@ -1873,12 +1634,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7345835491508316574}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.783, y: -0.093, z: 0.241}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.3913812, y: -0.37386304, z: -0.4211211, w: -0.7278079}
+  m_LocalPosition: {x: -0.0055479407, y: 0.18823935, z: -0.16292872}
+  m_LocalScale: {x: 1.6083634, y: 2.0104542, z: 1.6083634}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2424163403160389342}
+  m_Father: {fileID: 4132021616104681160}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7476866171969339655
 GameObject:
@@ -2135,6 +1896,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1857727245284314550}
+  - {fileID: 7874114153055189859}
   m_Father: {fileID: 1877120188208758774}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8742600315560845698
