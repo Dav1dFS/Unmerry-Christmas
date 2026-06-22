@@ -14,14 +14,14 @@ public partial class Controller
             return;
         }
 
-        Collider[] hits        = Physics.OverlapSphere(transform.position, pickupRange, pickupLayer);
+        Collider[] hits        = Physics.OverlapSphere(InteractionCenter, pickupRange, pickupLayer);
         string     hintText    = null;
         float      closestDist = Mathf.Infinity;
         Collider   closestHit  = null;
 
         foreach (Collider hit in hits)
         {
-            float d = Vector3.Distance(transform.position, hit.transform.position);
+            float d = Vector3.Distance(InteractionCenter, hit.transform.position);
             if (d >= closestDist) continue;
 
             string text = GetHintForCollider(hit);

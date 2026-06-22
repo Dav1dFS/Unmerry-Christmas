@@ -186,6 +186,13 @@ public static class SetupKitchenTasks
             rb.angularDamping = 0.5f;
         }
 
+        // The Nutcracker ships with a NON-convex MeshCollider. A non-convex MeshCollider
+        // on a non-kinematic Rigidbody is unsupported — Unity drops it from the physics
+        // sim, so OverlapSphere can't find it and it can't be picked up or thrown.
+        // Convexify it (the working PickableObjectTemplate uses a convex primitive).
+        var meshCol = go.GetComponent<MeshCollider>();
+        if (meshCol != null) meshCol.convex = true;
+
         // PickupObject reads its Collider from the SAME GameObject, so the root must
         // have one (not just a child mesh) or pickup throws a NullReference.
         if (go.GetComponent<Collider>() == null)
@@ -197,7 +204,10 @@ public static class SetupKitchenTasks
 
         GetOrAdd<PickupObject>(go);
 
-        go.tag = "Untagged"; // not a Collectable/Token — it's a thrown pickup
+        // Tag to match the working pickups (PickableObjectTemplate is tagged "Pickable").
+        // Detection is layer+component based, but keeping the tag consistent avoids
+        // surprises and matches the project convention.
+        go.tag = "Pickable";
         if (pickableLayer >= 0) SetLayerRecursive(go, pickableLayer);
     }
 

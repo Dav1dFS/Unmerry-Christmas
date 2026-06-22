@@ -21,7 +21,7 @@ public class LightableEmissive : MonoBehaviour, IExplosionReactive
 
     [Tooltip("Emission colour when fully lit (HDR). Ramped up from black.")]
     [ColorUsage(true, true)]
-    [SerializeField] private Color _litEmission = new Color(6f, 3.04f, 1.6f, 1f);
+    [SerializeField] private Color _litEmission = new Color(6f, 3.04f, 1.6f, 10f);
 
     [Tooltip("Seconds to ramp from unlit to fully lit.")]
     [SerializeField] private float _duration = 1f;

@@ -25,7 +25,7 @@ public class DrinkableHotChocolate : MonoBehaviour, IInteractable
     {
         if (_drunk) return;
         _drunk = true;
-
+    
         // Leave the empty mug behind so the kitchen visibly fills up with finished drinks.
         if (_emptyMugPrefab != null)
             Instantiate(_emptyMugPrefab, transform.position, transform.rotation, transform.parent);
